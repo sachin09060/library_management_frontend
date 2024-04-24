@@ -1,3 +1,4 @@
+import { AutoAwesome } from '@mui/icons-material';
 import { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 
@@ -9,7 +10,7 @@ function CarouselsHome() {
   };
 
   return (
-    <Carousel activeIndex={index} onSelect={handleSelect} interval={1000} data-bs-theme="dark">
+    <Carousel activeIndex={index} onSelect={handleSelect} interval={1000} data-bs-theme="dark" aria-setsize={AutoAwesome}>
       <Carousel.Item>
         <img
           className="d-block w-100"
