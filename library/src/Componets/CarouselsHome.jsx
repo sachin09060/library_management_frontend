@@ -1,8 +1,15 @@
+import { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 
 function CarouselsHome() {
+  const [index, setIndex] = useState(0);
+
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
+  };
+
   return (
-    <Carousel data-bs-theme="dark">
+    <Carousel activeIndex={index} onSelect={handleSelect} interval={1000} data-bs-theme="dark">
       <Carousel.Item>
         <img
           className="d-block w-100"
