@@ -8,6 +8,9 @@ function ButtonEx() {
 
   const handleClick = () => {
     navigate('/userProfile');
+  const navigate = useNavigate(); 
+  const handleClick = () => {
+    navigate('/admin');
   };
 
   return (
@@ -17,6 +20,6 @@ function ButtonEx() {
       </Button>
     </div>
   );
-}
+}}
 
 export default ButtonEx;

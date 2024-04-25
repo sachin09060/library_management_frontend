@@ -27,7 +27,7 @@ import ContactsIcon from '@mui/icons-material/Contacts';
 
 const drawerWidth = 240;
 
-function ResponsiveDrawer(props) {
+function Dashbord(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
@@ -199,7 +199,7 @@ function ResponsiveDrawer(props) {
   );
 }
 
-ResponsiveDrawer.propTypes = {
+Dashbord.propTypes = {
   /**
    * Injected by the documentation to work in an iframe.
    * Remove this when copying and pasting into your project.
@@ -207,4 +207,4 @@ ResponsiveDrawer.propTypes = {
   window: PropTypes.func,
 };
 
-export default ResponsiveDrawer;
+export default Dashbord;
