@@ -1,7 +1,7 @@
 import React from 'react'
 import ResponsiveAppBar from '../NavBar'
 import CarouselsHome from '../CarouselsHome'
-import ButtonEx from '../Buttons'
+import UserSignInBtn from './UserSignInBtn'
 
 
 export default function Home() {
@@ -9,8 +9,8 @@ export default function Home() {
     <div>
       <ResponsiveAppBar />
       <CarouselsHome />
-      <div style={{marginTop:"20px"}}><p>This is only for Admin </p></div>
-      <ButtonEx/>
+      <div style={{marginTop:"20px"}}><p>Click Here to SignIn </p></div>
+      <UserSignInBtn/>
     </div>
   )
 }
