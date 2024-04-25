@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import LocalLibrary from '@mui/icons-material/LocalLibrary';
+import AdminSignInBtn from "./Dashbord/AdminSignBtn";
 
 const pages = ["HOME", "ABOUT", "BOOKS","CONTACT"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -124,7 +125,7 @@ function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
-
+          <AdminSignInBtn/>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
