@@ -23,7 +23,6 @@ import SendIcon from "@mui/icons-material/Send";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import Grid1 from "./Cards/Grid/Grid1";
 import ContactsIcon from '@mui/icons-material/Contacts';
-import ContainerFluidExample from "./Cards/Grid/BooksContainer";
 
 
 const drawerWidth = 240;
@@ -192,10 +191,9 @@ function ResponsiveDrawer(props) {
 
         <Grid1 />
         <Toolbar />
-        <Typography paragraph color="primary" fontFamily="revert-layer">
+        {/* <Typography paragraph color="primary" fontFamily="revert-layer">
           <h3>Recently added Books</h3>
-        </Typography>
-        <ContainerFluidExample />
+        </Typography> */}
       </Box>
     </Box>
   );

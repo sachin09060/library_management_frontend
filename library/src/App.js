@@ -1,9 +1,8 @@
-// App.js
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './Componets/Dashbord/Home';
-import ResponsiveDrawer from './Componets/Dashbord/Drawer2'
+import Media from './Componets/Dashbord/Profile/UserProfile'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -12,7 +11,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/admin' element={<ResponsiveDrawer />} />
+          <Route path='/admin' element={<Media />} />
         </Routes>
       </BrowserRouter>
     </div>
