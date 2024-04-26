@@ -56,7 +56,8 @@ export default function UserSignIn() {
                 outline: "none",
                 border: "2px solid white",
                 borderRadius: "40px",
-                color: "#fff"
+                color: "#fff",
+                textAlign: "center"
               }}
               required
             />

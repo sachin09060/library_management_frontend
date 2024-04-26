@@ -21,14 +21,13 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import SendIcon from "@mui/icons-material/Send";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import Grid1 from "./Cards/Grid/Grid1";
+import Grid1 from "../Dashbord/Cards/Grid/Grid1";
 import ContactsIcon from '@mui/icons-material/Contacts';
-import ContainerFluidExample from "./Cards/Grid/BooksContainer";
 
 
 const drawerWidth = 240;
 
-function Dashbord(props) {
+function AdminDash(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
@@ -192,21 +191,13 @@ function Dashbord(props) {
 
         <Grid1 />
         <Toolbar />
-        <Typography paragraph color="primary" fontFamily="revert-layer">
-          <h3>Recently added Books</h3>
-        </Typography>
-        <ContainerFluidExample />
       </Box>
     </Box>
   );
 }
 
-Dashbord.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * Remove this when copying and pasting into your project.
-   */
+AdminDash.propTypes = {
   window: PropTypes.func,
 };
 
-export default Dashbord;
+export default AdminDash;
