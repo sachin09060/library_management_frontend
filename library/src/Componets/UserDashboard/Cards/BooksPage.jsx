@@ -132,7 +132,7 @@ export default function MiniDrawer() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Back'].map((text, index) => (
+          {['Book'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -180,7 +180,7 @@ export default function MiniDrawer() {
               <Col><Books/></Col>
               <Col><Books/></Col>
             </Row>
-    </Container>
+          </Container>
           
         </Typography>
       </Box>
