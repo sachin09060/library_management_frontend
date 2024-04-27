@@ -162,6 +162,7 @@ export default function MiniDrawer() {
         <DrawerHeader />
         <Typography paragraph>
           <h1>Welcome UserName </h1>
+          Books
 
           <Container>
             <Row className='mt-4'>
