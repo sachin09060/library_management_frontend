@@ -11,10 +11,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import RegisterPage from './Componets/login/RegisterPage';
 // import ForgotPassword from './Componets/login/ForgotPassword';
 
-// import UserNavBar from './Componets/UserDashboard/Cards/UserNavBar'
+import UserNavBar from './Componets/UserDashboard/Cards/UserNavBar'
 // import UserDetails from './Componets/UserDashboard/Cards/UserDetails'
 // import BookCard from './Componets/UserDashboard/Cards/BookCard'
-import BooksPage from './Componets/UserDashboard/Cards/BooksPage'
+// import BooksPage from './Componets/UserDashboard/Cards/BooksPage'
 function App() {
   return (
     <div className="App">
@@ -28,10 +28,10 @@ function App() {
           <Route path='/Forgot' element={<ForgotPassword />} />
         </Routes>
       </BrowserRouter> */}
-      {/* <UserNavBar/> */}
+      <UserNavBar/>
       {/* <UserDetails/> */}
       {/* <BookCard/> */}
-      <BooksPage/>
+      {/* <BooksPage/> */}
     </div>
   );
 }
