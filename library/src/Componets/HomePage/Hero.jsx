@@ -5,7 +5,7 @@ const Hero = () => {
   return (
     <section
       className="hero d-flex align-items-center justify-content-left"
-      style={{ backgroundColor: "#f5f5f5", minHeight: "100vh" }} // Set minimum height to full viewport height
+      style={{ backgroundColor: "#f5f5f5", minHeight: "100vh" }} 
     >
       <Container>
         <Row className="justify-content-center">
@@ -16,8 +16,8 @@ const Hero = () => {
                 fontSize: "3.4rem",
                 fontWeight: "bold",
                 color: "#333",
-                marginBottom: "20px", // Added spacing
-                textAlign: "left", // Center text on all screen sizes
+                marginBottom: "20px",
+                textAlign: "left",
               }}
             >
               Start your reading journey today
@@ -37,7 +37,7 @@ const Hero = () => {
                 fontSize: "1.9rem",
                 color: "#999",
                 marginTop: "30px",
-                textAlign: "left", // Center text on all screen sizes
+                textAlign: "left",
               }}
             >
               Find inspiration for your next adventure.
@@ -47,13 +47,13 @@ const Hero = () => {
                 fontFamily: "Raleway",
                 fontSize: "1rem",
                 color: "#aaa",
-                textAlign: "left", // Center text on all screen sizes
+                textAlign: "left",
               }}
             >
               Lose yourself in a captivating story or learn something new.
             </p>
 
-            <section className="search text-left"> {/* Center the form */}
+            <section className="search text-left">
               <Form inline>
                 <FormControl
                   type="text"
@@ -61,7 +61,7 @@ const Hero = () => {
                   aria-label="Search"
                   style={{
                     width: "100%",
-                    maxWidth: "400px", // Set max width for responsiveness
+                    maxWidth: "400px",
                     borderRadius: "8px",
                     marginBottom: "10px",
                   }}
@@ -76,12 +76,12 @@ const Hero = () => {
               </Form>
             </section>
           </Col>
-          <Col xs={12} md={6} className="d-flex justify-content-center"> {/* Center the image */}
+          <Col xs={12} md={6} className="d-flex justify-content-center">
             <Image
               src="https://libromaniacs.com/wp-content/uploads/2023/06/books-like-all-the-light-we-cannot-see-1024x768.jpg"
               alt="Bookstore Hero Image"
-              fluid // Make the image responsive
-              style={{ borderRadius: "5px", marginTop: "20px", maxWidth: "100%" }} // Added spacing and max width
+              fluid
+              style={{ borderRadius: "5px", marginTop: "20px", maxWidth: "100%" }}
             />
           </Col>
         </Row>

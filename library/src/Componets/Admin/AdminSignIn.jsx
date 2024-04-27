@@ -9,7 +9,7 @@ export default function AdminSignIn() {
   const navigate = useNavigate(); 
 
   const handleClick = () => {
-    navigate('/admin');
+    navigate('/adminDash');
   };
 
   return (

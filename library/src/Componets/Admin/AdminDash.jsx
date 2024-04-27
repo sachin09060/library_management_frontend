@@ -21,7 +21,7 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import SendIcon from "@mui/icons-material/Send";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import Grid1 from "../Dashbord/Cards/Grid/Grid1";
+import Grid1 from "../dashbord/Cards/Grid/Grid1";
 import ContactsIcon from '@mui/icons-material/Contacts';
 
 
@@ -142,7 +142,6 @@ function AdminDash(props) {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
           variant="temporary"
@@ -150,7 +149,7 @@ function AdminDash(props) {
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },

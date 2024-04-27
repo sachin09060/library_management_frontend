@@ -2,7 +2,7 @@ import React from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { Link, NavLink } from 'react-router-dom';
 
-const Header = () => {
+const Header2 = () => {
   return (
     <header>
       <Navbar bg="light" expand="lg">
@@ -28,11 +28,6 @@ const Header = () => {
               <NavLink to="/news" className="nav-link" activeClassName="active">News & Blogs</NavLink>
               <NavLink to="/about" className="nav-link" activeClassName="active">About Us</NavLink>
             </Nav>
-
-            <Nav className="justify-content-end">
-              <NavLink to="/UserSignIn" className="nav-link" activeClassName="active">UserSignIn</NavLink>
-              <NavLink to="/adminSignIn" className="nav-link" activeClassName="active">Admin Login</NavLink>
-            </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
@@ -40,4 +35,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Header2;
