@@ -4,7 +4,7 @@ import Tab from '@mui/material/Tab';
 import BooksGalleryLayout from './BooksGalleryLayout';
 import BooksGalleryLayout2 from './BooksGalleryLayout2';
 import Footer from '../homePage/Footer';
-import Header2 from '../homePage/Headr2';
+import Header2 from '../homePage/Header2';
 
 function BookTabs() {
   const [value, setValue] = useState(0);
