@@ -16,13 +16,15 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import Groups2Icon from "@mui/icons-material/Groups2";
-import Diversity3Icon from "@mui/icons-material/Diversity3";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import SendIcon from "@mui/icons-material/Send";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import Grid1 from "../dashbord/Cards/Grid/Grid1";
 import ContactsIcon from '@mui/icons-material/Contacts';
+import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import { Link } from 'react-router-dom';
 
 
 const drawerWidth = 240;
@@ -49,11 +51,11 @@ function AdminDash(props) {
 
   const drawer = (
     <div>
-      <ContactsIcon color="primary" sx={{marginTop:'20px', fontSize: 70 }}/>
+      <ContactsIcon color="primary" sx={{ marginTop: "20px", fontSize: 70 }} />
       <Toolbar />
       <Divider />
       <List>
-        {["Dashbord", "Profile"].map((text, index) => (
+        {["Dashbord"].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -65,26 +67,28 @@ function AdminDash(props) {
         ))}
       </List>
       <Divider />
-      <List>
-        {["All Users Information", "Manage Books"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <Diversity3Icon /> : <LibraryBooksIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+
+      {["Manage Books"].map((text, index) => (
+        <ListItem key={text} disablePadding>
+          <ListItemButton
+            component={Link}
+            to={text === "Manage Books" ? "/manageBooks" : "/adminDash"}>
+            <ListItemIcon>
+              {index % 2 === 0 ? <AutoStoriesIcon /> : <LibraryBooksIcon />}
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItemButton>
+        </ListItem>
+      ))}
+
       <Divider />
       <Divider />
       <List>
         {["Issued Books", "Requested Books"].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton component={Link} to={text === "Issued Books" ? "/manageIssuedBooks" : "/manageRequestedBooks"}>
               <ListItemIcon>
-                {index % 2 === 0 ? <Diversity3Icon /> : <SendIcon />}
+                {index % 2 === 0 ? <BookmarkAddedIcon /> : <SendIcon />}
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>
@@ -93,9 +97,9 @@ function AdminDash(props) {
       </List>
       <Divider />
       <List>
-        {["Manage Users", "Fine"].map((text, index) => (
+        {["Manage Users"].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton component={Link} to={text === "Manage Users" ? "/manageUsers" : "/adminDash"}>
               <ListItemIcon>
                 {index % 2 === 0 ? <GroupAddIcon /> : <AttachMoneyIcon />}
               </ListItemIcon>
@@ -110,7 +114,7 @@ function AdminDash(props) {
 
 
   const container =
-    window !== undefined ? () => window().document.body : undefined;
+  window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -187,7 +191,6 @@ function AdminDash(props) {
         <Typography paragraph color="primary" fontFamily="cursive">
           <h1>User Dashbord</h1>
         </Typography>
-
         <Grid1 />
         <Toolbar />
       </Box>
@@ -200,3 +203,4 @@ AdminDash.propTypes = {
 };
 
 export default AdminDash;
+

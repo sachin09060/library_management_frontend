@@ -27,6 +27,7 @@ const Header2 = () => {
               <NavLink to="/BooksGallery" className="nav-link" activeClassName="active">Store</NavLink>
               <NavLink to="/news" className="nav-link" activeClassName="active">News & Blogs</NavLink>
               <NavLink to="/about" className="nav-link" activeClassName="active">About Us</NavLink>
+              <NavLink to="/contactUs" className="nav-link" activeClassName="active">Contact Us</NavLink>
             </Nav>
           </Navbar.Collapse>
         </Container>
