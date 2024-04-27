@@ -1,6 +1,6 @@
 // App.js
 
-import { Book } from 'react-bootstrap-icons';
+// import { Book } from 'react-bootstrap-icons';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import Home from './Componets/Dashbord/Home';
@@ -11,13 +11,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import RegisterPage from './Componets/login/RegisterPage';
 // import ForgotPassword from './Componets/login/ForgotPassword';
 
-import Bookcard from './Componets/UserDashbord/cards/Bookcard';
-import Usercards from './Componets/UserDashbord/cards/Usercards'
-
-
-
-
-
+// import UserNavBar from './Componets/UserDashboard/Cards/UserNavBar'
+// import UserDetails from './Componets/UserDashboard/Cards/UserDetails'
+// import BookCard from './Componets/UserDashboard/Cards/BookCard'
+import BooksPage from './Componets/UserDashboard/Cards/BooksPage'
 function App() {
   return (
     <div className="App">
@@ -31,9 +28,10 @@ function App() {
           <Route path='/Forgot' element={<ForgotPassword />} />
         </Routes>
       </BrowserRouter> */}
-      <Bookcard/>
-      <Usercards/>
-      
+      {/* <UserNavBar/> */}
+      {/* <UserDetails/> */}
+      {/* <BookCard/> */}
+      <BooksPage/>
     </div>
   );
 }
