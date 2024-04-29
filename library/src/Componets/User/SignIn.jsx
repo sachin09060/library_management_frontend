@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 export default function UserSignIn() {
   const navigate = useNavigate(); 
   const handleClick = () => {
-    navigate('/UserSignIn');
+    navigate('/BooksGallery');
   };
   return (
     <div
@@ -56,7 +56,8 @@ export default function UserSignIn() {
                 outline: "none",
                 border: "2px solid white",
                 borderRadius: "40px",
-                color: "#fff"
+                color: "#fff",
+                textAlign: "center"
               }}
               required
             />

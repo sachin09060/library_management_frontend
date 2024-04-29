@@ -16,19 +16,20 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import Groups2Icon from "@mui/icons-material/Groups2";
-import Diversity3Icon from "@mui/icons-material/Diversity3";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import SendIcon from "@mui/icons-material/Send";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import Grid1 from "./Cards/Grid/Grid1";
+import Grid1 from "../dashbord/Cards/Grid/Grid1";
 import ContactsIcon from '@mui/icons-material/Contacts';
-import ContainerFluidExample from "./Cards/Grid/BooksContainer";
+import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import { Link } from 'react-router-dom';
 
 
 const drawerWidth = 240;
 
-function Dashbord(props) {
+function AdminDash(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
@@ -50,11 +51,11 @@ function Dashbord(props) {
 
   const drawer = (
     <div>
-      <ContactsIcon color="primary" sx={{marginTop:'20px', fontSize: 70 }}/>
+      <ContactsIcon color="primary" sx={{ marginTop: "20px", fontSize: 70 }} />
       <Toolbar />
       <Divider />
       <List>
-        {["Dashbord", "Profile"].map((text, index) => (
+        {["Dashbord"].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -66,26 +67,28 @@ function Dashbord(props) {
         ))}
       </List>
       <Divider />
-      <List>
-        {["All Users Information", "Manage Books"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <Diversity3Icon /> : <LibraryBooksIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+
+      {["Manage Books"].map((text, index) => (
+        <ListItem key={text} disablePadding>
+          <ListItemButton
+            component={Link}
+            to={text === "Manage Books" ? "/manageBooks" : "/adminDash"}>
+            <ListItemIcon>
+              {index % 2 === 0 ? <AutoStoriesIcon /> : <LibraryBooksIcon />}
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItemButton>
+        </ListItem>
+      ))}
+
       <Divider />
       <Divider />
       <List>
         {["Issued Books", "Requested Books"].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton component={Link} to={text === "Issued Books" ? "/manageIssuedBooks" : "/manageRequestedBooks"}>
               <ListItemIcon>
-                {index % 2 === 0 ? <Diversity3Icon /> : <SendIcon />}
+                {index % 2 === 0 ? <BookmarkAddedIcon /> : <SendIcon />}
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>
@@ -94,9 +97,9 @@ function Dashbord(props) {
       </List>
       <Divider />
       <List>
-        {["Manage Users", "Fine"].map((text, index) => (
+        {["Manage Users"].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton component={Link} to={text === "Manage Users" ? "/manageUsers" : "/adminDash"}>
               <ListItemIcon>
                 {index % 2 === 0 ? <GroupAddIcon /> : <AttachMoneyIcon />}
               </ListItemIcon>
@@ -111,7 +114,7 @@ function Dashbord(props) {
 
 
   const container =
-    window !== undefined ? () => window().document.body : undefined;
+  window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -143,7 +146,6 @@ function Dashbord(props) {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
           variant="temporary"
@@ -151,7 +153,7 @@ function Dashbord(props) {
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },
@@ -189,24 +191,16 @@ function Dashbord(props) {
         <Typography paragraph color="primary" fontFamily="cursive">
           <h1>User Dashbord</h1>
         </Typography>
-
         <Grid1 />
         <Toolbar />
-        <Typography paragraph color="primary" fontFamily="revert-layer">
-          <h3>Recently added Books</h3>
-        </Typography>
-        <ContainerFluidExample />
       </Box>
     </Box>
   );
 }
 
-Dashbord.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * Remove this when copying and pasting into your project.
-   */
+AdminDash.propTypes = {
   window: PropTypes.func,
 };
 
-export default Dashbord;
+export default AdminDash;
+
