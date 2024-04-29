@@ -4,11 +4,14 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-export default function UserSignIn() {
+
+export default function AdminSignIn() {
   const navigate = useNavigate(); 
+
   const handleClick = () => {
-    navigate('/UserSignIn');
+    navigate('/adminDash');
   };
+
   return (
     <div
       style={{
@@ -35,7 +38,7 @@ export default function UserSignIn() {
         }}
       >
         <form action="">
-          <h1 style={{ fontSize: "30px", textAlign: "center" }}>Sign-In</h1>
+          <h1 style={{ fontSize: "30px", textAlign: "center" }}>Admin Sign-In</h1>
           <div
             style={{
               position: "relative",
@@ -126,8 +129,8 @@ export default function UserSignIn() {
               </Link>
           </div>
           <button
-          onClick={handleClick}
-            type='submit'
+            onClick={handleClick}
+            type="submit"
             style={{
               width: "100%",
               height: "45px",
@@ -147,12 +150,6 @@ export default function UserSignIn() {
             }}
             className="register-link"
           >
-            <p>
-              Don't have an account?{" "}
-              <Link to="/UserSignUp" style={{ color: "#fff", textDecoration: "none" }}>
-                Register
-              </Link>
-            </p>
           </div>
         </form>
       </div>
