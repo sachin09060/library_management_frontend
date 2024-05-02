@@ -21,7 +21,7 @@ const NewsBlog = () => {
       content:
         "Royal Challengers Bengaluru beat Sunrisers Hyderabad by 35 runs.",
       date: "April 24, 2024",
-      imageUrl: "https://library.sportingnews.com/styles/twitter_card_120x120/s3/2023-04/RON_3732.JPG?itok=lc_ZSsJn",
+      imageUrl: "https://img.jagranjosh.com/images/2023/April/142023/ipl-rcb-list.webp",
     },
     {
         id: 3,
@@ -29,7 +29,7 @@ const NewsBlog = () => {
         content:
           "Salman Khan thinks that he should announce his wedding on June 04, the day of Lok Sabha election results.",
         date: "April 25, 2024",
-        imageUrl: "https://akm-img-a-in.tosshub.com/indiatoday/images/story/201905/salman_khan_wedding.jpeg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4OcGX-f2SSFdRSiw3BI89WkipS-AxPomY4-VOyqVKWw&s",
       },
       {
         id: 4,
@@ -37,7 +37,7 @@ const NewsBlog = () => {
         content:
           "Royal Challengers Bengaluru beat Sunrisers Hyderabad by 35 runs.",
         date: "April 24, 2024",
-        imageUrl: "https://funfacts.picescorp.in/images/BlogPics/IPL-Verdict-CSK-RR.jpg",
+        imageUrl: "https://wordpresscdn.winzogames.com/prod/blog/wp-content/uploads/2023/03/06123446/why-were-csk-banned-from-the-ipl.png",
       },
       {
         id: 5,

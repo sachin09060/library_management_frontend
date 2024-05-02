@@ -20,7 +20,7 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import SendIcon from "@mui/icons-material/Send";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import Grid1 from "../dashbord/Cards/Grid/Grid1";
+import Grid1 from "../dashbord/cards/grid/Grid1";
 import ContactsIcon from '@mui/icons-material/Contacts';
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
