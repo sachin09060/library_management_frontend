@@ -19,7 +19,7 @@ const books = [
   {
     title: "THE PSYCHOLOGY OF MONEY",
     subtitle:"Timeless lessons on wealth, greed, and happiness ",
-    image: "https://bookbins.in/wp-content/uploads/2021/05/The-Psychology-Of-Money-Morgan-Housel-Buy-Online-Bookbins-1.png",
+    image: "https://rochizalani.com/wp-content/uploads/2021/04/psychology-of-money-930x620.jpg",
     author: " Héctor García and Francesc Miralles",
   },
   {
