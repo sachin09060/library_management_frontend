@@ -1,149 +1,377 @@
-import React, { useState } from 'react';
-import { Container, Typography, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,Link } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import MuiAlert from '@mui/material/Alert';
+import {
+  Container,
+  Typography,
+  DatePicker,
+  TextField,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Link,
+  Snackbar,
+} from "@mui/material";
 
-const initialBooks = [
-  { bookId: 1, bookImgUrl: 'Book 1', bookName: 'Author 1', author: '1234567890' , genre: 'Genre', description: 'description', addedDate:'addedDate', totalCopies:'totalCopies', availableCopies: 'availableCopies'},
-  { bookId: 2, bookImgUrl: 'Book 2', bookName: 'Author 2', author: '0987654321' , genre: 'Genre', description: 'description', addedDate:'addedDate', totalCopies:'totalCopies', availableCopies: 'availableCopies'},
-  { bookId: 3, bookImgUrl: 'Book 3', bookName: 'Author 3', author: '2468109753' , genre: 'Genre', description: 'description', addedDate:'addedDate', totalCopies:'totalCopies', availableCopies: 'availableCopies'},
-  { bookId: 4, bookImgUrl: 'Book 4', bookName: 'Author 4', author: '1357924680' , genre: 'Genre', description: 'description', addedDate:'addedDate', totalCopies:'totalCopies', availableCopies: 'availableCopies'},
-  { bookId: 5, bookImgUrl: 'Book 5', bookName: 'Author 5', author: '9876543210' , genre: 'Genre', description: 'description', addedDate:'addedDate', totalCopies:'totalCopies', availableCopies: 'availableCopies'}
-];
 
 const ManageBooks = () => {
-  const [books, setBooks] = useState(initialBooks);
-  const [newBook, setNewBook] = useState({ title: '', author: '', isbn: '' });
+  const [books, setBooks] = useState([]);
+  const [newBook, setNewBook] = useState({
+    bookId: "",
+    bookName: "",
+    bookImgUrl: "",
+    author: "",
+    genre: "",
+    description: "",
+    addedDate: "",
+    totalCopies: "",
+    availableCopies: "",
+  });
+  const [updatingBook, setUpdatingBook] = useState(null);
 
-  const handleAddBook = () => {
-    if (newBook.bookId && newBook.bookName && newBook.author && newBook.genre && newBook.description && newBook.addedDate && newBook.totalCopies && newBook.availableCopies) {
-      const updatedBooks = [...books, { id: books.length + 1, ...newBook }];
-      setBooks(updatedBooks);
-      setNewBook({ title: '', author: '', isbn: '' });
+  const [users, setUsers] = useState([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get("http://localhost:8055/api/book");
+      setBooks(response.data);
+    } catch (error) {
+      console.error("Error fetching books:", error);
     }
   };
 
-  const handleDeleteBook = (id) => {
-    const updatedBooks = books.filter(book => book.id !== id);
-    setBooks(updatedBooks);
+  const addBookToDatabase = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8055/api/book/add",
+        newBook
+      );
+      console.log("Book added:", response.data);
+
+      fetchBooks();
+
+      setNewBook({
+        bookId: "",
+        bookName: "",
+        bookImgUrl: "",
+        author: "",
+        genre: "",
+        description: "",
+        addedDate: "",
+        totalCopies: "",
+        availableCopies: "",
+      });
+      setSnackbarSeverity('success');
+      setSnackbarMessage(response.data.message);
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error("Error adding book:", error);
+    }
+  };
+
+  const handleAddBook = () => {
+    if (
+      newBook.bookId &&
+      newBook.bookName &&
+      newBook.author &&
+      newBook.genre &&
+      newBook.description &&
+      newBook.addedDate &&
+      newBook.totalCopies &&
+      newBook.availableCopies
+    ) {
+      addBookToDatabase();
+    }
+  };
+
+  const handleDeleteAndUpdateBook = async (bookId) => {
+    try {
+      await axios.delete("http://localhost:8055/api/book/delete", {
+        data: {
+          bookId: bookId,
+        },
+      });
+
+      fetchBooks();
+    } catch (error) {
+      console.error("Error deleting book:", error);
+    }
+  };
+
+  const handleUpdateBook = async () => {
+    try {
+      const response = await axios.put(
+        "http://localhost:8055/api/book/update",
+        newBook
+      );
+      console.log("Book updated:", response.data);
+
+      fetchBooks();
+
+      setNewBook({
+        bookId: "",
+        bookName: "",
+        bookImgUrl: "",
+        author: "",
+        genre: "",
+        description: "",
+        addedDate: "",
+        totalCopies: "",
+        availableCopies: "",
+      });
+    } catch (error) {
+      console.error("Error updating book:", error);
+    }
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackbarOpen(false);
+  };
+
+  const snackbarStyle = {
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: '#4CAF50',
+    color: '#FFFFFF',
+    borderRadius: '12px',
+    padding: '24px', 
+    fontSize: '1.6rem', 
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
   };
 
   return (
-    <Container maxWidth="md" style={{ marginTop: 40 }}>
-      <Typography variant="h2" align="center" gutterBottom>
-        Manage Books
-      </Typography>
-      <div>
-        <TextField
-          label="Book ID"
-          variant="outlined"
-          fullWidth
-          value={newBook.bookId}
-          onChange={(e) => setNewBook({ ...newBook, bookId: e.target.value })}
-        />
-        <TextField
-          label="Book Name"
-          variant="outlined"
-          fullWidth
-          value={newBook.bookName}
-          onChange={(e) => setNewBook({ ...newBook, bookName: e.target.value })}
-        />
-        <TextField
-          label="Book URL"
-          variant="outlined"
-          fullWidth
-          value={newBook.bookImgUrl}
-          onChange={(e) => setNewBook({ ...newBook, bookImgUrl: e.target.value })}
-        />
-        <TextField
-          label="Author"
-          variant="outlined"
-          fullWidth
-          value={newBook.author}
-          onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
-        />
-        <TextField
-          label="Genre"
-          variant="outlined"
-          fullWidth
-          value={newBook.genre}
-          onChange={(e) => setNewBook({ ...newBook, genre: e.target.value })}
-        />
-        <TextField
-          label="Description"
-          variant="outlined"
-          fullWidth
-          value={newBook.description}
-          onChange={(e) => setNewBook({ ...newBook, description: e.target.value })}
-        />
-        <TextField
-          label="Added Date"
-          variant="outlined"
-          fullWidth
-          value={newBook.addedDate}
-          onChange={(e) => setNewBook({ ...newBook, addedDate: e.target.value })}
-        />
-        <TextField
-          label="Total Copies"
-          variant="outlined"
-          fullWidth
-          value={newBook.totalCopies}
-          onChange={(e) => setNewBook({ ...newBook, totalCopies: e.target.value })}
-        />
-        <TextField
-          label="Available Copies"
-          variant="outlined"
-          fullWidth
-          value={newBook.availableCopies}
-          onChange={(e) => setNewBook({ ...newBook, availableCopies: e.target.value })}
-        />
-        <Button variant="contained" color="primary" onClick={handleAddBook}>
+    <Container
+      maxWidth="xl"
+      style={{
+        marginTop: 40,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          padding: "20px",
+          backgroundColor: "#EBF3E8",
+          borderRadius: "10px",
+          marginBottom: "20px",
+        }}
+      >
+        <Typography variant="h2" align="center" gutterBottom>
+          Manage Books
+        </Typography>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
+          <TextField
+            label="Book ID"
+            value={newBook.bookId}
+            onChange={(e) => setNewBook({ ...newBook, bookId: e.target.value })}
+            style={{ width: "200px", margin: "10px" }}
+          />
+          <TextField
+            label="Book Name"
+            value={newBook.bookName}
+            onChange={(e) =>
+              setNewBook({ ...newBook, bookName: e.target.value })
+            }
+            style={{ width: "200px", margin: "10px" }}
+          />
+          <TextField
+            label="Book Image URL"
+            value={newBook.bookImgUrl}
+            onChange={(e) =>
+              setNewBook({ ...newBook, bookImgUrl: e.target.value })
+            }
+            style={{ width: "200px", margin: "10px" }}
+          />
+          <TextField
+            label="Author"
+            value={newBook.author}
+            onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
+            style={{ width: "200px", margin: "10px" }}
+          />
+          <TextField
+            label="Genre"
+            value={newBook.genre}
+            onChange={(e) => setNewBook({ ...newBook, genre: e.target.value })}
+            style={{ width: "200px", margin: "10px" }}
+          />
+          <TextField
+            label="Description"
+            value={newBook.description}
+            onChange={(e) =>
+              setNewBook({ ...newBook, description: e.target.value })
+            }
+            style={{ width: "200px", margin: "10px" }}
+          />
+          <TextField
+            label="Added Date"
+            type="date"
+            variant="outlined"
+            value={newBook.addedDate}
+            onChange={(e) =>
+              setNewBook({ ...newBook, addedDate: e.target.value })
+            }
+            style={{ width: "200px", margin: "10px" }}
+            InputLabelProps={{ shrink: true }}
+          />
+
+          <TextField
+            label="Total Copies"
+            value={newBook.totalCopies}
+            onChange={(e) =>
+              setNewBook({ ...newBook, totalCopies: e.target.value })
+            }
+            style={{ width: "200px", margin: "10px" }}
+          />
+          <TextField
+            label="Available Copies"
+            value={newBook.availableCopies}
+            onChange={(e) =>
+              setNewBook({ ...newBook, availableCopies: e.target.value })
+            }
+            style={{ width: "200px", margin: "10px" }}
+          />
+        </div>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddBook}
+          style={{ width: "80%", margin: "20px 0" }}
+        >
           Add
         </Button>
       </div>
-      <Typography variant="h4" style={{ marginTop: 20 }}>
-        Book List
-      </Typography>
-      <TableContainer component={Paper} style={{ marginTop: 10 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Book ID</TableCell>
-              <TableCell>Book Name</TableCell>
-              <TableCell>Book URL</TableCell>
-              <TableCell>Author</TableCell>
-              <TableCell>Genre</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Added Date</TableCell>
-              <TableCell>Total Copies</TableCell>
-              <TableCell>Available Copies</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {books.map((book) => (
-              <TableRow key={book.id}>
-                <TableCell>{book.title}</TableCell>
-                <TableCell>{book.author}</TableCell>
-                <TableCell>{book.isbn}</TableCell>
-                <TableCell>{book.title}</TableCell>
-                <TableCell>{book.author}</TableCell>
-                <TableCell>{book.isbn}</TableCell>
-                <TableCell>{book.title}</TableCell>
-                <TableCell>{book.author}</TableCell>
-                <TableCell>{book.isbn}</TableCell>
-                <TableCell>
-                  <Button variant="outlined" color="secondary" onClick={() => handleDeleteBook(book.id)}>
-                    Delete
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Link href="/adminDash" underline="none" style={{ display: 'block', textAlign: 'center', marginTop: 20 }}>
-        <Button variant="contained" color="primary" sx={{ '&:hover': { backgroundColor: '#303f9f' } }}>
-          Go to Dashboard
-        </Button>
-      </Link>
+      <div
+        style={{
+          width: "100%",
+          padding: "10px",
+          backgroundColor: "#D2E3C8",
+          borderRadius: "10px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          overflow: "hidden",
+        }}
+      >
+        <Typography variant="h4" align="center" gutterBottom>
+          Book List
+        </Typography>
+        <div style={{ height: "300px", overflowY: "auto", width: "100%" }}>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell style={{ width: "8%" }}>Book ID</TableCell>
+                  <TableCell style={{ width: "15%" }}>Book Name</TableCell>
+                  <TableCell style={{ width: "15%" }}>Book Image URL</TableCell>
+                  <TableCell style={{ width: "15%" }}>Author</TableCell>
+                  <TableCell style={{ width: "15%" }}>Genre</TableCell>
+                  <TableCell style={{ width: "20%" }}>Description</TableCell>
+                  <TableCell style={{ width: "7%" }}>Added Date</TableCell>
+                  <TableCell style={{ width: "5%" }}>Total Copies</TableCell>
+                  <TableCell style={{ width: "5%" }}>
+                    Available Copies
+                  </TableCell>
+                  <TableCell style={{ width: "5%" }}>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {books.map((book) => (
+                  <TableRow
+                    key={book.bookId}
+                    style={{ height: "40px", backgroundColor: "#EBF3E8" }}
+                  >
+                    <TableCell style={{ fontSize: "0.8rem" }}>
+                      {book.bookId}
+                    </TableCell>
+                    <TableCell style={{ fontSize: "0.8rem" }}>
+                      {book.bookName}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        fontSize: "0.8rem",
+                        maxWidth: "100px",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {book.bookImgUrl}
+                    </TableCell>
+                    <TableCell style={{ fontSize: "0.8rem" }}>
+                      {book.author}
+                    </TableCell>
+                    <TableCell style={{ fontSize: "0.8rem" }}>
+                      {book.genre}
+                    </TableCell>
+                    <TableCell style={{ fontSize: "0.8rem" }}>
+                      {book.description}
+                    </TableCell>
+                    <TableCell style={{ fontSize: "0.8rem" }}>
+                      {book.addedDate}
+                    </TableCell>
+                    <TableCell style={{ fontSize: "0.8rem" }}>
+                      {book.totalCopies}
+                    </TableCell>
+                    <TableCell style={{ fontSize: "0.8rem" }}>
+                      {book.availableCopies}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleDeleteAndUpdateBook(book.bookId)}
+                      >
+                        Delete
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => handleUpdateBook(book.bookId)}
+                      >
+                        Update
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+        <Link href="/adminDash" underline="none" style={{ marginTop: "20px" }}>
+          <Button variant="contained" color="primary">
+            Go to Dashboard
+          </Button>
+        </Link>
+      </div>
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose} style={snackbarStyle}>
+        <MuiAlert onClose={handleSnackbarClose} severity={snackbarSeverity}>
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
     </Container>
   );
 };

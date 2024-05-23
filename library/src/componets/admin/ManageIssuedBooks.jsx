@@ -1,114 +1,154 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Container, Typography, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Link } from '@mui/material';
 
-const initialIssuedBooks = [
-  { id: 1, bookTitle: 'Book 1', isbn: 'ISBN123', personName: 'John Doe', email: 'john@example.com', startDate: '2024-04-01' },
-  { id: 2, bookTitle: 'Book 2', isbn: 'ISBN456', personName: 'Jane Doe', email: 'jane@example.com', startDate: '2024-04-05' },
-  { id: 3, bookTitle: 'Book 3', isbn: 'ISBN789', personName: 'Alice Smith', email: 'alice@example.com', startDate: '2024-04-10' },
-];
-
 const ManageIssuedBooks = () => {
-  const [issuedBooks, setIssuedBooks] = useState(initialIssuedBooks);
-  const [newIssuedBook, setNewIssuedBook] = useState({ bookTitle: '', isbn: '', personName: '', email: '', startDate: '' });
+  const [newIssuedBook, setNewIssuedBook] = useState({
+    userId: '',
+    bookId: '',
+    issuedDate: '',
+    dueDate: '',
+    returnDate: '',
+    returned: false,
+    renewed: false
+  });
 
-  const handleAddIssuedBook = () => {
-    if (newIssuedBook.bookTitle && newIssuedBook.isbn && newIssuedBook.personName && newIssuedBook.email && newIssuedBook.startDate) {
-      const updatedIssuedBooks = [...issuedBooks, { id: issuedBooks.length + 1, ...newIssuedBook }];
-      setIssuedBooks(updatedIssuedBooks);
-      setNewIssuedBook({ bookTitle: '', isbn: '', personName: '', email: '', startDate: '' });
+  const [issuedBooks, setIssuedBooks] = useState([]);
+
+  useEffect(() => {
+    fetchIssuedBooks();
+  }, []);
+
+  const fetchIssuedBooks = async () => {
+    try {
+      const response = await axios.get('http://localhost:8055/api/history');
+      setIssuedBooks(response.data);
+    } catch (error) {
+      console.error('Error fetching issued books:', error);
     }
   };
 
-  const handleDeleteIssuedBook = (id) => {
-    const updatedIssuedBooks = issuedBooks.filter(book => book.id !== id);
-    setIssuedBooks(updatedIssuedBooks);
+  const handleAddIssuedBook = async () => {
+    try {
+      const response = await axios.post('http://localhost:8055/api/history/add', newIssuedBook);
+      console.log('Issued book added:', response.data);
+      setNewIssuedBook({
+        userId: '',
+        bookId: '',
+        issuedDate: '',
+        dueDate: '',
+        returnDate: '',
+        returned: false,
+        renewed: false
+      });
+      fetchIssuedBooks(); // Refresh the issued books list
+    } catch (error) {
+      console.error('Error adding issued book:', error);
+    }
+  };
+
+  const handleDeleteIssuedBook = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8055/api/history/delete/${id}`);
+      console.log('Issued book deleted:', id);
+      fetchIssuedBooks();
+    } catch (error) {
+      console.error('Error deleting issued book:', error);
+    }
   };
 
   return (
-    <Container maxWidth="md" style={{ marginTop: 40 }}>
+    <Container maxWidth="xl" style={{ marginTop: 40, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ width: '100%', padding: '20px', backgroundColor: '#EBF3E8', borderRadius: '10px', marginBottom: '20px' }}>
       <Typography variant="h2" align="center" gutterBottom>
         Manage Issued Books
       </Typography>
-      <div>
+      <div style={{ width: '100%', padding: '20px', backgroundColor: '#EBF3E8', borderRadius: '10px', marginBottom: '20px' }}>
         <TextField
-          label="Book Title"
+          label="User ID"
           variant="outlined"
           fullWidth
-          value={newIssuedBook.bookTitle}
-          onChange={(e) => setNewIssuedBook({ ...newIssuedBook, bookTitle: e.target.value })}
+          value={newIssuedBook.userId}
+          onChange={(e) => setNewIssuedBook({ ...newIssuedBook, userId: e.target.value })}
         />
         <TextField
-          label="ISBN"
+          label="Book ID"
           variant="outlined"
           fullWidth
-          value={newIssuedBook.isbn}
-          onChange={(e) => setNewIssuedBook({ ...newIssuedBook, isbn: e.target.value })}
+          value={newIssuedBook.bookId}
+          onChange={(e) => setNewIssuedBook({ ...newIssuedBook, bookId: e.target.value })}
         />
         <TextField
-          label="Person Name"
-          variant="outlined"
-          fullWidth
-          value={newIssuedBook.personName}
-          onChange={(e) => setNewIssuedBook({ ...newIssuedBook, personName: e.target.value })}
-        />
-        <TextField
-          label="Email"
-          variant="outlined"
-          fullWidth
-          value={newIssuedBook.email}
-          onChange={(e) => setNewIssuedBook({ ...newIssuedBook, email: e.target.value })}
-        />
-        <TextField
-          label="Start Date"
+          label="Issued Date"
           type="date"
           variant="outlined"
           fullWidth
-          value={newIssuedBook.startDate}
-          onChange={(e) => setNewIssuedBook({ ...newIssuedBook, startDate: e.target.value })}
+          value={newIssuedBook.issuedDate}
+          onChange={(e) => setNewIssuedBook({ ...newIssuedBook, issuedDate: e.target.value })}
           InputLabelProps={{ shrink: true }}
         />
-        <Button variant="contained" color="primary" onClick={handleAddIssuedBook} style={{ marginTop: 10 }}>
+        <TextField
+          label="Due Date"
+          type="date"
+          variant="outlined"
+          fullWidth
+          value={newIssuedBook.dueDate}
+          onChange={(e) => setNewIssuedBook({ ...newIssuedBook, dueDate: e.target.value })}
+          InputLabelProps={{ shrink: true }}
+        />
+        <TextField
+          label="Return Date"
+          type="date"
+          variant="outlined"
+          fullWidth
+          value={newIssuedBook.returnDate}
+          onChange={(e) => setNewIssuedBook({ ...newIssuedBook, returnDate: e.target.value })}
+          InputLabelProps={{ shrink: true }}
+        />
+        <Button variant="contained" color="primary" onClick={handleAddIssuedBook}style={{ width: '80%', margin: '20px 0' }}>
           Add
         </Button>
       </div>
-      <Typography variant="h4" style={{ marginTop: 20 }}>
-        Issued Books List
-      </Typography>
-      <TableContainer component={Paper} style={{ marginTop: 10 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Book Title</TableCell>
-              <TableCell>ISBN</TableCell>
-              <TableCell>Person Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Start Date</TableCell>
-              <TableCell>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {issuedBooks.map((book) => (
-              <TableRow key={book.id}>
-                <TableCell>{book.bookTitle}</TableCell>
-                <TableCell>{book.isbn}</TableCell>
-                <TableCell>{book.personName}</TableCell>
-                <TableCell>{book.email}</TableCell>
-                <TableCell>{book.startDate}</TableCell>
-                <TableCell>
-                  <Button variant="outlined" color="secondary" onClick={() => handleDeleteIssuedBook(book.id)}>
-                    Delete
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Link href="/adminDash" underline="none" style={{ display: 'block', textAlign: 'center', marginTop: 20 }}>
-        <Button variant="contained" color="primary" sx={{ '&:hover': { backgroundColor: '#303f9f' } }}>
-          Go to Dashboard
-        </Button>
-      </Link>
+      <div style={{ width: '100%', padding: '10px', backgroundColor: '#D2E3C8', borderRadius: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'hidden' }}>
+        <Typography variant="h4" align="center" gutterBottom>
+          Issued Books List
+        </Typography>
+        <div style={{ height: '300px', overflowY: 'auto', width: '100%' }}>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>User ID</TableCell>
+                  <TableCell>Book ID</TableCell>
+                  <TableCell>Issued Date</TableCell>
+                  <TableCell>Due Date</TableCell>
+                  <TableCell>Return Date</TableCell>
+                  <TableCell>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {issuedBooks.map((book) => (
+                  <TableRow key={book.id} style={{ height: '40px', backgroundColor: '#EBF3E8' }}>
+                    <TableCell>{book.userId}</TableCell>
+                    <TableCell>{book.bookId}</TableCell>
+                    <TableCell>{book.issuedDate}</TableCell>
+                    <TableCell>{book.dueDate}</TableCell>
+                    <TableCell>{book.returnDate}</TableCell>
+                    <TableCell>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+        <Link href="/adminDash" underline="none" style={{ marginTop: '20px' }}>
+          <Button variant="contained" color="primary">
+            Go to Dashboard
+          </Button>
+        </Link>
+      </div>
+      </div>
     </Container>
   );
 };

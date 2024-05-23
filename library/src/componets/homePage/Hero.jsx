@@ -1,11 +1,11 @@
 import React from "react";
-import { Container, Row, Col, Image, Button, Form, FormControl } from "react-bootstrap";
+import { Container, Row, Col, Image } from "react-bootstrap";
 
 const Hero = () => {
   return (
     <section
       className="hero d-flex align-items-center justify-content-left"
-      style={{ backgroundColor: "#f5f5f5", minHeight: "100vh" }} 
+      style={{ backgroundColor: "#f5f5f5", minHeight: "65vh", margin: 0, padding: 0 }} 
     >
       <Container>
         <Row className="justify-content-center">
@@ -52,29 +52,6 @@ const Hero = () => {
             >
               Lose yourself in a captivating story or learn something new.
             </p>
-
-            <section className="search text-left">
-              <Form inline>
-                <FormControl
-                  type="text"
-                  placeholder="Search Books"
-                  aria-label="Search"
-                  style={{
-                    width: "100%",
-                    maxWidth: "400px",
-                    borderRadius: "8px",
-                    marginBottom: "10px",
-                  }}
-                />
-                <Button
-                  variant="dark"
-                  style={{ width: "100%", maxWidth: "200px" }}
-                  className="search-btn"
-                >
-                  Search Books
-                </Button>
-              </Form>
-            </section>
           </Col>
           <Col xs={12} md={6} className="d-flex justify-content-center">
             <Image
