@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import MuiAlert from '@mui/material/Alert';
+import MuiAlert from "@mui/material/Alert";
 import {
   Container,
   Typography,
-  DatePicker,
   TextField,
   Button,
   Table,
@@ -17,7 +16,6 @@ import {
   Link,
   Snackbar,
 } from "@mui/material";
-
 
 const ManageBooks = () => {
   const [books, setBooks] = useState([]);
@@ -32,12 +30,10 @@ const ManageBooks = () => {
     totalCopies: "",
     availableCopies: "",
   });
-  const [updatingBook, setUpdatingBook] = useState(null);
-
-  const [users, setUsers] = useState([]);
+  
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   useEffect(() => {
     fetchBooks();
@@ -73,7 +69,7 @@ const ManageBooks = () => {
         totalCopies: "",
         availableCopies: "",
       });
-      setSnackbarSeverity('success');
+      setSnackbarSeverity("success");
       setSnackbarMessage(response.data.message);
       setSnackbarOpen(true);
     } catch (error) {
@@ -137,7 +133,7 @@ const ManageBooks = () => {
   };
 
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -145,15 +141,15 @@ const ManageBooks = () => {
   };
 
   const snackbarStyle = {
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    backgroundColor: '#4CAF50',
-    color: '#FFFFFF',
-    borderRadius: '12px',
-    padding: '24px', 
-    fontSize: '1.6rem', 
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "#4CAF50",
+    color: "#FFFFFF",
+    borderRadius: "12px",
+    padding: "24px",
+    fontSize: "1.6rem",
+    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
   };
 
   return (
@@ -170,7 +166,7 @@ const ManageBooks = () => {
         style={{
           width: "100%",
           padding: "20px",
-          backgroundColor: "#EBF3E8",
+          backgroundColor: "#F0EBE3",
           borderRadius: "10px",
           marginBottom: "20px",
         }}
@@ -183,6 +179,7 @@ const ManageBooks = () => {
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "center",
+            backgroundColor: "#F0EBE3",
           }}
         >
           <TextField
@@ -256,6 +253,7 @@ const ManageBooks = () => {
             style={{ width: "200px", margin: "10px" }}
           />
         </div>
+
         <Button
           variant="contained"
           color="primary"
@@ -264,12 +262,13 @@ const ManageBooks = () => {
         >
           Add
         </Button>
+
       </div>
       <div
         style={{
           width: "100%",
           padding: "10px",
-          backgroundColor: "#D2E3C8",
+          backgroundColor: "#F0EBE3",
           borderRadius: "10px",
           display: "flex",
           flexDirection: "column",
@@ -303,7 +302,7 @@ const ManageBooks = () => {
                 {books.map((book) => (
                   <TableRow
                     key={book.bookId}
-                    style={{ height: "40px", backgroundColor: "#EBF3E8" }}
+                    style={{ height: "40px", backgroundColor: "#F6F5F2" }}
                   >
                     <TableCell style={{ fontSize: "0.8rem" }}>
                       {book.bookId}
@@ -367,7 +366,12 @@ const ManageBooks = () => {
           </Button>
         </Link>
       </div>
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose} style={snackbarStyle}>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        style={snackbarStyle}
+      >
         <MuiAlert onClose={handleSnackbarClose} severity={snackbarSeverity}>
           {snackbarMessage}
         </MuiAlert>

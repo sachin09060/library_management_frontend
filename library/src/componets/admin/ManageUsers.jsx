@@ -1,25 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Container, Typography, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Link, Snackbar } from '@mui/material';
-import MuiAlert from '@mui/material/Alert';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Link,
+  Snackbar,
+} from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
 
 const ManageUsers = () => {
   const [newUser, setNewUser] = useState({
-    userId: '',
-    name: '',
-    gender: '',
-    phone: '',
-    email: '',
-    address: '',
+    userId: "",
+    name: "",
+    gender: "",
+    phone: "",
+    email: "",
+    address: "",
     isLibrarian: false,
     isUser: true,
-    createdAt: ''
+    createdAt: "",
   });
 
   const [users, setUsers] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   useEffect(() => {
     fetchUsers();
@@ -27,36 +41,39 @@ const ManageUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:8055/api/user');
+      const response = await axios.get("http://localhost:8055/api/user");
       setUsers(response.data);
     } catch (error) {
-      console.error('Error fetching users:', error);
+      console.error("Error fetching users:", error);
     }
   };
 
   const addUserToDatabase = async () => {
     try {
-      const response = await axios.post('http://localhost:8055/api/user/add', newUser);
-      console.log('User added:', response.data);
+      const response = await axios.post(
+        "http://localhost:8055/api/user/add",
+        newUser
+      );
+      console.log("User added:", response.data);
 
       fetchUsers();
 
       setNewUser({
-        userId: '',
-        name: '',
-        gender: '',
-        phone: '',
-        email: '',
-        address: '',
+        userId: "",
+        name: "",
+        gender: "",
+        phone: "",
+        email: "",
+        address: "",
         isLibrarian: false,
         isUser: true,
-        createdAt: ''
+        createdAt: "",
       });
-      setSnackbarSeverity('success');
+      setSnackbarSeverity("success");
       setSnackbarMessage(response.data.message);
       setSnackbarOpen(true);
     } catch (error) {
-      console.error('Error adding user:', error);
+      console.error("Error adding user:", error);
     }
   };
 
@@ -66,43 +83,46 @@ const ManageUsers = () => {
 
   const handleDeleteUser = async (userId) => {
     try {
-      await axios.delete('http://localhost:8055/api/user/delete', {
+      await axios.delete("http://localhost:8055/api/user/delete", {
         data: {
-          userId: userId
-        }
+          userId: userId,
+        },
       });
 
       fetchUsers();
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error("Error deleting user:", error);
     }
   };
 
   const handleUpdateUser = async (userId) => {
     try {
-      const response = await axios.put(`http://localhost:8055/api/user/update`, newUser);
-      console.log('User updated:', response.data);
-  
+      const response = await axios.put(
+        `http://localhost:8055/api/user/update`,
+        newUser
+      );
+      console.log("User updated:", response.data);
+
       fetchUsers();
-  
+
       setNewUser({
-        userId: '',
-        name: '',
-        gender: '',
-        phone: '',
-        email: '',
-        address: '',
+        userId: "",
+        name: "",
+        gender: "",
+        phone: "",
+        email: "",
+        address: "",
         isLibrarian: false,
         isUser: true,
-        createdAt: ''
+        createdAt: "",
       });
     } catch (error) {
-      console.error('Error updating user:', error);
+      console.error("Error updating user:", error);
     }
   };
 
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -110,31 +130,54 @@ const ManageUsers = () => {
   };
 
   const snackbarStyle = {
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    backgroundColor: '#4CAF50',
-    color: '#FFFFFF',
-    borderRadius: '12px',
-    padding: '24px', 
-    fontSize: '1.6rem', 
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "#4CAF50",
+    color: "#FFFFFF",
+    borderRadius: "12px",
+    padding: "24px",
+    fontSize: "1.6rem",
+    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
   };
 
   return (
-    <Container maxWidth="xl" style={{ marginTop: 40, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <div style={{ width: '100%', padding: '20px', backgroundColor: '#EBF3E8', borderRadius: '10px', marginBottom: '20px' }}>
+    <Container
+      maxWidth="xl"
+      style={{
+        marginTop: 40,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          padding: "20px",
+          backgroundColor: "#F0EBE3",
+          borderRadius: "10px",
+          marginBottom: "20px",
+        }}
+      >
         <Typography variant="h2" align="center" gutterBottom>
           Manage Users
         </Typography>
-        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
           <TextField
             label="User ID"
             variant="outlined"
             fullWidth
             value={newUser.userId}
             onChange={(e) => setNewUser({ ...newUser, userId: e.target.value })}
-            style={{ width: '200px', margin: '10px' }}
+            style={{ width: "200px", margin: "10px" }}
           />
           <TextField
             label="Name"
@@ -142,7 +185,7 @@ const ManageUsers = () => {
             fullWidth
             value={newUser.name}
             onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-            style={{ width: '200px', margin: '10px' }}
+            style={{ width: "200px", margin: "10px" }}
           />
           <TextField
             label="Gender"
@@ -150,7 +193,7 @@ const ManageUsers = () => {
             fullWidth
             value={newUser.gender}
             onChange={(e) => setNewUser({ ...newUser, gender: e.target.value })}
-            style={{ width: '200px', margin: '10px' }}
+            style={{ width: "200px", margin: "10px" }}
           />
           <TextField
             label="Phone"
@@ -158,7 +201,7 @@ const ManageUsers = () => {
             fullWidth
             value={newUser.phone}
             onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
-            style={{ width: '200px', margin: '10px' }}
+            style={{ width: "200px", margin: "10px" }}
           />
           <TextField
             label="Email"
@@ -166,36 +209,56 @@ const ManageUsers = () => {
             fullWidth
             value={newUser.email}
             onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-            style={{ width: '200px', margin: '10px' }}
+            style={{ width: "200px", margin: "10px" }}
           />
           <TextField
             label="Address"
             variant="outlined"
             fullWidth
             value={newUser.address}
-            onChange={(e) => setNewUser({ ...newUser, address: e.target.value })}
-            style={{ width: '200px', margin: '10px' }}
+            onChange={(e) =>
+              setNewUser({ ...newUser, address: e.target.value })
+            }
+            style={{ width: "200px", margin: "10px" }}
           />
           <TextField
             label="Created At"
-            type='date'
+            type="date"
             variant="outlined"
             fullWidth
             value={newUser.createdAt}
-            onChange={(e) => setNewUser({ ...newUser, createdAt: e.target.value })}
-            style={{ width: '200px', margin: '10px' }}
+            onChange={(e) =>
+              setNewUser({ ...newUser, createdAt: e.target.value })
+            }
+            style={{ width: "200px", margin: "10px" }}
             InputLabelProps={{ shrink: true }}
           />
         </div>
-        <Button variant="contained" color="primary" onClick={handleAddUser} style={{ width: '80%', margin: '20px 0' }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddUser}
+          style={{ width: "80%", margin: "20px 0" }}
+        >
           Add
         </Button>
       </div>
-      <div style={{ width: '100%', padding: '10px', backgroundColor: '#D2E3C8', borderRadius: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'hidden' }}>
+      <div
+        style={{
+          width: "100%",
+          padding: "10px",
+          backgroundColor: "#F0EBE3",
+          borderRadius: "10px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          overflow: "hidden",
+        }}
+      >
         <Typography variant="h4" align="center" gutterBottom>
           User List
         </Typography>
-        <div style={{ height: '300px', overflowY: 'auto', width: '100%' }}>
+        <div style={{ height: "300px", overflowY: "auto", width: "100%" }}>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -221,10 +284,20 @@ const ManageUsers = () => {
                     <TableCell>{user.address}</TableCell>
                     <TableCell>{user.createdAt}</TableCell>
                     <TableCell>
-                      <Button variant="outlined" color="secondary" onClick={() => handleDeleteUser(user.userId)}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleDeleteUser(user.userId)}
+                      >
                         Delete
                       </Button>
-                      <Button variant="outlined" color="primary" onClick={() => handleUpdateUser(user.userId)}> {/* Update button */}
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => handleUpdateUser(user.userId)}
+                      >
+                        {" "}
+                        {/* Update button */}
                         Update
                       </Button>
                     </TableCell>
@@ -234,13 +307,18 @@ const ManageUsers = () => {
             </Table>
           </TableContainer>
         </div>
-        <Link href="/adminDash" underline="none" style={{ marginTop: '20px' }}>
+        <Link href="/adminDash" underline="none" style={{ marginTop: "20px" }}>
           <Button variant="contained" color="primary">
             Go to Dashboard
           </Button>
         </Link>
       </div>
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose} style={snackbarStyle}>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        style={snackbarStyle}
+      >
         <MuiAlert onClose={handleSnackbarClose} severity={snackbarSeverity}>
           {snackbarMessage}
         </MuiAlert>
