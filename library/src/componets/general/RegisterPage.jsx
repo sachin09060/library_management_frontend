@@ -1,7 +1,40 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { Form, Button } from "react-bootstrap";
 
 export default function RegisterPage() {
+  const [formData, setFormData] = useState({
+    username: "",
+    phoneNo: "",
+    email: "",
+    address: "",
+    password: "",
+    confirmPassword: "",
+    gender: ""
+  });
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/library/auser",
+        formData
+      );
+      console.log(response.data); 
+    } catch (error) {
+      console.error("Registration failed:", error); 
+    }
+  };
+
   return (
     <div
       style={{
@@ -12,7 +45,8 @@ export default function RegisterPage() {
         fontFamily: "'Roboto', sans-serif",
         WebkitFontSmoothing: "antialiased",
         MozOsxFontSmoothing: "grayscale",
-        background: "url('https://wallpapersmug.com/download/1920x1080/f12332/books.jpg') no-repeat",
+        background:
+          "url('https://wallpapersmug.com/download/1920x1080/f12332/books.jpg') no-repeat",
         backgroundSize: "cover"
       }}
     >
@@ -27,117 +61,89 @@ export default function RegisterPage() {
           backdropFilter: "blur(20px)"
         }}
       >
-        <form action="">
-          <h1 style={{ fontSize: "30px", textAlign: "center" }}>Register Here</h1>
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "50px",
-              margin: "30px 0"
-            }}
-            className="input-box"
-          >
-            <input
+        <Form onSubmit={handleSubmit}>
+          <h1 style={{ fontSize: "30px", textAlign: "center" }}>
+            Register Here
+          </h1>
+          <Form.Group controlId="username" style={{ marginBottom: "15px" }}>
+            <Form.Control
               type="text"
-              placeholder="First Name"
-              style={{
-                width: "100%",
-                height: "100%",
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                border: "2px solid white",
-                borderRadius: "40px",
-                color: "#fff"
-              }}
+              placeholder="User Name"
+              value={formData.username}
+              onChange={handleChange}
+              style={{ borderRadius: "5px" }}
             />
-          </div>
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "50px",
-              margin: "30px 0"
-            }}
-            className="input-box"
-          >
-            <input
+          </Form.Group>
+          <Form.Group controlId="phoneNo" style={{ marginBottom: "15px" }}>
+            <Form.Control
               type="text"
-              placeholder="Last Name"
-              style={{
-                width: "100%",
-                height: "100%",
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                border: "2px solid white",
-                borderRadius: "40px",
-                color: "#fff"
-              }}
+              placeholder="Phone Num"
+              value={formData.phoneNo}
+              onChange={handleChange}
+              style={{ borderRadius: "5px" }}
             />
-          </div>
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "50px",
-              margin: "30px 0"
-            }}
-            className="input-box"
-          >
-            <input
+          </Form.Group>
+          <Form.Group controlId="email" style={{ marginBottom: "15px" }}>
+            <Form.Control
               type="text"
               placeholder="Email"
-              style={{
-                width: "100%",
-                height: "100%",
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                border: "2px solid white",
-                borderRadius: "40px",
-                color: "#fff"
-              }}
+              value={formData.email}
+              onChange={handleChange}
+              style={{ borderRadius: "5px" }}
             />
-          </div>
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "50px",
-              margin: "30px 0"
-            }}
-            className="input-box"
-          >
-            <input
+          </Form.Group>
+          <Form.Group controlId="address" style={{ marginBottom: "15px" }}>
+            <Form.Control
+              type="text"
+              placeholder="Address"
+              value={formData.address}
+              onChange={handleChange}
+              style={{ borderRadius: "5px" }}
+            />
+          </Form.Group>
+          <Form.Group controlId="password" style={{ marginBottom: "15px"}}>
+            <Form.Control
               type="password"
               placeholder="Password"
-              style={{
-                width: "100%",
-                height: "100%",
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                border: "2px solid white",
-                borderRadius: "40px",
-                color: "#fff"
-              }}
+              value={formData.password}
+              onChange={handleChange}
+              style={{ borderRadius: "5px" }}
             />
-          </div>
-          <button
-            type='submit'
-            style={{
-              width: "100%",
-              height: "45px",
-              border: "none",
-              borderRadius: "40px",
-              cursor: "pointer",
-              fontSize: "18px"
-            }}
+          </Form.Group>
+          <Form.Group
+            controlId="confirmPassword"
+            style={{ marginBottom: "15px" }}
           >
+            <Form.Control
+              type="password"
+              placeholder="Confirm Password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              style={{ borderRadius: "5px" }}
+            />
+          </Form.Group>
+          <Form.Group controlId="gender">
+            <Form.Check
+              inline
+              type="radio"
+              label="Male"
+              name="gender"
+              value="MALE"
+              onChange={handleChange}
+              style={{ marginRight: "15px" }}
+            />
+            <Form.Check
+              inline
+              type="radio"
+              label="Female"
+              name="gender"
+              value="FEMALE"
+              onChange={handleChange}
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit" block>
             Create Account
-          </button>
+          </Button>
           <div
             style={{
               fontSize: "14px",
@@ -146,11 +152,17 @@ export default function RegisterPage() {
             }}
             className="create-acc"
           >
-            <p>Already have an account? 
-            <Link to="/UserSignIn" style={{ color: "lightblue", textDecoration: "none" }}>Sign-In</Link>
-              </p>
+            <p>
+              Already have an account?
+              <Link
+                to="/UserSignIn"
+                style={{ color: "lightblue", textDecoration: "none" }}
+              >
+                Sign-In
+              </Link>
+            </p>
           </div>
-        </form>
+        </Form>
       </div>
     </div>
   );
