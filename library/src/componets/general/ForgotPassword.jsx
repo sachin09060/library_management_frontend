@@ -1,7 +1,25 @@
-import React from 'react';
-import Button from 'react-bootstrap/Button';
+import React, { useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { Form, Button } from "react-bootstrap";
+import { useNavigate } from 'react-router-dom';
 
 export default function ForgotPassword() {
+  const navigate = useNavigate();
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSavePassword = async (e) => {
+    e.preventDefault();
+    try {
+      // Your save password logic goes here
+    } catch (error) {
+      console.error("Password update unsuccessful:", error);
+      setError('Password update failed. Please try again.');
+    }
+  }
+
   return (
     <div
       style={{
@@ -27,79 +45,33 @@ export default function ForgotPassword() {
           backdropFilter: "blur(20px)"
         }}
       >
-        <form action="">
-          <h1 style={{ fontSize: "30px", textAlign: "center" }}>Forgot Password</h1>
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "50px",
-              margin: "30px 0"
-            }}
-            className="input-box"
-          >
-            <input
+        <Form onSubmit={handleSavePassword}>
+          <h1 style={{ fontSize: "30px", textAlign: "center" }}>
+            Forgot Password
+          </h1>
+          <Form.Group controlId="newPassword" style={{ marginBottom: "15px" }}>
+            <Form.Control
               type="password"
               placeholder="New Password"
-              style={{
-                width: "100%",
-                height: "100%",
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                border: "2px solid white",
-                borderRadius: "40px",
-                color: "#fff"
-              }}
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              style={{ borderRadius: "5px" }}
             />
-          </div>
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "50px",
-              margin: "30px 0"
-            }}
-            className="input-box"
-          >
-            <input
+          </Form.Group>
+          <Form.Group controlId="confirmPassword" style={{ marginBottom: "15px"}}>
+            <Form.Control
               type="password"
               placeholder="Confirm Password"
-              style={{
-                width: "100%",
-                height: "100%",
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                border: "2px solid white",
-                borderRadius: "40px",
-                color: "#fff"
-              }}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              style={{ borderRadius: "5px" }}
             />
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              marginTop: "30px"
-            }}
-            className="button"
-          >
-           <button
-            type='submit'
-            style={{
-              width: "100%",
-              height: "45px",
-              border: "none",
-              borderRadius: "40px",
-              cursor: "pointer",
-              fontSize: "18px"
-            }}
-          >
-            Save
-          </button>
-          </div>
-        </form>
+          </Form.Group>
+          <Button variant="primary" type="submit" block>
+            Submit
+          </Button>
+        </Form>
+        {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
       </div>
     </div>
   );

@@ -10,27 +10,29 @@ export default function AdminSignIn() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSignIn = async (e, adminId, password) => {
-    e.preventDefault(); // Prevent default form submission
+  const handleSignIn = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.get("http://localhost:8080/api/v1/library/adminlogin", {
-         adminId, password // Send adminId and password as query params
-      });
-      
-      if (response.data.message) {
-        // console.log("Login successful");    
-        alert(response.data.message);
-        setError('');
-        navigate('/adminDash');
-      } else {
-        // if(response.data.error)
-        setError(response.data.error);
-      }
+        const response = await axios.post("http://localhost:8080/api/v1/library/adminlogin", {
+            adminId: adminId,
+            password: password
+        });
+
+        if (response.data.message === "Admin Login Success") {
+            console.log("Login successful");
+            alert(response.data.message);
+            setError('');
+            navigate('/adminDash');
+        } else {
+            setError(response.data.message);
+            alert("Invalid email or password. Please try again");
+        }
     } catch (error) {
-      console.error("Login unsuccessful:", error);
-      setError('Invalid email or password. Please try again.');
+        console.error("Login unsuccessful:", error);
+        setError('Invalid email or password. Please try again.');
     }
-  }
+} 
+
 
   return (
     <div
@@ -91,15 +93,6 @@ export default function AdminSignIn() {
             }}
             className="create-acc"
           >
-            <p>
-              Already have an account?
-              <Link
-                to="/AdminDash"
-                style={{ color: "lightblue", textDecoration: "none" }}
-              >
-                Sign-In
-              </Link>
-            </p>
           </div>
         </Form>
         {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}

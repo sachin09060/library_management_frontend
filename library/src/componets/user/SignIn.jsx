@@ -1,14 +1,39 @@
-import React from 'react';
-import { FaUser } from "react-icons/fa";
-import { RiLockPasswordFill } from "react-icons/ri";
+import React, { useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { Form, Button  } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 
-export default function UserSignIn() {
+export default function AdminSignIn() {
   const navigate = useNavigate(); 
-  const handleClick = () => {
-    navigate('/BooksGallery');
-  };
+  const [userId, setUserId] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    try {
+        const response = await axios.post("", {
+            userId: userId,
+            password: password
+        });
+
+        if (response.data.message === "Admin Login Success") {
+            console.log("Login successful");
+            alert(response.data.message);
+            setError('');
+            navigate('/');
+        } else {
+            setError(response.data.message);
+            alert("Invalid email or password. Please try again");
+        }
+    } catch (error) {
+        console.error("Login unsuccessful:", error);
+        setError('Invalid email or password. Please try again.');
+    }
+} 
+
+
   return (
     <div
       style={{
@@ -19,7 +44,8 @@ export default function UserSignIn() {
         fontFamily: "'Roboto', sans-serif",
         WebkitFontSmoothing: "antialiased",
         MozOsxFontSmoothing: "grayscale",
-        background: "url('https://wallpapersmug.com/download/1920x1080/f12332/books.jpg') no-repeat",
+        background:
+          "url('https://wallpapersmug.com/download/1920x1080/f12332/books.jpg') no-repeat",
         backgroundSize: "cover"
       }}
     >
@@ -34,128 +60,57 @@ export default function UserSignIn() {
           backdropFilter: "blur(20px)"
         }}
       >
-        <form action="">
-          <h1 style={{ fontSize: "30px", textAlign: "center" }}>Sign-In</h1>
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "50px",
-              margin: "30px 0"
-            }}
-            className="input-box"
-          >
-            <input
+        <Form onSubmit={handleSignIn}>
+          <h1 style={{ fontSize: "30px", textAlign: "center" }}>
+            User Signin
+          </h1>
+          <Form.Group controlId="username" style={{ marginBottom: "15px" }}>
+            <Form.Control
               type="text"
-              placeholder="User"
-              style={{
-                width: "100%",
-                height: "100%",
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                border: "2px solid white",
-                borderRadius: "40px",
-                color: "#fff",
-                textAlign: "center"
-              }}
-              required
+              placeholder="UserId"
+              value={userId}
+              onChange={(e) => setUserId(e.target.value)}
+              style={{ borderRadius: "5px" }}
             />
-            <FaUser
-              style={{
-                position: "absolute",
-                right: "20px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                fontSize: "18px"
-              }}
-              className="icon"
-            />
-          </div>
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "50px",
-              margin: "30px 0"
-            }}
-            className="input-box"
-          >
-            <input
+          </Form.Group>
+          <Form.Group controlId="password" style={{ marginBottom: "15px"}}>
+            <Form.Control
               type="password"
               placeholder="Password"
-              style={{
-                width: "100%",
-                height: "100%",
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                border: "2px solid white",
-                borderRadius: "40px",
-                color: "#fff"
-              }}
-              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={{ borderRadius: "5px" }}
             />
-            <RiLockPasswordFill
-              style={{
-                position: "absolute",
-                right: "20px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                fontSize: "18px"
-              }}
-              className="icon"
-            />
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              fontSize: "16px",
-              margin: "-15px 0 15px"
-            }}
-            className="remember-forgot"
-          >
-            <label>
-              <input type="checkbox" />
-              Remember me
-            </label>
-            <Link to="/Forgot"
-              style={{ color: "white", textDecoration: "none" }}
-            >
-              Forgot password?
-              </Link>
-          </div>
-          <button
-          onClick={handleClick}
-            type='submit'
-            style={{
-              width: "100%",
-              height: "45px",
-              border: "none",
-              borderRadius: "40px",
-              cursor: "pointer",
-              fontSize: "18px"
-            }}
-          >
+          </Form.Group>
+          <Button variant="primary" type="submit" block>
             SignIn
-          </button>
+          </Button>
           <div
             style={{
               fontSize: "14px",
               textAlign: "center",
               marginTop: "20px"
             }}
-            className="register-link"
+            className="create-acc"
           >
             <p>
-              Don't have an account?{" "}
-              <Link to="/UserSignUp" style={{ color: "#fff", textDecoration: "none" }}>
-                Register
+              Don't have an account?
+              <Link
+                to="/UserSignUp"
+                style={{ color: "lightblue", textDecoration: "none" }}
+              >
+                Sign-up
               </Link>
             </p>
+            <Link
+                to="/Forgot"
+                style={{ color: "lightblue", textDecoration: "none" }}
+              >
+                Forgot Password
+              </Link>
           </div>
-        </form>
+        </Form>
+        {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
       </div>
     </div>
   );
