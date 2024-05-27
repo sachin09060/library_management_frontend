@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MuiAlert from "@mui/material/Alert";
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Typography,
@@ -151,6 +152,12 @@ const ManageBooks = () => {
     fontSize: "1.6rem",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
   };
+
+const navigate = useNavigate(); 
+
+const handleClick = () => {
+  navigate('/adminDash');
+};
 
   return (
     <Container
@@ -360,11 +367,10 @@ const ManageBooks = () => {
             </Table>
           </TableContainer>
         </div>
-        <Link href="/adminDash" underline="none" style={{ marginTop: "20px" }}>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" 
+          onClick={handleClick}>
             Go to Dashboard
           </Button>
-        </Link>
       </div>
       <Snackbar
         open={snackbarOpen}

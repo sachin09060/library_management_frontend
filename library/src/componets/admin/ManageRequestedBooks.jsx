@@ -1,48 +1,78 @@
-import React, { useState } from 'react';
-import { Container, Typography, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Link } from '@mui/material';
-
-const initialRequestedBooks = [
-  { id: 1, bookTitle: 'Book 1', personName: 'John Doe', email: 'john@example.com', requestedDate: '2024-04-01' },
-  { id: 2, bookTitle: 'Book 2', personName: 'Jane Doe', email: 'jane@example.com', requestedDate: '2024-04-05' },
-  { id: 3, bookTitle: 'Book 3', personName: 'Alice Smith', email: 'alice@example.com', requestedDate: '2024-04-10' },
-];
+import React, { useState, useEffect } from 'react';
+import { Container, Typography, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Snackbar, Alert } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const ManageRequestedBooks = () => {
-  const [requestedBooks, setRequestedBooks] = useState(initialRequestedBooks);
-  const [newRequestedBook, setNewRequestedBook] = useState({ bookTitle: '', personName: '', email: '', requestedDate: '' });
+  const [requestedBooks, setRequestedBooks] = useState([]);
+  const [newRequestedBook, setNewRequestedBook] = useState({ name: '', email: '', message: '' });
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const navigate = useNavigate();
 
-  const handleAddRequestedBook = () => {
-    if (newRequestedBook.bookTitle && newRequestedBook.personName && newRequestedBook.email && newRequestedBook.requestedDate) {
-      const updatedRequestedBooks = [...requestedBooks, { id: requestedBooks.length + 1, ...newRequestedBook }];
-      setRequestedBooks(updatedRequestedBooks);
-      setNewRequestedBook({ bookTitle: '', personName: '', email: '', requestedDate: '' });
+  useEffect(() => {
+    fetchAllMessages();
+  }, []);
+
+  const fetchAllMessages = async () => {
+    try {
+      const response = await axios.get('http://localhost:8055/api/contact');
+      setRequestedBooks(response.data);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
     }
   };
 
-  const handleDeleteRequestedBook = (id) => {
-    const updatedRequestedBooks = requestedBooks.filter(book => book.id !== id);
-    setRequestedBooks(updatedRequestedBooks);
+  const handleAddRequestedBook = async () => {
+    try {
+      const response = await axios.post('http://localhost:8055/api/contact/add', newRequestedBook);
+      console.log('Message added:', response.data);
+
+      fetchAllMessages();
+
+      setNewRequestedBook({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error('Error adding message:', error);
+    }
+  };
+
+  const handleDeleteRequestedBook = async (email) => {
+    try {
+      await axios.delete('http://localhost:8055/api/contact/delete', { data: { email } });
+      fetchAllMessages();
+      setAlertMessage('Message request deleted successfully!');
+      setAlertOpen(true);
+      setTimeout(() => {
+        setAlertOpen(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Error deleting message:', error);
+    }
+  };
+
+  const handleClick = () => {
+    navigate('/adminDash');
+  };
+
+  const handleCloseAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setAlertOpen(false);
   };
 
   return (
     <Container maxWidth="md" style={{ marginTop: 40 }}>
       <Typography variant="h2" align="center" gutterBottom>
-        Manage Requested Books
+        Manage Requests
       </Typography>
       <div>
         <TextField
-          label="Book Title"
+          label="Name"
           variant="outlined"
           fullWidth
-          value={newRequestedBook.bookTitle}
-          onChange={(e) => setNewRequestedBook({ ...newRequestedBook, bookTitle: e.target.value })}
-        />
-        <TextField
-          label="Person Name"
-          variant="outlined"
-          fullWidth
-          value={newRequestedBook.personName}
-          onChange={(e) => setNewRequestedBook({ ...newRequestedBook, personName: e.target.value })}
+          value={newRequestedBook.name}
+          onChange={(e) => setNewRequestedBook({ ...newRequestedBook, name: e.target.value })}
         />
         <TextField
           label="Email"
@@ -52,41 +82,39 @@ const ManageRequestedBooks = () => {
           onChange={(e) => setNewRequestedBook({ ...newRequestedBook, email: e.target.value })}
         />
         <TextField
-          label="Requested Date"
-          type="date"
+          label="Message"
+          multiline
+          rows={4}
           variant="outlined"
           fullWidth
-          value={newRequestedBook.requestedDate}
-          onChange={(e) => setNewRequestedBook({ ...newRequestedBook, requestedDate: e.target.value })}
-          InputLabelProps={{ shrink: true }}
+          value={newRequestedBook.message}
+          onChange={(e) => setNewRequestedBook({ ...newRequestedBook, message: e.target.value })}
         />
         <Button variant="contained" color="primary" onClick={handleAddRequestedBook} style={{ marginTop: 10 }}>
-          Add
+          Add Message
         </Button>
       </div>
       <Typography variant="h4" style={{ marginTop: 20 }}>
-        Requested Books List
+        All Messages
       </Typography>
       <TableContainer component={Paper} style={{ marginTop: 10 }}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Book Title</TableCell>
-              <TableCell>Requested Person</TableCell>
+              <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
-              <TableCell>Requested Date</TableCell>
+              <TableCell>Message</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {requestedBooks.map((book) => (
-              <TableRow key={book.id}>
-                <TableCell>{book.bookTitle}</TableCell>
-                <TableCell>{book.personName}</TableCell>
+              <TableRow key={book._id}>
+                <TableCell>{book.name}</TableCell>
                 <TableCell>{book.email}</TableCell>
-                <TableCell>{book.requestedDate}</TableCell>
+                <TableCell>{book.message}</TableCell>
                 <TableCell>
-                  <Button variant="outlined" color="secondary" onClick={() => handleDeleteRequestedBook(book.id)}>
+                  <Button variant="outlined" color="secondary" onClick={() => handleDeleteRequestedBook(book.email)}>
                     Delete
                   </Button>
                 </TableCell>
@@ -95,11 +123,14 @@ const ManageRequestedBooks = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Link href="/adminDash" underline="none" style={{ display: 'block', textAlign: 'center', marginTop: 20 }}>
-        <Button variant="contained" color="primary" sx={{ '&:hover': { backgroundColor: '#303f9f' } }}>
-          Go to Dashboard
-        </Button>
-      </Link>
+      <Button variant="contained" color="primary" onClick={handleClick} style={{ marginTop: 2, '&:hover': { backgroundColor: '#303f9f' } }}>
+        Go to Dashboard
+      </Button>
+      <Snackbar open={alertOpen} autoHideDuration={2000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+        <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%', backgroundColor: '#8b0000', fontSize: '1.2rem', color: 'white' }}>
+          {alertMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

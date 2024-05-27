@@ -17,6 +17,8 @@ import {
   Snackbar,
 } from "@mui/material";
 
+import { useNavigate } from 'react-router-dom';
+
 const ManageIssuedBooks = () => {
   const [newIssuedBook, setNewIssuedBook] = useState({
     userId: "",
@@ -92,6 +94,12 @@ const ManageIssuedBooks = () => {
     fontSize: "1.6rem",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
   };
+
+const navigate = useNavigate(); 
+
+const handleClick = () => {
+  navigate('/adminDash');
+};
 
   return (
     <Container
@@ -249,11 +257,11 @@ const ManageIssuedBooks = () => {
             </TableContainer>
           </div>
           <Link
-            href="/adminDash"
             underline="none"
             style={{ marginTop: "20px" }}
           >
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary"
+            onClick={handleClick}>
               Go to Dashboard
             </Button>
           </Link>

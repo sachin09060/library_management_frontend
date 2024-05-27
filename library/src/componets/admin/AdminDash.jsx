@@ -25,6 +25,8 @@ import ContactsIcon from '@mui/icons-material/Contacts';
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { Link } from 'react-router-dom';
+import { Button } from "react-bootstrap";
+import { useNavigate } from 'react-router-dom';
 
 
 const drawerWidth = 240;
@@ -84,7 +86,7 @@ function AdminDash(props) {
       <Divider />
       <Divider />
       <List>
-        {["Issued Books", "Requested Books"].map((text, index) => (
+        {["Issued Books", "Message Requests"].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton component={Link} to={text === "Issued Books" ? "/manageIssuedBooks" : "/manageRequestedBooks"}>
               <ListItemIcon>
@@ -115,6 +117,13 @@ function AdminDash(props) {
 
   const container =
   window !== undefined ? () => window().document.body : undefined;
+
+
+const navigate = useNavigate(); 
+
+const handleClick = () => {
+  navigate('/');
+};
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -193,6 +202,9 @@ function AdminDash(props) {
         </Typography>
         <Grid1 />
         <Toolbar />
+        <Button 
+        onClick={handleClick}
+         >Logout</Button>
       </Box>
     </Box>
   );
@@ -204,3 +216,32 @@ AdminDash.propTypes = {
 
 export default AdminDash;
 
+// import React from 'react';
+// import { Container, Row, Col, Nav } from 'react-bootstrap';
+// import { Link } from 'react-router-dom';
+
+// const AdminDashboard = () => {
+//   return (
+//     <Container fluid>
+//       <Row>
+//         <Col sm={3} style={{ backgroundColor: '#333', height: '100vh', color: '#fff', paddingTop: '20px' }}>
+//           <div style={{ paddingLeft: '20px' }}>
+//             <h2 style={{ color: '#fff', marginBottom: '30px', fontSize: '24px', fontWeight: 'bold', letterSpacing: '1px' }}>Dashboard</h2>
+//           </div>
+//           <Nav className="flex-column">
+//             <Nav.Link as={Link} to="/manageBooks" style={{ color: '#fff', fontSize: '18px', marginBottom: '10px', paddingLeft: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Manage Books</Nav.Link>
+//             <Nav.Link as={Link} to="/manageUsers" style={{ color: '#fff', fontSize: '18px', marginBottom: '10px', paddingLeft: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Manage Users</Nav.Link>
+//             <Nav.Link as={Link} to="/manageIssuedBooks" style={{ color: '#fff', fontSize: '18px', marginBottom: '10px', paddingLeft: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Issued Books</Nav.Link>
+//             <Nav.Link as={Link} to="/manageRequestedBooks" style={{ color: '#fff', fontSize: '18px', marginBottom: '10px', paddingLeft: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Message Requests</Nav.Link>
+//           </Nav>
+//         </Col>
+//         <Col sm={9} style={{ backgroundColor: '#f0f0f0', height: '100vh', padding: '20px' }}>
+//           <h2 style={{ color: '#333', marginBottom: '20px' }}>Dashboard Content</h2>
+//           <p style={{ color: '#555' }}>Welcome to the admin dashboard. Choose an option from the sidebar to manage books, users, requests, issued books, or message requests.</p>
+//         </Col>
+//       </Row>
+//     </Container>
+//   );
+// };
+
+// export default AdminDashboard;

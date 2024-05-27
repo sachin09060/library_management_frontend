@@ -16,6 +16,7 @@ import {
   Snackbar,
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
+import { useNavigate } from 'react-router-dom';
 
 const ManageUsers = () => {
   const [newUser, setNewUser] = useState({
@@ -55,7 +56,7 @@ const ManageUsers = () => {
         newUser
       );
       console.log("User added:", response.data);
-
+      if(response.data)
       fetchUsers();
 
       setNewUser({
@@ -140,6 +141,12 @@ const ManageUsers = () => {
     fontSize: "1.6rem",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
   };
+
+const navigate = useNavigate(); 
+
+const handleClick = () => {
+  navigate('/adminDash');
+};
 
   return (
     <Container
@@ -307,11 +314,12 @@ const ManageUsers = () => {
             </Table>
           </TableContainer>
         </div>
-        <Link href="/adminDash" underline="none" style={{ marginTop: "20px" }}>
-          <Button variant="contained" color="primary">
+
+          <Button variant="contained" color="primary"
+          onClick={handleClick}>
             Go to Dashboard
           </Button>
-        </Link>
+
       </div>
       <Snackbar
         open={snackbarOpen}
