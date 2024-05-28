@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Snackbar, Alert } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const ManageRequestedBooks = () => {
@@ -8,7 +7,6 @@ const ManageRequestedBooks = () => {
   const [newRequestedBook, setNewRequestedBook] = useState({ name: '', email: '', message: '' });
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchAllMessages();
@@ -50,9 +48,6 @@ const ManageRequestedBooks = () => {
     }
   };
 
-  const handleClick = () => {
-    navigate('/adminDash');
-  };
 
   const handleCloseAlert = (event, reason) => {
     if (reason === 'clickaway') {
@@ -62,7 +57,7 @@ const ManageRequestedBooks = () => {
   };
 
   return (
-    <Container maxWidth="md" style={{ marginTop: 40 }}>
+    <Container maxWidth="md" style={{ marginTop: 40, backgroundColor: '#F0EBE3', padding: '20px', borderRadius: '10px' }}>
       <Typography variant="h2" align="center" gutterBottom>
         Manage Requests
       </Typography>
@@ -97,37 +92,36 @@ const ManageRequestedBooks = () => {
       <Typography variant="h4" style={{ marginTop: 20 }}>
         All Messages
       </Typography>
-      <TableContainer component={Paper} style={{ marginTop: 10 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Message</TableCell>
-              <TableCell>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {requestedBooks.map((book) => (
-              <TableRow key={book._id}>
-                <TableCell>{book.name}</TableCell>
-                <TableCell>{book.email}</TableCell>
-                <TableCell>{book.message}</TableCell>
-                <TableCell>
-                  <Button variant="outlined" color="secondary" onClick={() => handleDeleteRequestedBook(book.email)}>
-                    Delete
-                  </Button>
-                </TableCell>
+      <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+        <TableContainer component={Paper} style={{ marginTop: 10 }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Message</TableCell>
+                <TableCell>Action</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Button variant="contained" color="primary" onClick={handleClick} style={{ marginTop: 2, '&:hover': { backgroundColor: '#303f9f' } }}>
-        Go to Dashboard
-      </Button>
+            </TableHead>
+            <TableBody>
+              {requestedBooks.map((book) => (
+                <TableRow key={book._id} style={ {backgroundColor:"F6F5F2"} }>
+                  <TableCell>{book.name}</TableCell>
+                  <TableCell>{book.email}</TableCell>
+                  <TableCell>{book.message}</TableCell>
+                  <TableCell>
+                    <Button variant="outlined" color="secondary" onClick={() => handleDeleteRequestedBook(book.email)}>
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
       <Snackbar open={alertOpen} autoHideDuration={2000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-        <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%', backgroundColor: '#8b0000', fontSize: '1.2rem', color: 'white' }}>
+        <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%', backgroundColor: '#F0EBE3', fontSize: '1.2rem', color: 'white' }}>
           {alertMessage}
         </Alert>
       </Snackbar>

@@ -12,11 +12,9 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Link,
   Snackbar,
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
-import { useNavigate } from 'react-router-dom';
 
 const ManageUsers = () => {
   const [newUser, setNewUser] = useState({
@@ -55,28 +53,33 @@ const ManageUsers = () => {
         "http://localhost:8055/api/user/add",
         newUser
       );
-      console.log("User added:", response.data);
-      if(response.data)
-      fetchUsers();
-
-      setNewUser({
-        userId: "",
-        name: "",
-        gender: "",
-        phone: "",
-        email: "",
-        address: "",
-        isLibrarian: false,
-        isUser: true,
-        createdAt: "",
-      });
-      setSnackbarSeverity("success");
-      setSnackbarMessage(response.data.message);
-      setSnackbarOpen(true);
+      console.log("User added:"+ response.data);
+  
+      if (response.data) {
+        fetchUsers();
+        setNewUser({
+          userId: "",
+          name: "",
+          gender: "",
+          phone: "",
+          email: "",
+          address: "",
+          isLibrarian: false,
+          isUser: true,
+          createdAt: "",
+        });
+        setSnackbarSeverity("success");
+        setSnackbarMessage(response.data.message);
+        setSnackbarOpen(true);
+      }
     } catch (error) {
-      console.error("Error adding user:", error);
+      if (error.response) {
+      } else {
+        console.error("Error adding user:", error.message);
+      }
     }
   };
+  
 
   const handleAddUser = () => {
     addUserToDatabase();
@@ -142,17 +145,11 @@ const ManageUsers = () => {
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
   };
 
-const navigate = useNavigate(); 
-
-const handleClick = () => {
-  navigate('/adminDash');
-};
-
   return (
     <Container
       maxWidth="xl"
       style={{
-        marginTop: 40,
+        marginTop: 10,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -161,7 +158,7 @@ const handleClick = () => {
       <div
         style={{
           width: "100%",
-          padding: "20px",
+          padding: "10px",
           backgroundColor: "#F0EBE3",
           borderRadius: "10px",
           marginBottom: "20px",
@@ -315,15 +312,10 @@ const handleClick = () => {
           </TableContainer>
         </div>
 
-          <Button variant="contained" color="primary"
-          onClick={handleClick}>
-            Go to Dashboard
-          </Button>
-
       </div>
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={6000}
+        autoHideDuration={1000}
         onClose={handleSnackbarClose}
         style={snackbarStyle}
       >

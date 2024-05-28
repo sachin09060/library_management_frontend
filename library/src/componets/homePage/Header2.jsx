@@ -1,6 +1,7 @@
 import React from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { Link, NavLink } from 'react-router-dom';
+import Avatar from '@mui/material/Avatar';
 
 const Header2 = () => {
   return (
@@ -17,7 +18,7 @@ const Header2 = () => {
                 color: "#000",
               }}
             >
-              Book Haven
+              BOOK HEAVEN
             </h1>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -25,11 +26,12 @@ const Header2 = () => {
             <Nav className="justify-content-center" style={{ width: "80%" }}>
               <NavLink to="/" className="nav-link" activeClassName="active">HOME</NavLink>
               <NavLink to="/BooksGallery" className="nav-link" activeClassName="active">BOOK STORE</NavLink>
-              <NavLink to="/news" className="nav-link" activeClassName="active">NEWS & BLOGS</NavLink>
+              {/* <NavLink to="/news" className="nav-link" activeClassName="active">NEWS & BLOGS</NavLink> */}
               <NavLink to="/about" className="nav-link" activeClassName="active">ABOUT US</NavLink>
               <NavLink to="/contactUs" className="nav-link" activeClassName="active">CONTACT US</NavLink>
             </Nav>
           </Navbar.Collapse>
+          <Avatar alt="Remy Sharp" src="https://wallpapers.com/images/hd/iconic-hd-john-wick-poster-jeaidqurrfx52d3u.jpg" />
         </Container>
       </Navbar>
     </header>
