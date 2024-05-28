@@ -72,6 +72,11 @@ const ManageUsers = () => {
         setSnackbarMessage(response.data.message);
         setSnackbarOpen(true);
       }
+      if(response.data.error){
+        setSnackbarSeverity("error");
+        setSnackbarMessage(response.data.message);
+        setSnackbarOpen(true);
+      }
     } catch (error) {
       if (error.response) {
       } else {
