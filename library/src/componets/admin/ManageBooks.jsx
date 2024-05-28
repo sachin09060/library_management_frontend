@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MuiAlert from "@mui/material/Alert";
-import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Typography,
@@ -14,7 +13,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Link,
   Snackbar,
 } from "@mui/material";
 
@@ -153,17 +151,11 @@ const ManageBooks = () => {
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
   };
 
-const navigate = useNavigate(); 
-
-const handleClick = () => {
-  navigate('/adminDash');
-};
-
   return (
     <Container
       maxWidth="xl"
       style={{
-        marginTop: 40,
+        marginTop:" 10px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -172,10 +164,10 @@ const handleClick = () => {
       <div
         style={{
           width: "100%",
-          padding: "20px",
+          padding: "10px",
           backgroundColor: "#F0EBE3",
           borderRadius: "10px",
-          marginBottom: "20px",
+          marginBottom: "10px",
         }}
       >
         <Typography variant="h2" align="center" gutterBottom>
@@ -187,6 +179,7 @@ const handleClick = () => {
             flexWrap: "wrap",
             justifyContent: "center",
             backgroundColor: "#F0EBE3",
+            marginBottom: "10px"
           }}
         >
           <TextField
@@ -280,71 +273,42 @@ const handleClick = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          overflow: "hidden",
+          overflow: "scroll",
         }}
       >
         <Typography variant="h4" align="center" gutterBottom>
           Book List
         </Typography>
-        <div style={{ height: "300px", overflowY: "auto", width: "100%" }}>
+        <div style={{ height: "300px", overflowY: "scroll", width: "100%" }}>
           <TableContainer component={Paper}>
+          <div style={{ maxWidth: "100%", overflowX: "auto", height: "300px" }}>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell style={{ width: "8%" }}>Book ID</TableCell>
-                  <TableCell style={{ width: "15%" }}>Book Name</TableCell>
-                  <TableCell style={{ width: "15%" }}>Book Image URL</TableCell>
-                  <TableCell style={{ width: "15%" }}>Author</TableCell>
-                  <TableCell style={{ width: "15%" }}>Genre</TableCell>
-                  <TableCell style={{ width: "20%" }}>Description</TableCell>
-                  <TableCell style={{ width: "7%" }}>Added Date</TableCell>
-                  <TableCell style={{ width: "5%" }}>Total Copies</TableCell>
-                  <TableCell style={{ width: "5%" }}>
-                    Available Copies
-                  </TableCell>
-                  <TableCell style={{ width: "5%" }}>Action</TableCell>
+                  <TableCell style={{ width: "8%", height: "20px" }}>Book ID</TableCell>
+                  <TableCell style={{ width: "15%", height: "20px" }}>Book Name</TableCell>
+                  <TableCell style={{ width: "15%", height: "20px" }}>Book Image URL</TableCell>
+                  <TableCell style={{ width: "15%", height: "20px" }}>Author</TableCell>
+                  <TableCell style={{ width: "15%", height: "20px" }}>Genre</TableCell>
+                  <TableCell style={{ width: "15%", height: "20px" }}>Description</TableCell>
+                  <TableCell style={{ width: "7%", height: "20px" }}>Added Date</TableCell>
+                  <TableCell style={{ width: "5%", height: "20px" }}>Total Copies</TableCell>
+                  <TableCell style={{ width: "5%", height: "20px" }}>Available Copies</TableCell>
+                  <TableCell style={{ width: "5%", height: "20px" }}>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {books.map((book) => (
-                  <TableRow
-                    key={book.bookId}
-                    style={{ height: "40px", backgroundColor: "#F6F5F2" }}
-                  >
-                    <TableCell style={{ fontSize: "0.8rem" }}>
-                      {book.bookId}
-                    </TableCell>
-                    <TableCell style={{ fontSize: "0.8rem" }}>
-                      {book.bookName}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        fontSize: "0.8rem",
-                        maxWidth: "100px",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {book.bookImgUrl}
-                    </TableCell>
-                    <TableCell style={{ fontSize: "0.8rem" }}>
-                      {book.author}
-                    </TableCell>
-                    <TableCell style={{ fontSize: "0.8rem" }}>
-                      {book.genre}
-                    </TableCell>
-                    <TableCell style={{ fontSize: "0.8rem" }}>
-                      {book.description}
-                    </TableCell>
-                    <TableCell style={{ fontSize: "0.8rem" }}>
-                      {book.addedDate}
-                    </TableCell>
-                    <TableCell style={{ fontSize: "0.8rem" }}>
-                      {book.totalCopies}
-                    </TableCell>
-                    <TableCell style={{ fontSize: "0.8rem" }}>
-                      {book.availableCopies}
-                    </TableCell>
+                  <TableRow key={book.bookId} style={{ height: "40px", backgroundColor: "#F6F5F2" }}>
+                    <TableCell style={{ fontSize: "0.8rem" }}>{book.bookId}</TableCell>
+                    <TableCell style={{ fontSize: "0.8rem" }}>{book.bookName}</TableCell>
+                    <TableCell style={{fontSize: "0.8rem", maxWidth: "100px", overflow: "hidden", textOverflow: "ellipsis"}}>{book.bookImgUrl}</TableCell>
+                    <TableCell style={{ fontSize: "0.8rem" }}>{book.author}</TableCell>
+                    <TableCell style={{ fontSize: "0.8rem" }}>{book.genre}</TableCell>
+                    <TableCell style={{ fontSize: "0.8rem" }}>{book.description}</TableCell>
+                    <TableCell style={{ fontSize: "0.8rem" }}>{book.addedDate}</TableCell>
+                    <TableCell style={{ fontSize: "0.8rem" }}>{book.totalCopies}</TableCell>
+                    <TableCell style={{ fontSize: "0.8rem" }}>{book.availableCopies}</TableCell>
                     <TableCell>
                       <Button
                         variant="outlined"
@@ -365,13 +329,11 @@ const handleClick = () => {
                 ))}
               </TableBody>
             </Table>
+          </div>
+
           </TableContainer>
+          </div>
         </div>
-          <Button variant="contained" color="primary" 
-          onClick={handleClick}>
-            Go to Dashboard
-          </Button>
-      </div>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}

@@ -13,11 +13,8 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Link,
   Snackbar,
 } from "@mui/material";
-
-import { useNavigate } from 'react-router-dom';
 
 const ManageIssuedBooks = () => {
   const [newIssuedBook, setNewIssuedBook] = useState({
@@ -30,7 +27,6 @@ const ManageIssuedBooks = () => {
     renewed: false,
   });
 
-    
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -95,21 +91,15 @@ const ManageIssuedBooks = () => {
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
   };
 
-const navigate = useNavigate(); 
-
-const handleClick = () => {
-  navigate('/adminDash');
-};
-
   return (
     <Container
       maxWidth="xl"
       style={{
         width: "100%",
-        padding: "20px",
+        padding: "10px",
         backgroundColor: "#F0EBE3",
         borderRadius: "10px",
-        marginBottom: "20px",
+        marginBottom: "10px",
       }}
     >
       <div
@@ -221,7 +211,8 @@ const handleClick = () => {
           <div
             style={{
               width: "100%",
-              overflowX: "auto",
+              height: "340px",
+              overflowY: "auto",
               backgroundColor: "#F0EBE3",
             }}
           >
@@ -256,15 +247,6 @@ const handleClick = () => {
               </Table>
             </TableContainer>
           </div>
-          <Link
-            underline="none"
-            style={{ marginTop: "20px" }}
-          >
-            <Button variant="contained" color="primary"
-            onClick={handleClick}>
-              Go to Dashboard
-            </Button>
-          </Link>
         </div>
       </div>
       <Snackbar
