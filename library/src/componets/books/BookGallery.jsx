@@ -1,16 +1,42 @@
-import React from 'react';
-import { Grid } from '@mui/material';
-import Book from './Book';
+import React from "react";
+import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 
 const BookGallery = ({ books }) => {
   return (
-    <Grid container spacing={1} style={{ justifyContent: 'center' }}> {/* Center the cards */}
+    <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "left", gap: "20px" }}>
       {books.map((book) => (
-        <Grid item xs={4} key={book.title}>
-          <Book {...book} />
-        </Grid>
+        <Card key={book.bookId} style={{ width: "calc(25% - 20px)" }}>
+          <CardMedia
+            component="img"
+            image={book.bookImgUrl}
+            alt={book.bookName}
+            sx={{ width: "225px", height: "268px", objectFit: "cover" }}
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              {book.bookName}
+            </Typography>
+            <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+              By: {book.author}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              Genre: {book.genre}
+            </Typography>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              style={{
+                maxHeight: "3em",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              Description: {book.description}
+            </Typography>
+          </CardContent>
+        </Card>
       ))}
-    </Grid>
+    </div>
   );
 };
 

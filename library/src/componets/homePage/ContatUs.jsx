@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Container, Typography, TextField, Button, Grid, Card, CardContent, Box } from "@mui/material";
+import { Container, Typography, TextField, Button, Grid, Card, CardContent, Box, Snackbar } from "@mui/material";
+import MuiAlert from '@mui/material/Alert';
 import Footer from "./Footer";
 import Header2 from "./Header2";
+import axios from 'axios';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +11,8 @@ const ContactForm = () => {
     email: "",
     message: "",
   });
+  const [openSuccessAlert, setOpenSuccessAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,10 +22,26 @@ const ContactForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // You can handle form submission here, such as sending data to backend or displaying a success message
-    console.log(formData);
+    try {
+      const response = await axios.post("http://localhost:8055/api/contact/add", formData);
+      console.log(response.data);
+      setAlertMessage(response.data.message);
+      setOpenSuccessAlert(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    } catch (error) {
+      console.error("Error adding message:", error);
+    }
+  };
+
+  const handleCloseSuccessAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSuccessAlert(false);
   };
 
   return (
@@ -84,6 +104,11 @@ const ContactForm = () => {
       </Card>
     </Container>
     <Footer />
+    <Snackbar open={openSuccessAlert} autoHideDuration={6000} onClose={handleCloseSuccessAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+      <MuiAlert onClose={handleCloseSuccessAlert} severity="success" sx={{ width: '100%', fontSize: '24px', backgroundColor: '#006400', color: '#FFFFFF' }}>
+        {alertMessage}
+      </MuiAlert>
+    </Snackbar>
     </>
   );
 };
