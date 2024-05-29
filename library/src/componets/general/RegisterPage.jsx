@@ -31,15 +31,38 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if(formData === null ){
-          alert("fill the fields");
-        }
+      
+      if(!formData.username || !formData.phoneNo || !formData.email || !formData.address || !formData.password || !formData.confirmPassword || !formData.gender) {
+        alert("Please fill all the fields.");
+        return;
+      }
+      
 
+      const phoneRegex = /^\d{10}$/;
+      if (!phoneRegex.test(formData.phoneNo)) {
+        alert("Please enter a valid phone number.");
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+
+      const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+      if (!passwordRegex.test(formData.password)) {
+        alert("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.");
+        return;
+      }
+
+     
       if (formData.password !== formData.confirmPassword) {
         alert("Passwords don't match. Please try again.");
         return;
       }
-      
+
+
       const response = await axios.post(
         "http://localhost:8080/api/v1/library/auser",
         formData
@@ -48,13 +71,17 @@ export default function RegisterPage() {
       if (response.data.message === "Registerd Sucessfully") {
         alert("Registered successfully!");
         navigate("/UserSignIn");
-      } else {
+      } 
+      
+      else if (response.data.message === "User already present") {
         setErrorMessage(response.data.message);
+        alert("User already present");
       }
-    } catch (error) {
+    } 
+    
+      catch (error) {
       if (error.response && error.response.status === 400) {
         alert("Please fill all the fields.");
-        setErrorMessage("Please fill all the fields.");
       } else {
         console.error("Registration failed:", error);
       }
