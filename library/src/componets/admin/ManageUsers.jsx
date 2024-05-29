@@ -41,7 +41,7 @@ const ManageUsers = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get("http://localhost:8055/api/user");
-      setUsers(response.data);
+      setUsers(response.data.data);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -97,8 +97,10 @@ const ManageUsers = () => {
           userId: userId,
         },
       });
-
       fetchUsers();
+      setSnackbarSeverity("success");
+      setSnackbarMessage("User deleted successfully!");
+      setSnackbarOpen(true);
     } catch (error) {
       console.error("Error deleting user:", error);
     }
@@ -142,7 +144,7 @@ const ManageUsers = () => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#008DDA",
     color: "#FFFFFF",
     borderRadius: "12px",
     padding: "24px",

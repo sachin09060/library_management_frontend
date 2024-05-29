@@ -40,7 +40,7 @@ const ManageIssuedBooks = () => {
   const fetchIssuedBooks = async () => {
     try {
       const response = await axios.get("http://localhost:8055/api/history");
-      setIssuedBooks(response.data);
+      setIssuedBooks(response.data.data);
     } catch (error) {
       console.error("Error fetching issued books:", error);
     }
@@ -83,7 +83,7 @@ const ManageIssuedBooks = () => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#008DDA",
     color: "#FFFFFF",
     borderRadius: "12px",
     padding: "24px",
