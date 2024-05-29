@@ -6,21 +6,22 @@ import { useNavigate } from 'react-router-dom';
 
 export default function AdminSignIn() {
   const navigate = useNavigate(); 
-  const [userId, setUserId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.post("", {
-            userId: userId,
+        const response = await axios.post("http://localhost:8080/api/v1/library/userlogin", {
+            email: email,
             password: password
         });
 
-        if (response.data.message === "Admin Login Success") {
+        if (response.data.message === "User Login Successfully!") {
             console.log("Login successful");
             alert(response.data.message);
+            // alert("Login successful");
             setError('');
             navigate('/');
         } else {
@@ -64,12 +65,12 @@ export default function AdminSignIn() {
           <h1 style={{ fontSize: "30px", textAlign: "center" }}>
             User Signin
           </h1>
-          <Form.Group controlId="username" style={{ marginBottom: "15px" }}>
+          <Form.Group controlId="Email" style={{ marginBottom: "15px" }}>
             <Form.Control
               type="text"
-              placeholder="UserId"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               style={{ borderRadius: "5px" }}
             />
           </Form.Group>

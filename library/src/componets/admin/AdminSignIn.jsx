@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { Form, Button  } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 
@@ -18,7 +17,7 @@ export default function AdminSignIn() {
             password: password
         });
 
-        if (response.data.message === "Admin Login Success") {
+        if (response.data.message === "Admin Logined Successfully!") {
             console.log("Login successful");
             alert(response.data.message);
             setError('');

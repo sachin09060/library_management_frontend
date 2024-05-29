@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
+import { useNavigate } from 'react-router-dom';
 
 export default function RegisterPage() {
+
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     phoneNo: "",
@@ -14,6 +17,8 @@ export default function RegisterPage() {
     gender: ""
   });
 
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
@@ -22,18 +27,40 @@ export default function RegisterPage() {
     }));
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if(formData === null ){
+          alert("fill the fields");
+        }
+
+      if (formData.password !== formData.confirmPassword) {
+        alert("Passwords don't match. Please try again.");
+        return;
+      }
+      
       const response = await axios.post(
         "http://localhost:8080/api/v1/library/auser",
         formData
       );
-      console.log(response.data); 
+
+      if (response.data.message === "Registerd Sucessfully") {
+        alert("Registered successfully!");
+        navigate("/UserSignIn");
+      } else {
+        setErrorMessage(response.data.message);
+      }
     } catch (error) {
-      console.error("Registration failed:", error); 
+      if (error.response && error.response.status === 400) {
+        alert("Please fill all the fields.");
+        setErrorMessage("Please fill all the fields.");
+      } else {
+        console.error("Registration failed:", error);
+      }
     }
   };
+  
 
   return (
     <div
