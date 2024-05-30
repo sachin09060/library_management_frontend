@@ -17,22 +17,22 @@ const Header = () => {
                 color: "#000",
               }}
             >
-              Book Haven
+              BOOK HEAVEN
             </h1>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="justify-content-center" style={{ width: "80%" }}>
-              <NavLink to="/" className="nav-link" activeClassName="active">Home</NavLink>
-              <NavLink to="/BooksGallery" className="nav-link" activeClassName="active">Store</NavLink>
-              <NavLink to="/news" className="nav-link" activeClassName="active">News & Blogs</NavLink>
-              <NavLink to="/about" className="nav-link" activeClassName="active">About Us</NavLink>
-              <NavLink to="/contactUs" className="nav-link" activeClassName="active">Contact Us</NavLink>
+            <NavLink to="/" className="nav-link" activeClassName="active">HOME</NavLink>
+              <NavLink to="/BooksGallery" className="nav-link" activeClassName="active">BOOK STORE</NavLink>
+              {/* <NavLink to="/news" className="nav-link" activeClassName="active">NEWS & BLOGS</NavLink> */}
+              <NavLink to="/about" className="nav-link" activeClassName="active">ABOUT US</NavLink>
+              <NavLink to="/contactUs" className="nav-link" activeClassName="active">CONTACT US</NavLink>
             </Nav>
 
             <Nav className="justify-content-end">
               <NavLink to="/UserSignIn" className="nav-link" activeClassName="active">UserSignIn</NavLink>
-              <NavLink to="/adminSignIn" className="nav-link" activeClassName="active">Admin Login</NavLink>
+              <NavLink to="/adminSignIn" className="nav-link" activeClassName="active">Admin</NavLink>
             </Nav>
           </Navbar.Collapse>
         </Container>

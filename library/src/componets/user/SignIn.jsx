@@ -13,17 +13,32 @@ export default function AdminSignIn() {
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+
+      const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+      if (!passwordRegex.test(password)) {
+        alert("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.");
+        return;
+      }
+
         const response = await axios.post("http://localhost:8080/api/v1/library/userlogin", {
             email: email,
             password: password
         });
+
+     
 
         if (response.data.message === "User Login Successfully!") {
             console.log("Login successful");
             alert(response.data.message);
             // alert("Login successful");
             setError('');
-            navigate('/');
+            navigate('/BooksGallery');
         } else {
             setError(response.data.message);
             alert("Invalid email or password. Please try again");
