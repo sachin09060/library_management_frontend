@@ -41,7 +41,7 @@ const ManageBooks = () => {
   const fetchBooks = async () => {
     try {
       const response = await axios.get("http://localhost:8055/api/book");
-      setBooks(response.data);
+      setBooks(response.data.data);
     } catch (error) {
       console.error("Error fetching books:", error);
     }
@@ -111,7 +111,7 @@ const ManageBooks = () => {
         "http://localhost:8055/api/book/update",
         newBook
       );
-      console.log("Book updated:", response.data);
+      console.log("Book updated:", response.data.data);
 
       fetchBooks();
 
@@ -143,13 +143,46 @@ const ManageBooks = () => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#008DDA",
     color: "#FFFFFF",
     borderRadius: "12px",
     padding: "24px",
     fontSize: "1.6rem",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
   };
+
+  const allGenres = [
+    "FANTASY",
+    "MYSTERY",
+    "SCIENCE_FICTION",
+    "NOVEL",
+    "NON_FICTION",
+    "HISTORY",
+    "BIOGRAPHY",
+    "SPIRITUALITY",
+    "POETRY",
+    "HUMOR",
+    "DETECTIVE",
+    "AUTOBIOGRAPHY",
+    "PHILOSOPHY",
+    "FAIRY_TALE",
+    "COMICS",
+    "COOK_BOOKS",
+    "TRAVEL",
+    "MUSIC",
+    "ART_DESIGN",
+    "DRAWING",
+    "VISUAL_ART",
+    "PHOTOGRAPHY",
+    "BUSINESS",
+    "ECONOMICS",
+    "POLITICS",
+    "FINANCE",
+    "MONEY",
+    "PSYCHOLOGY",
+    "TECHNOLOGY",
+    "BIOLOGY",
+  ];
 
   return (
     <Container
@@ -211,11 +244,20 @@ const ManageBooks = () => {
             style={{ width: "200px", margin: "10px" }}
           />
           <TextField
-            label="Genre"
+            select
+            label=""
             value={newBook.genre}
             onChange={(e) => setNewBook({ ...newBook, genre: e.target.value })}
             style={{ width: "200px", margin: "10px" }}
-          />
+            SelectProps={{ native: true }}
+          >
+            <option value="">Select genre</option>
+            {allGenres.map((genre) => (
+              <option key={genre} value={genre}>
+                {genre}
+              </option>
+            ))}
+          </TextField>
           <TextField
             label="Description"
             value={newBook.description}
@@ -226,7 +268,7 @@ const ManageBooks = () => {
           />
           <TextField
             label="Added Date"
-            type="date"
+            type="datetime-local"
             variant="outlined"
             value={newBook.addedDate}
             onChange={(e) =>
@@ -336,7 +378,7 @@ const ManageBooks = () => {
         </div>
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={6000}
+        autoHideDuration={500}
         onClose={handleSnackbarClose}
         style={snackbarStyle}
       >

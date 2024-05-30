@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Snackbar, Alert } from '@mui/material';
+import { Container, Typography, Button, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Snackbar, Alert } from '@mui/material';
 import axios from 'axios';
 
 const ManageRequestedBooks = () => {
   const [requestedBooks, setRequestedBooks] = useState([]);
-  const [newRequestedBook, setNewRequestedBook] = useState({ name: '', email: '', message: '' });
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
@@ -15,24 +14,12 @@ const ManageRequestedBooks = () => {
   const fetchAllMessages = async () => {
     try {
       const response = await axios.get('http://localhost:8055/api/contact');
-      setRequestedBooks(response.data);
+      setRequestedBooks(response.data.data);
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
   };
 
-  const handleAddRequestedBook = async () => {
-    try {
-      const response = await axios.post('http://localhost:8055/api/contact/add', newRequestedBook);
-      console.log('Message added:', response.data);
-
-      fetchAllMessages();
-
-      setNewRequestedBook({ name: '', email: '', message: '' });
-    } catch (error) {
-      console.error('Error adding message:', error);
-    }
-  };
 
   const handleDeleteRequestedBook = async (email) => {
     try {
@@ -58,51 +45,12 @@ const ManageRequestedBooks = () => {
 
   return (
     <Container maxWidth="md" style={{ marginTop: 40, backgroundColor: '#F0EBE3', padding: '20px', borderRadius: '10px' }}>
-      <Typography variant="h2" align="center" gutterBottom>
-        Manage Requests
-      </Typography>
-      <div>
-        <TextField
-          label="Name"
-          variant="outlined"
-          fullWidth
-          value={newRequestedBook.name}
-          onChange={(e) => setNewRequestedBook({ ...newRequestedBook, name: e.target.value })}
-        />
-        <TextField
-          label="Email"
-          variant="outlined"
-          fullWidth
-          value={newRequestedBook.email}
-          onChange={(e) => setNewRequestedBook({ ...newRequestedBook, email: e.target.value })}
-        />
-        <TextField
-          label="Message"
-          multiline
-          rows={4}
-          variant="outlined"
-          fullWidth
-          value={newRequestedBook.message}
-          onChange={(e) => setNewRequestedBook({ ...newRequestedBook, message: e.target.value })}
-        />
-        <Button variant="contained" color="primary" onClick={handleAddRequestedBook} style={{ marginTop: 10 }}>
-          Add Message
-        </Button>
-      </div>
       <Typography variant="h4" style={{ marginTop: 20 }}>
         All Messages
       </Typography>
       <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
         <TableContainer component={Paper} style={{ marginTop: 10 }}>
           <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Message</TableCell>
-                <TableCell>Action</TableCell>
-              </TableRow>
-            </TableHead>
             <TableBody>
               {requestedBooks.map((book) => (
                 <TableRow key={book._id} style={ {backgroundColor:"F6F5F2"} }>
@@ -121,7 +69,7 @@ const ManageRequestedBooks = () => {
         </TableContainer>
       </div>
       <Snackbar open={alertOpen} autoHideDuration={2000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-        <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%', backgroundColor: '#F0EBE3', fontSize: '1.2rem', color: 'white' }}>
+        <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%', backgroundColor: '#005B41', fontSize: '1.2rem', color: 'white' }}>
           {alertMessage}
         </Alert>
       </Snackbar>

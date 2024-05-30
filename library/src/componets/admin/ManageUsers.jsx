@@ -30,6 +30,7 @@ const ManageUsers = () => {
   });
 
   const [users, setUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -41,7 +42,7 @@ const ManageUsers = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get("http://localhost:8055/api/user");
-      setUsers(response.data);
+      setUsers(response.data.data);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -53,8 +54,8 @@ const ManageUsers = () => {
         "http://localhost:8055/api/user/add",
         newUser
       );
-      console.log("User added:"+ response.data);
-  
+      console.log("User added:" + response.data);
+
       if (response.data) {
         fetchUsers();
         setNewUser({
@@ -72,7 +73,7 @@ const ManageUsers = () => {
         setSnackbarMessage(response.data.message);
         setSnackbarOpen(true);
       }
-      if(response.data.error){
+      if (response.data.error) {
         setSnackbarSeverity("error");
         setSnackbarMessage(response.data.message);
         setSnackbarOpen(true);
@@ -84,7 +85,6 @@ const ManageUsers = () => {
       }
     }
   };
-  
 
   const handleAddUser = () => {
     addUserToDatabase();
@@ -97,8 +97,10 @@ const ManageUsers = () => {
           userId: userId,
         },
       });
-
       fetchUsers();
+      setSnackbarSeverity("success");
+      setSnackbarMessage("User deleted successfully!");
+      setSnackbarOpen(true);
     } catch (error) {
       console.error("Error deleting user:", error);
     }
@@ -130,6 +132,15 @@ const ManageUsers = () => {
     }
   };
 
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.userId.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -142,13 +153,15 @@ const ManageUsers = () => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#008DDA",
     color: "#FFFFFF",
     borderRadius: "12px",
     padding: "24px",
     fontSize: "1.6rem",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
   };
+
+  const allGenders = ["MALE", "FEMALE", "OTHER"];
 
   return (
     <Container
@@ -166,7 +179,7 @@ const ManageUsers = () => {
           padding: "10px",
           backgroundColor: "#F0EBE3",
           borderRadius: "10px",
-          marginBottom: "20px",
+          marginBottom: "10px",
         }}
       >
         <Typography variant="h2" align="center" gutterBottom>
@@ -197,13 +210,22 @@ const ManageUsers = () => {
             style={{ width: "200px", margin: "10px" }}
           />
           <TextField
-            label="Gender"
+            select
+            label=""
             variant="outlined"
             fullWidth
             value={newUser.gender}
             onChange={(e) => setNewUser({ ...newUser, gender: e.target.value })}
             style={{ width: "200px", margin: "10px" }}
-          />
+            SelectProps={{ native: true }}
+          >
+            <option value="">Select Gender</option>
+            {allGenders.map((gender) => (
+              <option key={gender} value={gender}>
+                {gender}
+              </option>
+            ))}
+          </TextField>
           <TextField
             label="Phone"
             variant="outlined"
@@ -232,7 +254,7 @@ const ManageUsers = () => {
           />
           <TextField
             label="Created At"
-            type="date"
+            type="datetime-local"
             variant="outlined"
             fullWidth
             value={newUser.createdAt}
@@ -267,60 +289,67 @@ const ManageUsers = () => {
         <Typography variant="h4" align="center" gutterBottom>
           User List
         </Typography>
-        <div style={{ height: "300px", overflowY: "auto", width: "100%" }}>
+        <TextField
+          label="Search"
+          variant="outlined"
+          fullWidth
+          value={searchQuery}
+          onChange={handleSearch}
+          style={{ width: "80%", margin: "10px 0" }}
+        />
+        <div style={{ height: "300px", overflowY: "scroll", width: "100%" }}>
           <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>User ID</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Gender</TableCell>
-                  <TableCell>Phone</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Address</TableCell>
-                  <TableCell>Created At</TableCell>
-                  <TableCell>Action</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {users.map((user) => (
-                  <TableRow key={user.userId}>
-                    <TableCell>{user.userId}</TableCell>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.gender}</TableCell>
-                    <TableCell>{user.phone}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.address}</TableCell>
-                    <TableCell>{user.createdAt}</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleDeleteUser(user.userId)}
-                      >
-                        Delete
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        onClick={() => handleUpdateUser(user.userId)}
-                      >
-                        {" "}
-                        {/* Update button */}
-                        Update
-                      </Button>
-                    </TableCell>
+            <div style={{ maxWidth: "100%", overflowX: "auto", height: "300px" }}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>User ID</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Gender</TableCell>
+                    <TableCell>Phone</TableCell>
+                    <TableCell>Email</TableCell>
+                    <TableCell>Address</TableCell>
+                    <TableCell>Created At</TableCell>
+                    <TableCell>Action</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {filteredUsers.map((user) => (
+                    <TableRow key={user.userId}>
+                      <TableCell>{user.userId}</TableCell>
+                      <TableCell>{user.name}</TableCell>
+                      <TableCell>{user.gender}</TableCell>
+                      <TableCell>{user.phone}</TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell>{user.address}</TableCell>
+                      <TableCell>{user.createdAt}</TableCell>
+                      <TableCell>
+                        <Button
+                          variant="outlined"
+                          color="secondary"
+                          onClick={() => handleDeleteUser(user.userId)}
+                        >
+                          Delete
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          onClick={() => handleUpdateUser(user.userId)}
+                        >
+                          Update
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </TableContainer>
         </div>
-
       </div>
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={1000}
+        autoHideDuration={500}
         onClose={handleSnackbarClose}
         style={snackbarStyle}
       >

@@ -15,7 +15,7 @@ const BooksGalleryLayout2 = () => {
   const fetchBooks = async () => {
     try {
       const response = await axios.get("http://localhost:8055/api/book");
-      setBooks(response.data);
+      setBooks(response.data.data);
     } catch (error) {
       console.error("Error fetching books:", error);
     }

@@ -3,14 +3,27 @@ import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+import axios from 'axios';
 
 const BookGallery = ({ books }) => {
   const [show, setShow] = useState(false);
   const [userId, setUser] = useState("");
-  const handleClose = () => setShow(false);
+  const [selectedBookId, setSelectedBookId] = useState("");
+  const [userIdError, setUserIdError] = useState(false);
+
+  const handleClose = () => {
+    setShow(false);
+    setUserIdError(false);
+  };
+
   const handleShow = () => setShow(true);
 
   const handleSubmit = () => {
+    if (!userId.trim()) {
+      setUserIdError(true);
+      return;
+    }
+
     const currentDate = new Date();
     const formattedCurrentDate = currentDate.toISOString().split("T")[0];
     const returnDate = new Date(currentDate);
@@ -28,27 +41,18 @@ const BookGallery = ({ books }) => {
       returned: true,
       renewed: false,
     };
-    console.log("email: ",requestBody.userId);
 
-    fetch("http://localhost:8055/api/history/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
+    axios.post("http://localhost:8055/api/history/add", requestBody)
+      .then((response) => {
+        console.log(response.data);
+        alert("One transaction added Successfully!");
+        handleClose();
+        window.location.reload(); // Refresh the page
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-    window.location.reload();
-    handleClose();
   };
-
-  const [selectedBookId, setSelectedBookId] = useState("");
 
   const handleSelectBook = (bookId) => {
     setSelectedBookId(bookId);
@@ -70,13 +74,16 @@ const BookGallery = ({ books }) => {
                 placeholder="Enter your user ID"
                 autoFocus
                 value={userId}
-                onChange={(e) => setUser(e.target.value)}
+                onChange={(e) => {
+                  setUser(e.target.value);
+                  setUserIdError(false);
+                }}
+                isInvalid={userIdError}
               />
+              <Form.Control.Feedback type="invalid">
+                Please enter your user ID.
+              </Form.Control.Feedback>
             </Form.Group>
-            <Form.Group
-              className="mb-3"
-              controlId="exampleForm.ControlTextarea1"
-            ></Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>

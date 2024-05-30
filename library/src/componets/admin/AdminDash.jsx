@@ -26,7 +26,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const navigate = useNavigate(); 
+const navigate = useNavigate(); 
 
 const handleClick = () => {
   navigate('/');
@@ -35,7 +35,7 @@ const handleClick = () => {
   return (
     <Container fluid>
       <Row>
-        <Col sm={3} style={{ backgroundColor: '#333', height: '100vh', color: '#fff', paddingTop: '20px' }}>
+        <Col sm={3} style={{ backgroundColor: '#333', height: '108vh', color: '#fff', paddingTop: '20px' }}>
           <div style={{ paddingLeft: '20px' }}>
           <h1
               style={{
@@ -45,7 +45,7 @@ const handleClick = () => {
                 color: "#fff",
               }}
             >
-              BOOK HAVEN
+              BOOK HEAVEN
             </h1>
           </div>
           
