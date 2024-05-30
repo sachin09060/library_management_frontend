@@ -268,7 +268,7 @@ const ManageBooks = () => {
           />
           <TextField
             label="Added Date"
-            type="date"
+            type="datetime-local"
             variant="outlined"
             value={newBook.addedDate}
             onChange={(e) =>

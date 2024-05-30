@@ -13,7 +13,11 @@ const BooksGalleryLayout = () => {
   const fetchBooks = async () => {
     let url = "http://localhost:8055/api/book";
     if (searchParams.searchBy && searchParams.query) {
-      url += `?${searchParams.searchBy}=${searchParams.query}`;
+      if (searchParams.searchBy === "genre") {
+        url += `?${searchParams.searchBy}=${searchParams.query.toUpperCase()}`;
+      } else {
+        url += `?${searchParams.searchBy}=${searchParams.query}`;
+      }
     }
     try {
       const response = await axios.get(url);
@@ -33,6 +37,7 @@ const BooksGalleryLayout = () => {
       ...prevParams,
       [name]: value,
     }));
+    setSearchClicked(false);
   };
 
   const handleSearch = () => {
@@ -40,8 +45,20 @@ const BooksGalleryLayout = () => {
   };
 
   useEffect(() => {
-    fetchBooks();
-  }, [searchClicked]);
+    if (searchClicked || (searchParams.searchBy && searchParams.query)) {
+      fetchBooks();
+    } else {
+      const fetchAllBooks = async () => {
+        try {
+          const response = await axios.get("http://localhost:8055/api/book");
+          setBooks(response.data.data);
+        } catch (error) {
+          console.error("Error fetching all books:", error);
+        }
+      };
+      fetchAllBooks();
+    }
+  }, [searchClicked, searchParams]);
 
   const startIndex = (page - 1) * booksPerPage;
   const endIndex = page * booksPerPage;

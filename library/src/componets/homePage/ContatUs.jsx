@@ -69,6 +69,10 @@ const ContactForm = () => {
         >
           Contact Us
         </Typography>
+        <Typography
+        style={{ fontFamily: "Arial, sans-serif" }}>
+        <p>"Request the librarian to register new users at the library."</p>
+        </Typography>
         <Card elevation={3} style={{ padding: 20 }}>
           <CardContent>
             <form onSubmit={handleSubmit}>

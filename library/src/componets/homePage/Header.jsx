@@ -25,7 +25,6 @@ const Header = () => {
             <Nav className="justify-content-center" style={{ width: "80%" }}>
             <NavLink to="/" className="nav-link" activeClassName="active">HOME</NavLink>
               <NavLink to="/BooksGallery" className="nav-link" activeClassName="active">BOOK STORE</NavLink>
-              {/* <NavLink to="/news" className="nav-link" activeClassName="active">NEWS & BLOGS</NavLink> */}
               <NavLink to="/about" className="nav-link" activeClassName="active">ABOUT US</NavLink>
               <NavLink to="/contactUs" className="nav-link" activeClassName="active">CONTACT US</NavLink>
             </Nav>
