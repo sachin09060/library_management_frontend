@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Button, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Snackbar, Alert } from '@mui/material';
+import { Container, Typography, Button, Table, TableHead,TableBody, TableCell, TableContainer, TableRow, Paper, Snackbar, Alert } from '@mui/material';
 import axios from 'axios';
 
 const ManageRequestedBooks = () => {
@@ -13,7 +13,7 @@ const ManageRequestedBooks = () => {
 
   const fetchAllMessages = async () => {
     try {
-      const response = await axios.get('http://localhost:8055/api/contact');
+      const response = await axios.get('http://localhost:8080/api/v1/library/getallFeedback');
       setRequestedBooks(response.data.data);
     } catch (error) {
       console.error('Error fetching messages:', error);
@@ -51,6 +51,13 @@ const ManageRequestedBooks = () => {
       <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
         <TableContainer component={Paper} style={{ marginTop: 10 }}>
           <Table>
+          <TableHead>
+                <TableRow>
+                  <TableCell>NAME</TableCell>
+                  <TableCell>EMAIL</TableCell>
+                  <TableCell>MESSAGE</TableCell>
+                </TableRow>
+              </TableHead>
             <TableBody>
               {requestedBooks.map((book) => (
                 <TableRow key={book._id} style={ {backgroundColor:"F6F5F2"} }>
@@ -58,9 +65,9 @@ const ManageRequestedBooks = () => {
                   <TableCell>{book.email}</TableCell>
                   <TableCell>{book.message}</TableCell>
                   <TableCell>
-                    <Button variant="outlined" color="secondary" onClick={() => handleDeleteRequestedBook(book.email)}>
+                    {/* <Button variant="outlined" color="secondary" onClick={() => handleDeleteRequestedBook(book.email)}>
                       Delete
-                    </Button>
+                    </Button> */}
                   </TableCell>
                 </TableRow>
               ))}

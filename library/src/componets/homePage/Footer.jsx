@@ -10,7 +10,9 @@ const Footer = () => {
           <Col md={6}>
             <h5>About Our Library</h5>
             <p>
-            Step into the realms of knowledge at Book Heaven, where every page holds a universe waiting to be explored.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec
+              elit sit amet arcu molestie convallis. Nullam nec ligula nec
+              libero molestie sollicitudin vel ac velit.
             </p>
           </Col>
 
@@ -22,7 +24,10 @@ const Footer = () => {
                 Mysore, Karnataka
               </li>
               <li>
-                <i className="fas fa-envelope"></i> bookheaven@library.com
+                <i className="fas fa-phone-alt"></i> +123-456-7890
+              </li>
+              <li>
+                <i className="fas fa-envelope"></i> info@library.com
               </li>
             </ul>
           </Col>
@@ -51,7 +56,7 @@ const Footer = () => {
         </Row>
         <Row>
           <Col className="text-center mt-4">
-            <p>&copy; 2024 Book Heaven. All Rights Reserved.</p>
+            <p>&copy; 2024 Book Haven. All Rights Reserved.</p>
           </Col>
         </Row>
       </Container>

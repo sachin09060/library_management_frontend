@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import LocalLibrary from '@mui/icons-material/LocalLibrary';
-import AdminSignInBtn from "../Admin/AdminSignBtn";
+import AdminSignInBtn from "../admin/AdminSignBtn";
 
 const pages = ["HOME", "ABOUT", "BOOKS","CONTACT"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];

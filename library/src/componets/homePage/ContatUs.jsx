@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import Footer from "./Footer";
-import Header2 from "./Header2";
+import Header from "./Header";
 import axios from "axios";
 
 const ContactForm = () => {
@@ -36,7 +36,7 @@ const ContactForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8055/api/contact/add",
+        "http://localhost:8080/api/v1/library/postfeedback",
         formData
       );
       console.log(response.data);
@@ -59,7 +59,7 @@ const ContactForm = () => {
 
   return (
     <>
-      <Header2 />
+      <Header />
       <Container maxWidth="md" style={{ marginTop: 40 }}>
         <Typography
           variant="h2"
@@ -68,10 +68,6 @@ const ContactForm = () => {
           style={{ fontFamily: "Arial, sans-serif" }}
         >
           Contact Us
-        </Typography>
-        <Typography
-        style={{ fontFamily: "Arial, sans-serif" }}>
-        <p>"Request the librarian to register new users at the library."</p>
         </Typography>
         <Card elevation={3} style={{ padding: 20 }}>
           <CardContent>

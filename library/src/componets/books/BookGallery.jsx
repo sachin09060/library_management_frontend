@@ -42,7 +42,7 @@ const BookGallery = ({ books }) => {
       renewed: false,
     };
 
-    axios.post("http://localhost:8055/api/history/add", requestBody)
+    axios.post("http://localhost:8080/api/v1/library/abook", requestBody)
       .then((response) => {
         console.log(response.data);
         alert("One transaction added Successfully!");

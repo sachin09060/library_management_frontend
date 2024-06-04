@@ -14,7 +14,7 @@ const BooksGalleryLayout2 = () => {
 
   const fetchBooks = async () => {
     try {
-      const response = await axios.get("http://localhost:8055/api/book");
+      const response = await axios.get("http://localhost:8080/api/v1/library/allbook");
       setBooks(response.data.data);
     } catch (error) {
       console.error("Error fetching books:", error);
@@ -27,7 +27,7 @@ const BooksGalleryLayout2 = () => {
 
   const startIndex = (page - 1) * booksPerPage;
   const endIndex = page * booksPerPage;
-  const paginatedBooks = books.slice(startIndex, endIndex);
+  const paginatedBooks = books && books.length > 0 ? books.slice(startIndex, endIndex) : [];
 
   return (
     <div className="App" style={{ backgroundColor: "#f5f5f5", minHeight: "100vh" }}>

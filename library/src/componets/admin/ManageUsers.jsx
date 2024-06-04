@@ -19,18 +19,14 @@ import MuiAlert from "@mui/material/Alert";
 const ManageUsers = () => {
   const [newUser, setNewUser] = useState({
     userId: "",
-    name: "",
+    username: "",
     gender: "",
-    phone: "",
+    phoneNo: "",
     email: "",
-    address: "",
-    isLibrarian: false,
-    isUser: true,
-    createdAt: "",
+    address: ""
   });
 
   const [users, setUsers] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -41,7 +37,7 @@ const ManageUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:8055/api/user");
+      const response = await axios.get("http://localhost:8080/api/v1/library/alluser");
       setUsers(response.data.data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -51,29 +47,26 @@ const ManageUsers = () => {
   const addUserToDatabase = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8055/api/user/add",
+        "http://localhost:8080/api/v1/library/auser",
         newUser
       );
-      console.log("User added:" + response.data);
-
+      console.log("User added:"+ response.data);
+  
       if (response.data) {
         fetchUsers();
         setNewUser({
           userId: "",
-          name: "",
+          username: "",
           gender: "",
-          phone: "",
+          phoneNo: "",
           email: "",
-          address: "",
-          isLibrarian: false,
-          isUser: true,
-          createdAt: "",
+          address: ""
         });
         setSnackbarSeverity("success");
         setSnackbarMessage(response.data.message);
         setSnackbarOpen(true);
       }
-      if (response.data.error) {
+      if(response.data.error){
         setSnackbarSeverity("error");
         setSnackbarMessage(response.data.message);
         setSnackbarOpen(true);
@@ -85,6 +78,7 @@ const ManageUsers = () => {
       }
     }
   };
+  
 
   const handleAddUser = () => {
     addUserToDatabase();
@@ -92,7 +86,7 @@ const ManageUsers = () => {
 
   const handleDeleteUser = async (userId) => {
     try {
-      await axios.delete("http://localhost:8055/api/user/delete", {
+      await axios.delete("http://localhost:8080/api/v1/library/deleteuserbyid", {
         data: {
           userId: userId,
         },
@@ -109,7 +103,7 @@ const ManageUsers = () => {
   const handleUpdateUser = async (userId) => {
     try {
       const response = await axios.put(
-        `http://localhost:8055/api/user/update`,
+        `http://localhost:8080/api/v1/library/updateuserbyid`,
         newUser
       );
       console.log("User updated:", response.data);
@@ -118,28 +112,16 @@ const ManageUsers = () => {
 
       setNewUser({
         userId: "",
-        name: "",
+        username: "",
         gender: "",
-        phone: "",
+        phoneNo: "",
         email: "",
-        address: "",
-        isLibrarian: false,
-        isUser: true,
-        createdAt: "",
+        address: ""
       });
     } catch (error) {
       console.error("Error updating user:", error);
     }
   };
-
-  const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
-  };
-
-  const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.userId.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -161,8 +143,6 @@ const ManageUsers = () => {
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
   };
 
-  const allGenders = ["MALE", "FEMALE", "OTHER"];
-
   return (
     <Container
       maxWidth="xl"
@@ -179,7 +159,7 @@ const ManageUsers = () => {
           padding: "10px",
           backgroundColor: "#F0EBE3",
           borderRadius: "10px",
-          marginBottom: "10px",
+          marginBottom: "20px",
         }}
       >
         <Typography variant="h2" align="center" gutterBottom>
@@ -205,33 +185,24 @@ const ManageUsers = () => {
             label="Name"
             variant="outlined"
             fullWidth
-            value={newUser.name}
-            onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+            value={newUser.username}
+            onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
             style={{ width: "200px", margin: "10px" }}
           />
           <TextField
-            select
-            label=""
+            label="Gender"
             variant="outlined"
             fullWidth
             value={newUser.gender}
             onChange={(e) => setNewUser({ ...newUser, gender: e.target.value })}
             style={{ width: "200px", margin: "10px" }}
-            SelectProps={{ native: true }}
-          >
-            <option value="">Select Gender</option>
-            {allGenders.map((gender) => (
-              <option key={gender} value={gender}>
-                {gender}
-              </option>
-            ))}
-          </TextField>
+          />
           <TextField
             label="Phone"
             variant="outlined"
             fullWidth
-            value={newUser.phone}
-            onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
+            value={newUser.phoneNo}
+            onChange={(e) => setNewUser({ ...newUser, phoneNo: e.target.value })}
             style={{ width: "200px", margin: "10px" }}
           />
           <TextField
@@ -252,9 +223,9 @@ const ManageUsers = () => {
             }
             style={{ width: "200px", margin: "10px" }}
           />
-          <TextField
+          {/* <TextField
             label="Created At"
-            type="datetime-local"
+            type="date"
             variant="outlined"
             fullWidth
             value={newUser.createdAt}
@@ -263,7 +234,7 @@ const ManageUsers = () => {
             }
             style={{ width: "200px", margin: "10px" }}
             InputLabelProps={{ shrink: true }}
-          />
+          /> */}
         </div>
         <Button
           variant="contained"
@@ -289,67 +260,60 @@ const ManageUsers = () => {
         <Typography variant="h4" align="center" gutterBottom>
           User List
         </Typography>
-        <TextField
-          label="Search"
-          variant="outlined"
-          fullWidth
-          value={searchQuery}
-          onChange={handleSearch}
-          style={{ width: "80%", margin: "10px 0" }}
-        />
-        <div style={{ height: "300px", overflowY: "scroll", width: "100%" }}>
+        <div style={{ height: "300px", overflowY: "auto", width: "100%" }}>
           <TableContainer component={Paper}>
-            <div style={{ maxWidth: "100%", overflowX: "auto", height: "300px" }}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>User ID</TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Gender</TableCell>
-                    <TableCell>Phone</TableCell>
-                    <TableCell>Email</TableCell>
-                    <TableCell>Address</TableCell>
-                    <TableCell>Created At</TableCell>
-                    <TableCell>Action</TableCell>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>User ID</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Gender</TableCell>
+                  <TableCell>Phone</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Address</TableCell>
+                  {/* <TableCell>Created At</TableCell> */}
+                  <TableCell>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {users.map((user) => (
+                  <TableRow key={user.userId}>
+                    <TableCell>{user.userId}</TableCell>
+                    <TableCell>{user.username}</TableCell>
+                    <TableCell>{user.gender}</TableCell>
+                    <TableCell>{user.phoneNo}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.address}</TableCell>
+                    {/* <TableCell>{user.createdAt}</TableCell> */}
+                    <TableCell>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleDeleteUser(user.userId)}
+                      >
+                        Delete
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => handleUpdateUser(user.userId)}
+                      >
+                        {" "}
+                        {/* Update button */}
+                        Update
+                      </Button>
+                    </TableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {filteredUsers.map((user) => (
-                    <TableRow key={user.userId}>
-                      <TableCell>{user.userId}</TableCell>
-                      <TableCell>{user.name}</TableCell>
-                      <TableCell>{user.gender}</TableCell>
-                      <TableCell>{user.phone}</TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>{user.address}</TableCell>
-                      <TableCell>{user.createdAt}</TableCell>
-                      <TableCell>
-                        <Button
-                          variant="outlined"
-                          color="secondary"
-                          onClick={() => handleDeleteUser(user.userId)}
-                        >
-                          Delete
-                        </Button>
-                        <Button
-                          variant="outlined"
-                          color="primary"
-                          onClick={() => handleUpdateUser(user.userId)}
-                        >
-                          Update
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                ))}
+              </TableBody>
+            </Table>
           </TableContainer>
         </div>
+
       </div>
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={500}
+        autoHideDuration={1000}
         onClose={handleSnackbarClose}
         style={snackbarStyle}
       >

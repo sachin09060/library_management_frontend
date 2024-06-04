@@ -1,12 +1,12 @@
 import React from "react";
 import { Container, Typography, Grid, Card, CardContent, CardMedia } from "@mui/material";
 import Footer from "./Footer";
-import Header2 from "./Header2";
+import Header from "./Header";
 
 const AboutUs = () => {
   return (
     <>
-      <Header2 />
+      <Header />
       <Card>
         <CardContent>
           <Container maxWidth="lg" style={{ marginTop: 40 }}>
