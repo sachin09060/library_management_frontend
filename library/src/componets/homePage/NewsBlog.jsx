@@ -1,7 +1,5 @@
 import React from "react";
 import { Container, Grid, Card, CardContent, CardMedia, Typography, Pagination } from "@mui/material";
-
-// Import the header and footer components
 import Footer from "./Footer";
 import Header2 from "./Header2";
 

@@ -1,26 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import axios from 'axios';
+import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const BookGallery = ({ books }) => {
+  const { state } = useLocation();
+
   const [show, setShow] = useState(false);
-  const [userId, setUser] = useState("");
+  const [email, setEmail] = useState(state);
   const [selectedBookId, setSelectedBookId] = useState("");
-  const [userIdError, setUserIdError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [users, setUsers] = useState([]);
+
+  console.log(email);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8055/api/user")
+      .then((response) => {
+        setUsers(response.data.data.map((user) => user.email));
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
 
   const handleClose = () => {
     setShow(false);
-    setUserIdError(false);
+    setEmail("");
+    setEmailError(false);
+    window.location.reload();
   };
 
   const handleShow = () => setShow(true);
 
   const handleSubmit = () => {
-    if (!userId.trim()) {
-      setUserIdError(true);
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim() || !emailPattern.test(email) || !users.includes(email)) {
+      setEmailError(true);
       return;
     }
 
@@ -33,21 +53,22 @@ const BookGallery = ({ books }) => {
     dueDate.setDate(dueDate.getDate() + 1);
     const formattedDueDate = dueDate.toISOString().split("T")[0];
     const requestBody = {
-      userId: userId,
+      email: email,
       bookId: selectedBookId,
       issuedDate: formattedCurrentDate,
       dueDate: formattedDueDate,
       returnDate: formattedReturnDate,
-      returned: true,
+      returned: false,
       renewed: false,
     };
 
-    axios.post("http://localhost:8055/api/history/add", requestBody)
+    axios
+      .post("http://localhost:8055/api/history/add", requestBody)
       .then((response) => {
         console.log(response.data);
         alert("One transaction added Successfully!");
         handleClose();
-        window.location.reload(); // Refresh the page
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -63,25 +84,28 @@ const BookGallery = ({ books }) => {
     <>
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Enter your user ID to get Book!</Modal.Title>
+          <Modal.Title>Confirm your email to get Book!</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>User ID</Form.Label>
+              <Form.Label>Please confirm your registered Email!</Form.Label>
               <Form.Control
-                type="text"
-                placeholder="Enter your user ID"
+                type="email"
+                placeholder="Enter your email id"
                 autoFocus
-                value={userId}
+                value={email}
+                disabled
                 onChange={(e) => {
-                  setUser(e.target.value);
-                  setUserIdError(false);
+                  setEmail(e.target.value);
+                  setEmailError(false);
                 }}
-                isInvalid={userIdError}
+                isInvalid={emailError}
               />
               <Form.Control.Feedback type="invalid">
-                Please enter your user ID.
+                {emailError
+                  ? "Invalid email. Please enter a valid registered email."
+                  : "Please enter a valid email."}
               </Form.Control.Feedback>
             </Form.Group>
           </Form>

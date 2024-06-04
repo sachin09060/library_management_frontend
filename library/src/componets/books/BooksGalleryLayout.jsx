@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import BookGallery from "./BookGallery";
-import { Typography, Pagination, TextField, Button, MenuItem } from "@mui/material";
+import { Typography, Pagination, TextField, MenuItem } from "@mui/material";
 
 const BooksGalleryLayout = () => {
   const [books, setBooks] = useState([]);
@@ -40,10 +40,6 @@ const BooksGalleryLayout = () => {
     setSearchClicked(false);
   };
 
-  const handleSearch = () => {
-    setSearchClicked(true);
-  };
-
   useEffect(() => {
     if (searchClicked || (searchParams.searchBy && searchParams.query)) {
       fetchBooks();
@@ -62,11 +58,21 @@ const BooksGalleryLayout = () => {
 
   const startIndex = (page - 1) * booksPerPage;
   const endIndex = page * booksPerPage;
-  const paginatedBooks = books.slice(startIndex, endIndex);
+  const paginatedBooks = books ? books.slice(startIndex, endIndex) : [];
 
   return (
-    <div className="App" style={{ backgroundColor: "#f5f5f5", minHeight: "100vh" }}>
-      <div style={{ maxWidth: "1024px", margin: "0 auto", padding: "20px", textAlign: "left" }}>
+    <div
+      className="App"
+      style={{ backgroundColor: "#f5f5f5", minHeight: "100vh" }}
+    >
+      <div
+        style={{
+          maxWidth: "1024px",
+          margin: "0 auto",
+          padding: "20px",
+          textAlign: "left",
+        }}
+      >
         <h1 style={{ textAlign: "center" }}>Our Book Gallery</h1>
         <TextField
           select
@@ -87,14 +93,11 @@ const BooksGalleryLayout = () => {
           label={`Search by ${searchParams.searchBy}`}
           variant="outlined"
           style={{ marginBottom: 10 }}
-          fullWidth
           name="query"
+          fullWidth
           value={searchParams.query}
           onChange={handleSearchChange}
         />
-        <Button variant="contained" onClick={handleSearch} style={{ marginBottom: 20 }}>
-          Search
-        </Button>
         {paginatedBooks.length > 0 ? (
           <>
             <BookGallery books={paginatedBooks} />

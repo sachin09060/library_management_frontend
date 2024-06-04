@@ -1,7 +1,31 @@
-import React from 'react';
-import Button from 'react-bootstrap/Button';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 export default function ForgotPassword() {
+  const [email, setEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('http://localhost:8055/api/user/forgetpassword', {
+        email: email,
+        password: newPassword,
+        confirmPassword: confirmPassword
+      });
+
+      setMessage(response.data.message);
+      setError(response.data.error);
+    } catch (error) {
+      setMessage('An error occurred. Please try again.');
+      setError(true);
+    }
+  };
+
   return (
     <div
       style={{
@@ -12,8 +36,7 @@ export default function ForgotPassword() {
         fontFamily: "'Roboto', sans-serif",
         WebkitFontSmoothing: "antialiased",
         MozOsxFontSmoothing: "grayscale",
-        background: "url('https://wallpapersmug.com/download/1920x1080/f12332/books.jpg') no-repeat",
-        backgroundSize: "cover"
+        background: "linear-gradient(45deg, #FF5733, #50C9C3, #FF5733)",
       }}
     >
       <div
@@ -27,20 +50,23 @@ export default function ForgotPassword() {
           backdropFilter: "blur(20px)"
         }}
       >
-        <form action="">
-          <h1 style={{ fontSize: "30px", textAlign: "center" }}>Forgot Password</h1>
+        <form onSubmit={handleSubmit} style={{ margin: "0 auto", textAlign: "center" }}>
+          <h1 style={{ fontSize: "30px", textAlign: "center", marginBottom: "30px" }}>Forgot Password</h1>
           <div
             style={{
               position: "relative",
               width: "100%",
               height: "50px",
-              margin: "30px 0"
+              margin: "0 auto 30px",
+              textAlign: "center"
             }}
             className="input-box"
           >
             <input
-              type="password"
-              placeholder="New Password"
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               style={{
                 width: "100%",
                 height: "100%",
@@ -49,7 +75,8 @@ export default function ForgotPassword() {
                 outline: "none",
                 border: "2px solid white",
                 borderRadius: "40px",
-                color: "#fff"
+                color: "#fff",
+                textAlign: "center"
               }}
             />
           </div>
@@ -58,13 +85,16 @@ export default function ForgotPassword() {
               position: "relative",
               width: "100%",
               height: "50px",
-              margin: "30px 0"
+              margin: "0 auto 30px",
+              textAlign: "center"
             }}
             className="input-box"
           >
             <input
               type="password"
-              placeholder="Confirm Password"
+              placeholder="New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
               style={{
                 width: "100%",
                 height: "100%",
@@ -73,7 +103,36 @@ export default function ForgotPassword() {
                 outline: "none",
                 border: "2px solid white",
                 borderRadius: "40px",
-                color: "#fff"
+                color: "#fff",
+                textAlign: "center"
+              }}
+            />
+          </div>
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              height: "50px",
+              margin: "0 auto 30px",
+              textAlign: "center"
+            }}
+            className="input-box"
+          >
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              style={{
+                width: "100%",
+                height: "100%",
+                background: "transparent",
+                border: "none",
+                outline: "none",
+                border: "2px solid white",
+                borderRadius: "40px",
+                color: "#fff",
+                textAlign: "center"
               }}
             />
           </div>
@@ -85,21 +144,23 @@ export default function ForgotPassword() {
             }}
             className="button"
           >
-           <button
-            type='submit'
-            style={{
-              width: "100%",
-              height: "45px",
-              border: "none",
-              borderRadius: "40px",
-              cursor: "pointer",
-              fontSize: "18px"
-            }}
-          >
-            Save
-          </button>
+            <button
+              type='submit'
+              style={{
+                width: "100%",
+                height: "45px",
+                border: "none",
+                borderRadius: "40px",
+                cursor: "pointer",
+                fontSize: "18px",
+                background: "#FF5733"
+              }}
+            >
+              Save
+            </button>
           </div>
         </form>
+        {message && <p style={{ color: error ? 'red' : 'green' }}>{message}</p>}
       </div>
     </div>
   );
