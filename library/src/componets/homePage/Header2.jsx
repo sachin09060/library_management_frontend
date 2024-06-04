@@ -31,7 +31,7 @@ const Header2 = () => {
               <NavLink to="/contactUs" className="nav-link" activeClassName="active">CONTACT US</NavLink>
             </Nav>
           </Navbar.Collapse>
-          <Avatar alt="Remy Sharp" src="https://t4.ftcdn.net/jpg/04/44/53/99/360_F_444539901_2GSnvmTX14LELJ6edPudUsarbcytOEgj.jpg" />
+          <Avatar alt="Remy Sharp" src="https://wallpapers.com/images/hd/iconic-hd-john-wick-poster-jeaidqurrfx52d3u.jpg" />
         </Container>
       </Navbar>
     </header>

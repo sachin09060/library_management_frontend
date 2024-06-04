@@ -16,6 +16,7 @@ import ManageBooks from './componets/admin/ManageBooks';
 import ManageUsers from './componets/admin/ManageUsers';
 import ManageIssuedBooks from './componets/admin/ManageIssuedBooks';
 import ManageRequestedBooks from './componets/admin/ManageRequestedBooks';
+import ManageBooks2 from './componets/admin/ManageBooks2';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path='/about' element={<AboutUs />} />
           <Route path='/contactUs' element={<ContactForm />} />
           <Route path='/manageBooks' element={<ManageBooks />} />
+          <Route path='/manageBooks2' element={<ManageBooks2 />} />
           <Route path='/manageUsers' element={<ManageUsers />} />
           <Route path='/manageIssuedBooks' element={<ManageIssuedBooks />} />
           <Route path='/manageRequestedBooks' element={<ManageRequestedBooks />} />

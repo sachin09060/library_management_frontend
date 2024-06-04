@@ -4,7 +4,7 @@ import Tab from '@mui/material/Tab';
 import BooksGalleryLayout from './BooksGalleryLayout';
 import BooksGalleryLayout2 from './BooksGalleryLayout2';
 import Footer from '../homePage/Footer';
-import Header2 from '../homePage/Header2';
+import Header from '../homePage/Header';
 
 function BookTabs() {
   const [value, setValue] = useState(0);
@@ -15,7 +15,7 @@ function BookTabs() {
 
   return (
     <div>
-      <Header2 />
+      <Header />
       <Tabs
         value={value}
         onChange={handleChange}

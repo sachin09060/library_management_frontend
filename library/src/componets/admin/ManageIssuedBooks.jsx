@@ -23,8 +23,8 @@ const ManageIssuedBooks = () => {
     issuedDate: "",
     dueDate: "",
     returnDate: "",
-    returned: false,
-    renewed: false,
+    isReturned: false,
+    isRenewed: false,
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -32,13 +32,6 @@ const ManageIssuedBooks = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const [issuedBooks, setIssuedBooks] = useState([]);
-  const [searchQuery, setSearchQuery] = useState({
-    userId: "",
-    bookId: "",
-    issuedDate: "",
-    dueDate: "",
-    returnDate: "",
-  });
 
   useEffect(() => {
     fetchIssuedBooks();
@@ -46,7 +39,7 @@ const ManageIssuedBooks = () => {
 
   const fetchIssuedBooks = async () => {
     try {
-      const response = await axios.get("http://localhost:8055/api/history");
+      const response = await axios.get("http://localhost:8080/api/v1/library/alltransaction");
       setIssuedBooks(response.data.data);
     } catch (error) {
       console.error("Error fetching issued books:", error);
@@ -56,7 +49,7 @@ const ManageIssuedBooks = () => {
   const handleAddIssuedBook = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8055/api/history/add",
+        "http://localhost:8080/api/v1/library/atransaction",
         newIssuedBook
       );
       console.log("Issued book added:", response.data);
@@ -66,8 +59,8 @@ const ManageIssuedBooks = () => {
         issuedDate: "",
         dueDate: "",
         returnDate: "",
-        returned: false,
-        renewed: false,
+        isReturned: false,
+        isRenewed: false,
       });
       setSnackbarSeverity("success");
       setSnackbarMessage(response.data.message);
@@ -97,15 +90,6 @@ const ManageIssuedBooks = () => {
     fontSize: "1.6rem",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
   };
-
-  // Filter issued books based on search query
-  const filteredBooks = issuedBooks.filter(book =>
-    book.userId.toLowerCase().includes(searchQuery.userId.toLowerCase()) &&
-    book.bookId.toLowerCase().includes(searchQuery.bookId.toLowerCase()) &&
-    book.issuedDate.includes(searchQuery.issuedDate) &&
-    book.dueDate.includes(searchQuery.dueDate) &&
-    book.returnDate.includes(searchQuery.returnDate)
-  );
 
   return (
     <Container
@@ -142,9 +126,9 @@ const ManageIssuedBooks = () => {
             label="User ID"
             variant="outlined"
             fullWidth
-            value={searchQuery.userId}
+            value={newIssuedBook.userId}
             onChange={(e) =>
-              setSearchQuery({ ...searchQuery, userId: e.target.value })
+              setNewIssuedBook({ ...newIssuedBook, userId: e.target.value })
             }
             style={{ width: "200px", margin: "10px" }}
           />
@@ -152,20 +136,24 @@ const ManageIssuedBooks = () => {
             label="Book ID"
             variant="outlined"
             fullWidth
-            value={searchQuery.bookId}
+            value={newIssuedBook.bookId}
             onChange={(e) =>
-              setSearchQuery({ ...searchQuery, bookId: e.target.value })
+              setNewIssuedBook({ ...newIssuedBook, bookId: e.target.value })
             }
             style={{ width: "200px", margin: "10px" }}
           />
+
           <TextField
             label="Issued Date"
             type="date"
             variant="outlined"
             fullWidth
-            value={searchQuery.issuedDate}
+            value={newIssuedBook.issuedDate}
             onChange={(e) =>
-              setSearchQuery({ ...searchQuery, issuedDate: e.target.value })
+              setNewIssuedBook({
+                ...newIssuedBook,
+                issuedDate: e.target.value,
+              })
             }
             InputLabelProps={{ shrink: true }}
             style={{ width: "200px", margin: "10px" }}
@@ -175,9 +163,9 @@ const ManageIssuedBooks = () => {
             type="date"
             variant="outlined"
             fullWidth
-            value={searchQuery.dueDate}
+            value={newIssuedBook.dueDate}
             onChange={(e) =>
-              setSearchQuery({ ...searchQuery, dueDate: e.target.value })
+              setNewIssuedBook({ ...newIssuedBook, dueDate: e.target.value })
             }
             InputLabelProps={{ shrink: true }}
             style={{ width: "200px", margin: "10px" }}
@@ -187,9 +175,12 @@ const ManageIssuedBooks = () => {
             type="date"
             variant="outlined"
             fullWidth
-            value={searchQuery.returnDate}
+            value={newIssuedBook.returnDate}
             onChange={(e) =>
-              setSearchQuery({ ...searchQuery, returnDate: e.target.value })
+              setNewIssuedBook({
+                ...newIssuedBook,
+                returnDate: e.target.value,
+              })
             }
             InputLabelProps={{ shrink: true }}
             style={{ width: "200px", margin: "10px" }}
@@ -230,60 +221,15 @@ const ManageIssuedBooks = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>
-                      <TextField
-                        label="User ID"
-                        variant="standard"
-                        value={searchQuery.userId}
-                        onChange={(e) =>
-                          setSearchQuery({ ...searchQuery, userId: e.target.value })
-                        }
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        label="Book ID"
-                        variant="standard"
-                        value={searchQuery.bookId}
-                        onChange={(e) =>
-                          setSearchQuery({ ...searchQuery, bookId: e.target.value })
-                        }
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        label="Issued Date"
-                        variant="standard"
-                        value={searchQuery.issuedDate}
-                        onChange={(e) =>
-                          setSearchQuery({ ...searchQuery, issuedDate: e.target.value })
-                        }
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        label="Due Date"
-                        variant="standard"
-                        value={searchQuery.dueDate}
-                        onChange={(e) =>
-                          setSearchQuery({ ...searchQuery, dueDate: e.target.value })
-                        }
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        label="Return Date"
-                        variant="standard"
-                        value={searchQuery.returnDate}
-                        onChange={(e) =>
-                          setSearchQuery({ ...searchQuery, returnDate: e.target.value })
-                        }
-                      />
-                    </TableCell>
+                    <TableCell>User ID</TableCell>
+                    <TableCell>Book ID</TableCell>
+                    <TableCell>Issued Date</TableCell>
+                    <TableCell>Due Date</TableCell>
+                    <TableCell>Return Date</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filteredBooks.map((book) => (
+                  {issuedBooks && issuedBooks.map((book) => (
                     <TableRow
                       key={book.id}
                       style={{
@@ -306,7 +252,7 @@ const ManageIssuedBooks = () => {
       </div>
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={500}
+        autoHideDuration={6000}
         onClose={handleSnackbarClose}
         style={snackbarStyle}
       >

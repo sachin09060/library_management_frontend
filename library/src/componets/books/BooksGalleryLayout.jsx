@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import BookGallery from "./BookGallery";
-import { Typography, Pagination, TextField, Button, MenuItem } from "@mui/material";
+import { Typography, Pagination, TextField, Button, MenuItem, CircularProgress } from "@mui/material";
 
 const BooksGalleryLayout = () => {
   const [books, setBooks] = useState([]);
@@ -11,13 +11,9 @@ const BooksGalleryLayout = () => {
   const booksPerPage = 8;
 
   const fetchBooks = async () => {
-    let url = "http://localhost:8055/api/book";
+    let url = "http://localhost:8080/api/v1/library/allbook";
     if (searchParams.searchBy && searchParams.query) {
-      if (searchParams.searchBy === "genre") {
-        url += `?${searchParams.searchBy}=${searchParams.query.toUpperCase()}`;
-      } else {
-        url += `?${searchParams.searchBy}=${searchParams.query}`;
-      }
+      url += `?${searchParams.searchBy}=${searchParams.query}`;
     }
     try {
       const response = await axios.get(url);
@@ -37,7 +33,6 @@ const BooksGalleryLayout = () => {
       ...prevParams,
       [name]: value,
     }));
-    setSearchClicked(false);
   };
 
   const handleSearch = () => {
@@ -45,24 +40,12 @@ const BooksGalleryLayout = () => {
   };
 
   useEffect(() => {
-    if (searchClicked || (searchParams.searchBy && searchParams.query)) {
-      fetchBooks();
-    } else {
-      const fetchAllBooks = async () => {
-        try {
-          const response = await axios.get("http://localhost:8055/api/book");
-          setBooks(response.data.data);
-        } catch (error) {
-          console.error("Error fetching all books:", error);
-        }
-      };
-      fetchAllBooks();
-    }
-  }, [searchClicked, searchParams]);
+    fetchBooks();
+  }, [searchClicked]);
 
   const startIndex = (page - 1) * booksPerPage;
   const endIndex = page * booksPerPage;
-  const paginatedBooks = books.slice(startIndex, endIndex);
+  const paginatedBooks = books ? books.slice(startIndex, endIndex) : [];
 
   return (
     <div className="App" style={{ backgroundColor: "#f5f5f5", minHeight: "100vh" }}>

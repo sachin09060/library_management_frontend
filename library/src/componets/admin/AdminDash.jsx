@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
-import ManageBooks from './ManageBooks';
+import ManageBooks2 from './ManageBooks2';
 import ManageUsers from './ManageUsers';
 import ManageIssuedBooks from './ManageIssuedBooks';
 import ManageRequestedBooks from './ManageRequestedBooks';
@@ -13,8 +12,8 @@ const AdminDashboard = () => {
 
   const renderPage = () => {
     switch (selectedPage) {
-      case 'manageBooks':
-        return <ManageBooks />;
+      case 'manageBooks2':
+        return <ManageBooks2 />;
       case 'manageUsers':
         return <ManageUsers />;
       case 'manageIssuedBooks':
@@ -22,11 +21,11 @@ const AdminDashboard = () => {
       case 'manageRequestedBooks':
         return <ManageRequestedBooks />;
       default:
-        return <ManageBooks />;
+        return <ManageBooks2 />;
     }
   };
 
-const navigate = useNavigate(); 
+  const navigate = useNavigate(); 
 
 const handleClick = () => {
   navigate('/');
@@ -35,7 +34,7 @@ const handleClick = () => {
   return (
     <Container fluid>
       <Row>
-        <Col sm={3} style={{ backgroundColor: '#333', height: '108vh', color: '#fff', paddingTop: '20px' }}>
+        <Col sm={3} style={{ backgroundColor: '#333', height: '100vh', color: '#fff', paddingTop: '20px' }}>
           <div style={{ paddingLeft: '20px' }}>
           <h1
               style={{
@@ -45,12 +44,12 @@ const handleClick = () => {
                 color: "#fff",
               }}
             >
-              BOOK HEAVEN
+              BOOK HAVEN
             </h1>
           </div>
           
           <Nav className="flex-column">
-            <Nav.Link onClick={() => setSelectedPage('manageBooks')} style={{ color: '#fff', fontSize: '18px', marginBottom: '10px', paddingLeft: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Manage Books</Nav.Link>
+            <Nav.Link onClick={() => setSelectedPage('manageBooks2')} style={{ color: '#fff', fontSize: '18px', marginBottom: '10px', paddingLeft: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Manage Books</Nav.Link>
             <Nav.Link onClick={() => setSelectedPage('manageUsers')} style={{ color: '#fff', fontSize: '18px', marginBottom: '10px', paddingLeft: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Manage Users</Nav.Link>
             <Nav.Link onClick={() => setSelectedPage('manageIssuedBooks')} style={{ color: '#fff', fontSize: '18px', marginBottom: '10px', paddingLeft: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Issued Books</Nav.Link>
             <Nav.Link onClick={() => setSelectedPage('manageRequestedBooks')} style={{ color: '#fff', fontSize: '18px', marginBottom: '10px', paddingLeft: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Message Requests</Nav.Link>
@@ -67,5 +66,3 @@ const handleClick = () => {
 };
 
 export default AdminDashboard;
-
-
