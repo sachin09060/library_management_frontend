@@ -1,9 +1,9 @@
 import React from "react";
 import { Container, Typography, Grid, Card, CardContent, CardMedia } from "@mui/material";
 import Footer from "./Footer";
-import Header2 from "./Header";
+import Header2 from "./Header2";
 
-const AboutUs = () => {
+const AboutUs2 = () => {
   return (
     <>
       <Header2 />
@@ -71,4 +71,4 @@ const AboutUs = () => {
   );
 };
 
-export default AboutUs;
+export default AboutUs2;

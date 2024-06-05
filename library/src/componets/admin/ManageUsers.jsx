@@ -2,38 +2,34 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Container,
-  Typography,
-  TextField,
-  Button,
+  FormControl,
+  InputGroup,
   Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Snackbar,
-} from "@mui/material";
-import MuiAlert from "@mui/material/Alert";
+  Button,
+  Modal,
+  Form,
+  Alert,
+} from "react-bootstrap";
 
 const ManageUsers = () => {
-  const [newUser, setNewUser] = useState({
-    userId: "",
-    name: "",
-    gender: "",
-    phone: "",
-    email: "",
-    address: "",
-    isLibrarian: false,
-    isUser: true,
-    createdAt: "",
-  });
+  // const [newUser, setNewUser] = useState({
+  //   name: "",
+  //   gender: "",
+  //   phone: "",
+  //   email: "",
+  //   address: "",
+  //   password: "",
+  //   confirmPassword: "",
+  //   createdAt: "",
+  // });
 
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     fetchUsers();
@@ -48,120 +44,107 @@ const ManageUsers = () => {
     }
   };
 
-  const addUserToDatabase = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8055/api/user/add",
-        newUser
-      );
-      console.log("User added:" + response.data);
+  // const handleAddUser = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       "http://localhost:8055/api/user/add",
+  //       newUser
+  //     );
 
-      if (response.data) {
-        fetchUsers();
-        setNewUser({
-          userId: "",
-          name: "",
-          gender: "",
-          phone: "",
-          email: "",
-          address: "",
-          isLibrarian: false,
-          isUser: true,
-          createdAt: "",
-        });
-        setSnackbarSeverity("success");
-        setSnackbarMessage(response.data.message);
-        setSnackbarOpen(true);
-      }
-      if (response.data.error) {
-        setSnackbarSeverity("error");
-        setSnackbarMessage(response.data.message);
-        setSnackbarOpen(true);
-      }
-    } catch (error) {
-      if (error.response) {
-      } else {
-        console.error("Error adding user:", error.message);
-      }
-    }
-  };
+  //     console.log("User added:", response.data);
 
-  const handleAddUser = () => {
-    addUserToDatabase();
-  };
+  //     if (response.data.error) {
+  //       setSnackbarSeverity("error");
+  //       setSnackbarMessage(response.data.message);
+  //       setShowSnackbar(true);
+  //     } else {
+  //       fetchUsers();
+  //       setNewUser({
+  //         name: "",
+  //         gender: "",
+  //         phone: "",
+  //         email: "",
+  //         address: "",
+  //         password: "",
+  //         confirmPassword: "",
+  //         createdAt: "",
+  //       });
+  //       setSnackbarSeverity("success");
+  //       setSnackbarMessage(response.data.message);
+  //       setShowSnackbar(true);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error adding user:", error);
+  //     setSnackbarSeverity("error");
+  //     setSnackbarMessage("Failed to add user. Please try again later.");
+  //     setShowSnackbar(true);
+  //   }
+  // };
 
-  const handleDeleteUser = async (userId) => {
+  const handleDeleteUser = async (email) => {
     try {
       await axios.delete("http://localhost:8055/api/user/delete", {
         data: {
-          userId: userId,
+          email: email,
         },
       });
       fetchUsers();
       setSnackbarSeverity("success");
       setSnackbarMessage("User deleted successfully!");
-      setSnackbarOpen(true);
+      setShowSnackbar(true);
     } catch (error) {
       console.error("Error deleting user:", error);
     }
   };
 
-  const handleUpdateUser = async (userId) => {
-    try {
-      const response = await axios.put(
-        `http://localhost:8055/api/user/update`,
-        newUser
-      );
-      console.log("User updated:", response.data);
-
-      fetchUsers();
-
-      setNewUser({
-        userId: "",
-        name: "",
-        gender: "",
-        phone: "",
-        email: "",
-        address: "",
-        isLibrarian: false,
-        isUser: true,
-        createdAt: "",
-      });
-    } catch (error) {
-      console.error("Error updating user:", error);
-    }
+  const handleUpdateUser = (user) => {
+    setSelectedUser(user);
+    setShowModal(true);
   };
 
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.userId.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredUsers = users.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
+  const handleSnackbarClose = () => {
+    setShowSnackbar(false);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedUser(null);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setSelectedUser({ ...selectedUser, [name]: value });
+  };
+
+  const handleSubmitUpdate = async () => {
+    try {
+      const response = await axios.put(
+        "http://localhost:8055/api/user/update",
+        selectedUser
+      );
+      console.log("User updated:", response.data);
+      fetchUsers();
+      setSnackbarSeverity("success");
+      setSnackbarMessage(response.data.message);
+      setShowSnackbar(true);
+    } catch (error) {
+      console.error("Error updating user:", error);
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Failed to update user. Please try again later.");
+      setShowSnackbar(true);
     }
-
-    setSnackbarOpen(false);
+    handleCloseModal();
   };
-
-  const snackbarStyle = {
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    backgroundColor: "#008DDA",
-    color: "#FFFFFF",
-    borderRadius: "12px",
-    padding: "24px",
-    fontSize: "1.6rem",
-    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-  };
-
-  const allGenders = ["MALE", "FEMALE", "OTHER"];
 
   return (
     <Container
@@ -179,184 +162,142 @@ const ManageUsers = () => {
           padding: "10px",
           backgroundColor: "#F0EBE3",
           borderRadius: "10px",
-          marginBottom: "10px",
-        }}
-      >
-        <Typography variant="h2" align="center" gutterBottom>
-          Manage Users
-        </Typography>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            justifyContent: "center",
-          }}
-        >
-          <TextField
-            label="User ID"
-            variant="outlined"
-            fullWidth
-            value={newUser.userId}
-            onChange={(e) => setNewUser({ ...newUser, userId: e.target.value })}
-            style={{ width: "200px", margin: "10px" }}
-          />
-          <TextField
-            label="Name"
-            variant="outlined"
-            fullWidth
-            value={newUser.name}
-            onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-            style={{ width: "200px", margin: "10px" }}
-          />
-          <TextField
-            select
-            label=""
-            variant="outlined"
-            fullWidth
-            value={newUser.gender}
-            onChange={(e) => setNewUser({ ...newUser, gender: e.target.value })}
-            style={{ width: "200px", margin: "10px" }}
-            SelectProps={{ native: true }}
-          >
-            <option value="">Select Gender</option>
-            {allGenders.map((gender) => (
-              <option key={gender} value={gender}>
-                {gender}
-              </option>
-            ))}
-          </TextField>
-          <TextField
-            label="Phone"
-            variant="outlined"
-            fullWidth
-            value={newUser.phone}
-            onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
-            style={{ width: "200px", margin: "10px" }}
-          />
-          <TextField
-            label="Email"
-            variant="outlined"
-            fullWidth
-            value={newUser.email}
-            onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-            style={{ width: "200px", margin: "10px" }}
-          />
-          <TextField
-            label="Address"
-            variant="outlined"
-            fullWidth
-            value={newUser.address}
-            onChange={(e) =>
-              setNewUser({ ...newUser, address: e.target.value })
-            }
-            style={{ width: "200px", margin: "10px" }}
-          />
-          <TextField
-            label="Created At"
-            type="datetime-local"
-            variant="outlined"
-            fullWidth
-            value={newUser.createdAt}
-            onChange={(e) =>
-              setNewUser({ ...newUser, createdAt: e.target.value })
-            }
-            style={{ width: "200px", margin: "10px" }}
-            InputLabelProps={{ shrink: true }}
-          />
-        </div>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleAddUser}
-          style={{ width: "80%", margin: "20px 0" }}
-        >
-          Add
-        </Button>
-      </div>
-      <div
-        style={{
-          width: "100%",
-          padding: "10px",
-          backgroundColor: "#F0EBE3",
-          borderRadius: "10px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           overflow: "hidden",
         }}
       >
-        <Typography variant="h4" align="center" gutterBottom>
-          User List
-        </Typography>
-        <TextField
-          label="Search"
-          variant="outlined"
-          fullWidth
-          value={searchQuery}
-          onChange={handleSearch}
-          style={{ width: "80%", margin: "10px 0" }}
-        />
+        <h4>User List</h4>
+        <InputGroup className="mb-3" style={{ width: "80%" }}>
+          <FormControl
+            placeholder="Search"
+            aria-label="Search"
+            aria-describedby="basic-addon2"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+        </InputGroup>
         <div style={{ height: "300px", overflowY: "scroll", width: "100%" }}>
-          <TableContainer component={Paper}>
-            <div style={{ maxWidth: "100%", overflowX: "auto", height: "300px" }}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>User ID</TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Gender</TableCell>
-                    <TableCell>Phone</TableCell>
-                    <TableCell>Email</TableCell>
-                    <TableCell>Address</TableCell>
-                    <TableCell>Created At</TableCell>
-                    <TableCell>Action</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {filteredUsers.map((user) => (
-                    <TableRow key={user.userId}>
-                      <TableCell>{user.userId}</TableCell>
-                      <TableCell>{user.name}</TableCell>
-                      <TableCell>{user.gender}</TableCell>
-                      <TableCell>{user.phone}</TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>{user.address}</TableCell>
-                      <TableCell>{user.createdAt}</TableCell>
-                      <TableCell>
-                        <Button
-                          variant="outlined"
-                          color="secondary"
-                          onClick={() => handleDeleteUser(user.userId)}
-                        >
-                          Delete
-                        </Button>
-                        <Button
-                          variant="outlined"
-                          color="primary"
-                          onClick={() => handleUpdateUser(user.userId)}
-                        >
-                          Update
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </TableContainer>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUsers.map((user) => (
+                <tr key={user.email}>
+                  <td>{user.name}</td>
+                  <td>{user.gender}</td>
+                  <td>{user.phone}</td>
+                  <td>{user.email}</td>
+                  <td>{user.address}</td>
+                  <td>
+                    <Button
+                      variant="danger"
+                      onClick={() => handleDeleteUser(user.email)}
+                    >
+                      Delete
+                    </Button>
+                    <Button
+                      variant="primary"
+                      onClick={() => handleUpdateUser(user)}
+                    >
+                      Update
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         </div>
       </div>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={500}
+      <Alert
+        show={showSnackbar}
+        variant={snackbarSeverity}
         onClose={handleSnackbarClose}
-        style={snackbarStyle}
+        dismissible
       >
-        <MuiAlert onClose={handleSnackbarClose} severity={snackbarSeverity}>
-          {snackbarMessage}
-        </MuiAlert>
-      </Snackbar>
+        {snackbarMessage}
+      </Alert>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Update User</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="formName">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter name"
+                name="name"
+                value={selectedUser ? selectedUser.name : ""}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formGender">
+              <Form.Label>Gender</Form.Label>
+              <Form.Control
+                as="select"
+                name="gender"
+                value={selectedUser ? selectedUser.gender : ""}
+                onChange={handleInputChange}
+              >
+                <option value="">Select Gender</option>
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+                <option value="OTHER">Other</option>
+              </Form.Control>
+            </Form.Group>
+            <Form.Group controlId="formPhone">
+              <Form.Label>Phone</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter phone number"
+                name="phone"
+                value={selectedUser ? selectedUser.phone : ""}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formEmail">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                name="email"
+                disabled
+                value={selectedUser ? selectedUser.email : ""}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formAddress">
+              <Form.Label>Address</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter address"
+                name="address"
+                value={selectedUser ? selectedUser.address : ""}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSubmitUpdate}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };

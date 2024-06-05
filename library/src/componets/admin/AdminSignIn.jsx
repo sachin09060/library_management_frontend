@@ -1,156 +1,137 @@
-import React from 'react';
-import { FaUser } from "react-icons/fa";
-import { RiLockPasswordFill } from "react-icons/ri";
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-
+import React, { useState } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import { FaUser } from 'react-icons/fa';
+import { RiLockPasswordFill } from 'react-icons/ri';
 
 export default function AdminSignIn() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const [adminId, setAdminId] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleClick = () => {
-    navigate('/adminDash');
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        'http://localhost:8055/api/admin/login',
+        {
+          adminId: adminId,
+          password: password,
+        }
+      );
+
+      if (response.data.error === false) {
+        console.log('Login successful');
+        alert(response.data.message);
+        setError('');
+        navigate('/adminDash');
+      } else {
+        setError('Invalid adminId or password. Please try again.');
+        alert('Invalid adminId or password. Please try again.');
+      }
+    } catch (error) {
+      console.error('Login unsuccessful:', error);
+      setError('Invalid adminId or password. Please try again.');
+    }
   };
 
   return (
     <div
       style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
         fontFamily: "'Roboto', sans-serif",
-        WebkitFontSmoothing: "antialiased",
-        MozOsxFontSmoothing: "grayscale",
-        background: "url('https://wallpapersmug.com/download/1920x1080/f12332/books.jpg') no-repeat",
-        backgroundSize: "cover"
+        WebkitFontSmoothing: 'antialiased',
+        MozOsxFontSmoothing: 'grayscale',
+        background: 'linear-gradient(45deg, #FF5733, #50C9C3, #FF5733)',
       }}
     >
       <div
         style={{
-          width: "420px",
-          background: "transparent",
-          color: "white",
-          padding: "20px",
-          borderRadius: "8px",
-          border: "2px solid yellow",
-          backdropFilter: "blur(20px)"
+          width: '420px',
+          background: 'transparent',
+          color: 'white',
+          padding: '20px',
+          borderRadius: '8px',
+          border: '2px solid yellow',
+          backdropFilter: 'blur(20px)',
         }}
       >
-        <form action="">
-          <h1 style={{ fontSize: "30px", textAlign: "center" }}>Admin Sign-In</h1>
-          <div
+        <form
+          onSubmit={handleSignIn}
+          style={{ margin: '0 auto', textAlign: 'center' }}
+        >
+          <h1
             style={{
-              position: "relative",
-              width: "100%",
-              height: "50px",
-              margin: "30px 0"
+              fontSize: '30px',
+              textAlign: 'center',
+              marginBottom: '30px',
             }}
-            className="input-box"
           >
+            Admin Sign-In
+          </h1>
+          <div className="input-box" style={{ marginBottom: '30px' }}>
             <input
               type="text"
-              placeholder="User"
+              placeholder="Enter Admin ID"
+              value={adminId}
+              onChange={(e) => setAdminId(e.target.value)}
               style={{
-                width: "100%",
-                height: "100%",
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                border: "2px solid white",
-                borderRadius: "40px",
-                color: "#fff"
+                width: '100%',
+                height: '100%',
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                border: '2px solid white',
+                borderRadius: '40px',
+                color: '#fff',
+                textAlign: 'center',
               }}
               required
             />
-            <FaUser
-              style={{
-                position: "absolute",
-                right: "20px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                fontSize: "18px"
-              }}
-              className="icon"
-            />
           </div>
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "50px",
-              margin: "30px 0"
-            }}
-            className="input-box"
-          >
+          <div className="input-box" style={{ marginBottom: '30px' }}>
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Enter Admin Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               style={{
-                width: "100%",
-                height: "100%",
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                border: "2px solid white",
-                borderRadius: "40px",
-                color: "#fff"
+                width: '100%',
+                height: '100%',
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                border: '2px solid white',
+                borderRadius: '40px',
+                color: '#fff',
+                textAlign: 'center',
               }}
               required
             />
-            <RiLockPasswordFill
-              style={{
-                position: "absolute",
-                right: "20px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                fontSize: "18px"
-              }}
-              className="icon"
-            />
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              fontSize: "16px",
-              margin: "-15px 0 15px"
-            }}
-            className="remember-forgot"
-          >
-            <label>
-              <input type="checkbox" />
-              Remember me
-            </label>
-            <Link to="/Forgot"
-              style={{ color: "white", textDecoration: "none" }}
-            >
-              Forgot password?
-              </Link>
           </div>
           <button
-            onClick={handleClick}
             type="submit"
             style={{
-              width: "100%",
-              height: "45px",
-              border: "none",
-              borderRadius: "40px",
-              cursor: "pointer",
-              fontSize: "18px"
+              width: '100%',
+              height: '45px',
+              border: 'none',
+              borderRadius: '40px',
+              cursor: 'pointer',
+              fontSize: '18px',
+              background: 'blue',
             }}
           >
             SignIn
           </button>
-          <div
-            style={{
-              fontSize: "14px",
-              textAlign: "center",
-              marginTop: "20px"
-            }}
-            className="register-link"
-          >
-          </div>
+          {error && (
+            <p style={{ color: 'red', textAlign: 'center', marginTop: '20px' }}>
+              {error}
+            </p>
+          )}
         </form>
       </div>
     </div>

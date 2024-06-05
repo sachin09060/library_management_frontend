@@ -26,8 +26,6 @@ const Footer = () => {
               </li>
             </ul>
           </Col>
-
-          {/* Additional Content Column */}
           <Col md={3}>
             <h5>Follow Us</h5>
             <ul className="list-unstyled">

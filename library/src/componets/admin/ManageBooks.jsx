@@ -29,10 +29,11 @@ const ManageBooks = () => {
     totalCopies: "",
     availableCopies: "",
   });
-  
+
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [showSnackbar, setShowSnackbar] = useState(false);
 
   useEffect(() => {
     fetchBooks();
@@ -72,7 +73,11 @@ const ManageBooks = () => {
       setSnackbarMessage(response.data.message);
       setSnackbarOpen(true);
     } catch (error) {
-      console.error("Error adding book:", error);
+      setSnackbarSeverity("error");
+      console.error("Error adding Book:", error);
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Failed to add Book. Please try again later.");
+      setShowSnackbar(true);
     }
   };
 
@@ -188,7 +193,7 @@ const ManageBooks = () => {
     <Container
       maxWidth="xl"
       style={{
-        marginTop:" 10px",
+        marginTop: " 10px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -212,7 +217,7 @@ const ManageBooks = () => {
             flexWrap: "wrap",
             justifyContent: "center",
             backgroundColor: "#F0EBE3",
-            marginBottom: "10px"
+            marginBottom: "10px",
           }}
         >
           <TextField
@@ -304,7 +309,6 @@ const ManageBooks = () => {
         >
           Add
         </Button>
-
       </div>
       <div
         style={{
@@ -323,62 +327,111 @@ const ManageBooks = () => {
         </Typography>
         <div style={{ height: "300px", overflowY: "scroll", width: "100%" }}>
           <TableContainer component={Paper}>
-          <div style={{ maxWidth: "100%", overflowX: "auto", height: "300px" }}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell style={{ width: "8%", height: "20px" }}>Book ID</TableCell>
-                  <TableCell style={{ width: "15%", height: "20px" }}>Book Name</TableCell>
-                  <TableCell style={{ width: "15%", height: "20px" }}>Book Image URL</TableCell>
-                  <TableCell style={{ width: "15%", height: "20px" }}>Author</TableCell>
-                  <TableCell style={{ width: "15%", height: "20px" }}>Genre</TableCell>
-                  <TableCell style={{ width: "15%", height: "20px" }}>Description</TableCell>
-                  <TableCell style={{ width: "7%", height: "20px" }}>Added Date</TableCell>
-                  <TableCell style={{ width: "5%", height: "20px" }}>Total Copies</TableCell>
-                  <TableCell style={{ width: "5%", height: "20px" }}>Available Copies</TableCell>
-                  <TableCell style={{ width: "5%", height: "20px" }}>Action</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {books.map((book) => (
-                  <TableRow key={book.bookId} style={{ height: "40px", backgroundColor: "#F6F5F2" }}>
-                    <TableCell style={{ fontSize: "0.8rem" }}>{book.bookId}</TableCell>
-                    <TableCell style={{ fontSize: "0.8rem" }}>{book.bookName}</TableCell>
-                    <TableCell style={{fontSize: "0.8rem", maxWidth: "100px", overflow: "hidden", textOverflow: "ellipsis"}}>{book.bookImgUrl}</TableCell>
-                    <TableCell style={{ fontSize: "0.8rem" }}>{book.author}</TableCell>
-                    <TableCell style={{ fontSize: "0.8rem" }}>{book.genre}</TableCell>
-                    <TableCell style={{ fontSize: "0.8rem" }}>{book.description}</TableCell>
-                    <TableCell style={{ fontSize: "0.8rem" }}>{book.addedDate}</TableCell>
-                    <TableCell style={{ fontSize: "0.8rem" }}>{book.totalCopies}</TableCell>
-                    <TableCell style={{ fontSize: "0.8rem" }}>{book.availableCopies}</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleDeleteAndUpdateBook(book.bookId)}
-                      >
-                        Delete
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        onClick={() => handleUpdateBook(book.bookId)}
-                      >
-                        Update
-                      </Button>
+            <div
+              style={{ maxWidth: "100%", overflowX: "auto", height: "300px" }}
+            >
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell style={{ width: "8%", height: "20px" }}>
+                      Book ID
+                    </TableCell>
+                    <TableCell style={{ width: "15%", height: "20px" }}>
+                      Book Name
+                    </TableCell>
+                    <TableCell style={{ width: "15%", height: "20px" }}>
+                      Book Image URL
+                    </TableCell>
+                    <TableCell style={{ width: "15%", height: "20px" }}>
+                      Author
+                    </TableCell>
+                    <TableCell style={{ width: "15%", height: "20px" }}>
+                      Genre
+                    </TableCell>
+                    <TableCell style={{ width: "15%", height: "20px" }}>
+                      Description
+                    </TableCell>
+                    <TableCell style={{ width: "7%", height: "20px" }}>
+                      Added Date
+                    </TableCell>
+                    <TableCell style={{ width: "5%", height: "20px" }}>
+                      Total Copies
+                    </TableCell>
+                    <TableCell style={{ width: "5%", height: "20px" }}>
+                      Available Copies
+                    </TableCell>
+                    <TableCell style={{ width: "5%", height: "20px" }}>
+                      Action
                     </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-
+                </TableHead>
+                <TableBody>
+                  {books.map((book) => (
+                    <TableRow
+                      key={book.bookId}
+                      style={{ height: "40px", backgroundColor: "#F6F5F2" }}
+                    >
+                      <TableCell style={{ fontSize: "0.8rem" }}>
+                        {book.bookId}
+                      </TableCell>
+                      <TableCell style={{ fontSize: "0.8rem" }}>
+                        {book.bookName}
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          fontSize: "0.8rem",
+                          maxWidth: "100px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {book.bookImgUrl}
+                      </TableCell>
+                      <TableCell style={{ fontSize: "0.8rem" }}>
+                        {book.author}
+                      </TableCell>
+                      <TableCell style={{ fontSize: "0.8rem" }}>
+                        {book.genre}
+                      </TableCell>
+                      <TableCell style={{ fontSize: "0.8rem" }}>
+                        {book.description}
+                      </TableCell>
+                      <TableCell style={{ fontSize: "0.8rem" }}>
+                        {book.addedDate}
+                      </TableCell>
+                      <TableCell style={{ fontSize: "0.8rem" }}>
+                        {book.totalCopies}
+                      </TableCell>
+                      <TableCell style={{ fontSize: "0.8rem" }}>
+                        {book.availableCopies}
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="outlined"
+                          color="secondary"
+                          onClick={() => handleDeleteAndUpdateBook(book.bookId)}
+                        >
+                          Delete
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          onClick={() => handleUpdateBook(book.bookId)}
+                        >
+                          Update
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </TableContainer>
-          </div>
         </div>
+      </div>
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={500}
+        autoHideDuration={2000}
         onClose={handleSnackbarClose}
         style={snackbarStyle}
       >

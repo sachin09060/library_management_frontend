@@ -11,11 +11,14 @@ import BookTabs from './componets/books/BookTabs';
 import AdminDash from './componets/admin/AdminDash'
 import NewsBlog from './componets/homePage/NewsBlog';
 import AboutUs from './componets/homePage/AboutUs';
+import AboutUs2 from './componets/homePage/AboutUs2';
 import ContactForm from './componets/homePage/ContatUs';
+import ContactForm2 from './componets/homePage/ContatUs2';
 import ManageBooks from './componets/admin/ManageBooks';
 import ManageUsers from './componets/admin/ManageUsers';
 import ManageIssuedBooks from './componets/admin/ManageIssuedBooks';
 import ManageRequestedBooks from './componets/admin/ManageRequestedBooks';
+import Main1 from './componets/homePage/Main1';
 
 function App() {
   return (
@@ -23,6 +26,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Main />} />
+          <Route path='/main1' element={<Main1 />} />
           <Route path='/adminDash' element={<AdminDash />} />
           <Route path='/adminSignIn' element={<AdminSignIn />} />
           <Route path='/UserSignIn' element={<UserSignIn />} />
@@ -31,7 +35,9 @@ function App() {
           <Route path='/BooksGallery' element={<BookTabs />} />
           <Route path='/news' element={<NewsBlog />} />
           <Route path='/about' element={<AboutUs />} />
+          <Route path='/about2' element={<AboutUs2 />} />
           <Route path='/contactUs' element={<ContactForm />} />
+          <Route path='/contactUs2' element={<ContactForm2 />} />
           <Route path='/manageBooks' element={<ManageBooks />} />
           <Route path='/manageUsers' element={<ManageUsers />} />
           <Route path='/manageIssuedBooks' element={<ManageIssuedBooks />} />

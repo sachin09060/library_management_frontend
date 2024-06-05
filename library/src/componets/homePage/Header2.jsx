@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
+import Badge from '@mui/material/Badge';
+import IconButton from '@mui/material/IconButton';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const Header2 = () => {
+  const navigate = useNavigate();
+  const [showLogoutBadge, setShowLogoutBadge] = useState(false);
+
+  const handleLogout = () => {
+    navigate('/');
+  };
+
   return (
     <header>
       <Navbar bg="light" expand="lg">
@@ -24,14 +34,35 @@ const Header2 = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="justify-content-center" style={{ width: "80%" }}>
-              <NavLink to="/" className="nav-link" activeClassName="active">HOME</NavLink>
+              <NavLink to="/main1" className="nav-link" activeClassName="active">HOME</NavLink>
               <NavLink to="/BooksGallery" className="nav-link" activeClassName="active">BOOK STORE</NavLink>
-              {/* <NavLink to="/news" className="nav-link" activeClassName="active">NEWS & BLOGS</NavLink> */}
-              <NavLink to="/about" className="nav-link" activeClassName="active">ABOUT US</NavLink>
-              <NavLink to="/contactUs" className="nav-link" activeClassName="active">CONTACT US</NavLink>
+              <NavLink to="/about2" className="nav-link" activeClassName="active">ABOUT US</NavLink>
+              <NavLink to="/contactUs2" className="nav-link" activeClassName="active">CONTACT US</NavLink>
             </Nav>
           </Navbar.Collapse>
-          <Avatar alt="Remy Sharp" src="https://t4.ftcdn.net/jpg/04/44/53/99/360_F_444539901_2GSnvmTX14LELJ6edPudUsarbcytOEgj.jpg" />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Avatar
+              alt="Remy Sharp"
+              src="https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png"
+              onClick={() => setShowLogoutBadge(true)}
+              style={{ cursor: 'pointer' }}
+            />
+            {showLogoutBadge && (
+              <Badge
+                badgeContent="LOGOUT"
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                onClick={handleLogout}
+                style={{ cursor: 'pointer' }}
+              >
+                <IconButton size="small">
+                  <LogoutIcon />
+                </IconButton>
+              </Badge>
+            )}
+          </div>
         </Container>
       </Navbar>
     </header>

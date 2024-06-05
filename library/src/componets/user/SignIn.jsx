@@ -1,14 +1,47 @@
-import React from 'react';
-import { FaUser } from "react-icons/fa";
-import { RiLockPasswordFill } from "react-icons/ri";
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
-export default function UserSignIn() {
-  const navigate = useNavigate(); 
-  const handleClick = () => {
-    navigate('/BooksGallery');
+export default function AdminSignIn() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    try {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+
+      const response = await axios.post(
+        "http://localhost:8055/api/user/login",
+        {
+          email: email,
+          password: password,
+        }
+      );
+
+      if (response.data.message === "User Login Successfully!") {
+        console.log("Login successful");
+        alert(response.data.message);
+        setError("");
+        navigate("/BooksGallery", { state: email });
+      } else {
+        setError(response.data.message);
+        alert("Invalid email or password. Please try again");
+      }
+    } catch (error) {
+      console.error("Login unsuccessful:", error);
+      setError("Invalid email or password. Please try again.");
+    }
   };
+
   return (
     <div
       style={{
@@ -19,144 +52,90 @@ export default function UserSignIn() {
         fontFamily: "'Roboto', sans-serif",
         WebkitFontSmoothing: "antialiased",
         MozOsxFontSmoothing: "grayscale",
-        background: "url('https://wallpapersmug.com/download/1920x1080/f12332/books.jpg') no-repeat",
-        backgroundSize: "cover"
+        background: "linear-gradient(45deg, #FF5733, #50C9C3, #FF5733)",
       }}
     >
-      <div
-        style={{
-          width: "420px",
-          background: "transparent",
-          color: "white",
-          padding: "20px",
-          borderRadius: "8px",
-          border: "2px solid yellow",
-          backdropFilter: "blur(20px)"
-        }}
-      >
-        <form action="">
-          <h1 style={{ fontSize: "30px", textAlign: "center" }}>Sign-In</h1>
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "50px",
-              margin: "30px 0"
-            }}
-            className="input-box"
-          >
-            <input
-              type="text"
-              placeholder="User"
+      <Container>
+        <Row className="justify-content-center">
+          <Col xs={12} md={6}>
+            <div
               style={{
-                width: "100%",
-                height: "100%",
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                border: "2px solid white",
-                borderRadius: "40px",
-                color: "#fff",
-                textAlign: "center"
+                background: "rgba(0,0,0,0.5)",
+                color: "white",
+                padding: "20px",
+                borderRadius: "8px",
+                border: "2px solid yellow",
+                backdropFilter: "blur(20px)",
               }}
-              required
-            />
-            <FaUser
-              style={{
-                position: "absolute",
-                right: "20px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                fontSize: "18px"
-              }}
-              className="icon"
-            />
-          </div>
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "50px",
-              margin: "30px 0"
-            }}
-            className="input-box"
-          >
-            <input
-              type="password"
-              placeholder="Password"
-              style={{
-                width: "100%",
-                height: "100%",
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                border: "2px solid white",
-                borderRadius: "40px",
-                color: "#fff"
-              }}
-              required
-            />
-            <RiLockPasswordFill
-              style={{
-                position: "absolute",
-                right: "20px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                fontSize: "18px"
-              }}
-              className="icon"
-            />
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              fontSize: "16px",
-              margin: "-15px 0 15px"
-            }}
-            className="remember-forgot"
-          >
-            <label>
-              <input type="checkbox" />
-              Remember me
-            </label>
-            <Link to="/Forgot"
-              style={{ color: "white", textDecoration: "none" }}
             >
-              Forgot password?
-              </Link>
-          </div>
-          <button
-          onClick={handleClick}
-            type='submit'
-            style={{
-              width: "100%",
-              height: "45px",
-              border: "none",
-              borderRadius: "40px",
-              cursor: "pointer",
-              fontSize: "18px"
-            }}
-          >
-            SignIn
-          </button>
-          <div
-            style={{
-              fontSize: "14px",
-              textAlign: "center",
-              marginTop: "20px"
-            }}
-            className="register-link"
-          >
-            <p>
-              Don't have an account?{" "}
-              <Link to="/UserSignUp" style={{ color: "#fff", textDecoration: "none" }}>
-                Register
-              </Link>
-            </p>
-          </div>
-        </form>
-      </div>
+              <h1 style={{ fontSize: "30px", textAlign: "center" }}>
+                User Signin
+              </h1>
+              <Form onSubmit={handleSignIn}>
+                <Form.Group controlId="Email" style={{ marginBottom: "15px" }}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter User Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    style={{ textAlign: "center", borderRadius: "5px" }}
+                  />
+                </Form.Group>
+                <Form.Group
+                  controlId="password"
+                  style={{ marginBottom: "15px" }}
+                >
+                  <Form.Control
+                    type="password"
+                    placeholder="Enter User Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    style={{ textAlign: "center", borderRadius: "5px" }}
+                  />
+                </Form.Group>
+                <Button variant="primary" type="submit" block>
+                  SignIn
+                </Button>
+                <div
+                  style={{
+                    fontSize: "14px",
+                    textAlign: "center",
+                    marginTop: "20px",
+                  }}
+                  className="create-acc"
+                >
+                  <p>
+                    Don't have an account?
+                    <Link
+                      to="/UserSignUp"
+                      style={{
+                        color: "lightblue",
+                        textDecoration: "none",
+                        marginLeft: "5px",
+                      }}
+                    >
+                      Sign-up
+                    </Link>
+                  </p>
+                  <Link
+                    to="/Forgot"
+                    style={{
+                      color: "lightblue",
+                      textDecoration: "none",
+                      marginLeft: "5px",
+                    }}
+                  >
+                    Forgot Password
+                  </Link>
+                </div>
+              </Form>
+              {error && (
+                <p style={{ color: "red", textAlign: "center" }}>{error}</p>
+              )}
+            </div>
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 }

@@ -12,10 +12,10 @@ import {
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import Footer from "./Footer";
-import Header from "./Header";
+import Header2 from "./Header2";
 import axios from "axios";
 
-const ContactForm = () => {
+const ContactForm2 = () => {
   const [formData, setFormData] = useState({
     name: "",
     contactEmail: "",
@@ -59,7 +59,7 @@ const ContactForm = () => {
 
   return (
     <>
-      <Header />
+      <Header2 />
       <Container maxWidth="md" style={{ marginTop: 40 }}>
         <Typography
           variant="h2"
@@ -169,4 +169,4 @@ const ContactForm = () => {
   );
 };
 
-export default ContactForm;
+export default ContactForm2;
