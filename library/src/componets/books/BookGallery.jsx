@@ -47,7 +47,7 @@ const BookGallery = ({ books }) => {
         console.log(response.data);
         alert("One transaction added Successfully!");
         handleClose();
-        window.location.reload(); // Refresh the page
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -108,7 +108,7 @@ const BookGallery = ({ books }) => {
           <Card key={book.bookId} style={{ width: "calc(25% - 20px)" }}>
             <CardMedia
               component="img"
-              image={book.bookImgUrl}
+              image={book.bookUrl}
               alt={book.bookName}
               sx={{ width: "225px", height: "268px", objectFit: "cover" }}
             />
