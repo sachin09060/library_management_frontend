@@ -20,16 +20,20 @@ export default function AdminSignIn() {
         return;
       }
 
-      const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
-      if (!passwordRegex.test(password)) {
-        alert("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.");
-        return;
-      }
+      // const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+      // if (!passwordRegex.test(password)) {
+      //   alert("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.");
+      //   return;
+      // }
 
         const response = await axios.post("http://localhost:8080/api/v1/library/userlogin", {
             email: email,
             password: password
         });
+
+        // window.sessionStorage.setItem("name",response.data.data)
+        // window.sessionStorage.setItem("email",response.data.data)
+
 
      
 
@@ -38,7 +42,7 @@ export default function AdminSignIn() {
             alert(response.data.message);
             // alert("Login successful");
             setError('');
-            navigate('/BooksGallery');
+            navigate('/Main2');
         } else {
             setError(response.data.message);
             alert("Invalid email or password. Please try again");

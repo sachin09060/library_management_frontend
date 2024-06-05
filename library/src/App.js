@@ -17,6 +17,10 @@ import ManageUsers from './componets/admin/ManageUsers';
 import ManageIssuedBooks from './componets/admin/ManageIssuedBooks';
 import ManageRequestedBooks from './componets/admin/ManageRequestedBooks';
 import ManageBooks2 from './componets/admin/ManageBooks2';
+import ManageUsers2 from './componets/admin/ManageUsers2';
+import ManageIssuedBooks2 from './componets/admin/ManageIssuedBooks2';
+import ManageRequestedBooks2 from './componets/admin/ManageRequestedBooks2';
+import Main2 from './componets/homePage/Main2';
 
 function App() {
   return (
@@ -24,6 +28,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Main />} />
+          <Route path='/MAin2' element={<Main2 />} />
           <Route path='/adminDash' element={<AdminDash />} />
           <Route path='/adminSignIn' element={<AdminSignIn />} />
           <Route path='/UserSignIn' element={<UserSignIn />} />
@@ -36,8 +41,12 @@ function App() {
           <Route path='/manageBooks' element={<ManageBooks />} />
           <Route path='/manageBooks2' element={<ManageBooks2 />} />
           <Route path='/manageUsers' element={<ManageUsers />} />
+          <Route path='/manageUsers2' element={<ManageUsers2 />} />
           <Route path='/manageIssuedBooks' element={<ManageIssuedBooks />} />
+          <Route path='/manageIssuedBooks2' element={<ManageIssuedBooks2 />} />=
           <Route path='/manageRequestedBooks' element={<ManageRequestedBooks />} />
+          <Route path='/manageRequestedBooks2' element={<ManageRequestedBooks2 />} />
+
         </Routes>
       </BrowserRouter>
     </div>

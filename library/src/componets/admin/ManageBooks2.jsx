@@ -35,6 +35,19 @@ const ManageBooks2 = () => {
     },[])
 
 
+    const clearFields = () =>{
+      setBookId('');
+      setBookName('');
+      setBookUrl('');
+      setBookAuthor('');
+      setDescirption('');
+      setGenres('');
+      setAddedDate('');
+      setTotalCopies('');
+      setAvailableCopies('')
+    }
+
+
     const getBooks = () =>{
       axios.get('http://localhost:8080/api/v1/library/allbook')
       .then(response =>{
@@ -47,7 +60,7 @@ const ManageBooks2 = () => {
     }
 
 
-const addBooks = (bookId, bookName, bookUrl, bookAuthor,genres,description, addedDate,totalCopies,availableCopies) => {
+const addBooks = () => {
      console.log(bookId, bookName, bookUrl, bookAuthor,genres,description, addedDate,totalCopies,availableCopies);
     if(!bookId || !bookName || !bookUrl || !bookAuthor || !genres || !description || !addedDate || !totalCopies
         || !availableCopies){
@@ -57,9 +70,15 @@ const addBooks = (bookId, bookName, bookUrl, bookAuthor,genres,description, adde
     axios.post('http://localhost:8080/api/v1/library/abook' ,{bookId,bookName,bookUrl,
         bookAuthor,genres,description,addedDate,totalCopies,availableCopies})
         .then(response =>{
+          if(response.data.message === "Book added"){
             console.log("added successfully",response.data.data);
             alert("successful added")
+            clearFields()
             getBooks();
+          }
+          else{
+            alert("book already present")
+          }   
         })
         .catch(error => {
             console.log("Unable to add",error);
@@ -101,6 +120,7 @@ const updateBook=()=>{
     console.log("updated",response);
     alert("upadated successfull")
     getBooks();
+    clearFields()
   })
   .catch(error => {
     console.log("unable to update",error);
@@ -243,7 +263,7 @@ const updateBook=()=>{
         <Button
           variant="contained"
           color="primary"
-          onClick={()=>{addBooks(bookId, bookName, bookUrl, bookAuthor,genres,description, addedDate,totalCopies,availableCopies)}}
+          onClick={()=>{addBooks()}}
           style={{ width: "80%", margin: "20px 0" }}
         >
           Add

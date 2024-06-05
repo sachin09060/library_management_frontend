@@ -13,83 +13,50 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Snackbar,
 } from "@mui/material";
 
-const ManageIssuedBooks = () => {
-  const [newIssuedBook, setNewIssuedBook] = useState({
-    userId: "",
-    bookId: "",
-    issuedDate: "",
-    dueDate: "",
-    returnDate: "",
-    isReturned: false,
-    isRenewed: false,
-  });
+const ManageIssuedBooks2 = () => {
+const[transactions, setTransactions] = useState(''); 
+const[bookId,setBookId] = useState('');
+const[email, setEmail] = useState('');
+const[issuedDate,setIssuedDate] = useState('');
+const[dueDate,setDueDate] = useState('');
+const[returnDate, setReturnDate] = useState('')
 
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+const clearFields = () =>{
+    setBookId('');
+    setEmail('');
+    setIssuedDate('');
+    setDueDate('');
+    setReturnDate('');
+}
 
-  const [ issuedBooks, setIssuedBooks] = useState([]);
+useEffect(() => {
+    getTransactions()
+},[])
 
-  useEffect(() => {
-    fetchIssuedBooks();
-  }, []);
+const addTransaction = () =>{
+    axios.post('http://localhost:8080/api/v1/library/atransaction',{
+        bookId,email,issuedDate,dueDate,returnDate
+    })
+    .then(res =>{
+        console.log("Transaction added", res);
+        alert("transaction added")
+        clearFields()
+    })
+    .catch(err => {
+        console.log("unable to do transation" , err);
+    })
+}
 
-  const fetchIssuedBooks = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/api/v1/library/alltransaction");
-      setIssuedBooks(response.data.data);
-    } catch (error) {
-      console.error("Error fetching issued books:", error);
-    }
-  };
-
-  const handleAddIssuedBook = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/library/atransaction",
-        newIssuedBook
-      );
-      console.log("Issued book added:", response.data);
-      setNewIssuedBook({
-        userId: "",
-        bookId: "",
-        issuedDate: "",
-        dueDate: "",
-        returnDate: "",
-        isReturned: false,
-        isRenewed: false,
-      });
-      setSnackbarSeverity("success");
-      setSnackbarMessage(response.data.message);
-      setSnackbarOpen(true);
-      fetchIssuedBooks();
-    } catch (error) {
-      console.error("Error adding issued book:", error);
-    }
-  };
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setSnackbarOpen(false);
-  };
-
-  const snackbarStyle = {
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    backgroundColor: "#008DDA",
-    color: "#FFFFFF",
-    borderRadius: "12px",
-    padding: "24px",
-    fontSize: "1.6rem",
-    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-  };
+const getTransactions = () =>{
+    axios.get('http://localhost:8080/api/v1/library/alltransaction')
+    .then(res => {
+        console.log("transactions are fetched",res);
+        setTransactions(res.data.data || [])
+    })
+}
+  
 
   return (
     <Container
@@ -123,23 +90,19 @@ const ManageIssuedBooks = () => {
           }}
         >
           <TextField
-            label="User ID"
+            label="Email"
             variant="outlined"
             fullWidth
-            value={newIssuedBook.userId}
-            onChange={(e) =>
-              setNewIssuedBook({ ...newIssuedBook, userId: e.target.value })
-            }
+            value={email}
+            onChange={(e) => {setEmail(e.target.value)}}
             style={{ width: "200px", margin: "10px" }}
           />
           <TextField
             label="Book ID"
             variant="outlined"
             fullWidth
-            value={newIssuedBook.bookId}
-            onChange={(e) =>
-              setNewIssuedBook({ ...newIssuedBook, bookId: e.target.value })
-            }
+            value={bookId}
+            onChange={(e) => {setBookId(e.target.value)}}
             style={{ width: "200px", margin: "10px" }}
           />
 
@@ -148,13 +111,8 @@ const ManageIssuedBooks = () => {
             type="date"
             variant="outlined"
             fullWidth
-            value={newIssuedBook.issuedDate}
-            onChange={(e) =>
-              setNewIssuedBook({
-                ...newIssuedBook,
-                issuedDate: e.target.value,
-              })
-            }
+            value={issuedDate}
+            onChange={(e) => {setIssuedDate(e.target.value)}}
             InputLabelProps={{ shrink: true }}
             style={{ width: "200px", margin: "10px" }}
           />
@@ -163,10 +121,8 @@ const ManageIssuedBooks = () => {
             type="date"
             variant="outlined"
             fullWidth
-            value={newIssuedBook.dueDate}
-            onChange={(e) =>
-              setNewIssuedBook({ ...newIssuedBook, dueDate: e.target.value })
-            }
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
             InputLabelProps={{ shrink: true }}
             style={{ width: "200px", margin: "10px" }}
           />
@@ -175,20 +131,15 @@ const ManageIssuedBooks = () => {
             type="date"
             variant="outlined"
             fullWidth
-            value={newIssuedBook.returnDate}
-            onChange={(e) =>
-              setNewIssuedBook({
-                ...newIssuedBook,
-                returnDate: e.target.value,
-              })
-            }
+            value={returnDate}
+            onChange={(e) => {setReturnDate(e.target.value)}}
             InputLabelProps={{ shrink: true }}
             style={{ width: "200px", margin: "10px" }}
           />
           <Button
             variant="contained"
             color="primary"
-            onClick={handleAddIssuedBook}
+            onClick={() => addTransaction()}
             style={{ width: "80%", margin: "20px 0" }}
           >
             Add
@@ -221,7 +172,7 @@ const ManageIssuedBooks = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>User ID</TableCell>
+                    <TableCell>Email</TableCell>
                     <TableCell>Book ID</TableCell>
                     <TableCell>Issued Date</TableCell>
                     <TableCell>Due Date</TableCell>
@@ -229,7 +180,7 @@ const ManageIssuedBooks = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {issuedBooks && issuedBooks.map((book) => (
+                  {transactions && transactions.map((book) => (
                     <TableRow
                       key={book.id}
                       style={{
@@ -237,7 +188,7 @@ const ManageIssuedBooks = () => {
                         backgroundColor: "#F6F5F2",
                       }}
                     >
-                      <TableCell>{book.userId}</TableCell>
+                      <TableCell>{book.email}</TableCell>
                       <TableCell>{book.bookId}</TableCell>
                       <TableCell>{book.issuedDate}</TableCell>
                       <TableCell>{book.dueDate}</TableCell>
@@ -250,7 +201,7 @@ const ManageIssuedBooks = () => {
           </div>
         </div>
       </div>
-      <Snackbar
+      {/* <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
@@ -259,9 +210,9 @@ const ManageIssuedBooks = () => {
         <MuiAlert onClose={handleSnackbarClose} severity={snackbarSeverity}>
           {snackbarMessage}
         </MuiAlert>
-      </Snackbar>
+      </Snackbar> */}
     </Container>
   );
 };
 
-export default ManageIssuedBooks;
+export default ManageIssuedBooks2;

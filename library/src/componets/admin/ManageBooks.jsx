@@ -53,7 +53,6 @@ const ManageBooks = () => {
     try {
       const response = await axios.get("http://localhost:8080/api/v1/library/allbook");
       setBooks(response.data.data || []);
-      // console.log(response);
     } catch (error) {
       console.error("Error fetching books:", error);
     }

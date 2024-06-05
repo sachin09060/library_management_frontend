@@ -24,14 +24,14 @@ const Header = () => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="justify-content-center" style={{ width: "80%" }}>
             <NavLink to="/" className="nav-link" activeClassName="active">HOME</NavLink>
-              <NavLink to="/BooksGallery" className="nav-link" activeClassName="active">BOOK STORE</NavLink>
+              <NavLink to="/UserSignIn" className="nav-link" activeClassName="active">BOOK STORE</NavLink>
               {/* <NavLink to="/news" className="nav-link" activeClassName="active">NEWS & BLOGS</NavLink> */}
               <NavLink to="/about" className="nav-link" activeClassName="active">ABOUT US</NavLink>
               <NavLink to="/contactUs" className="nav-link" activeClassName="active">CONTACT US</NavLink>
             </Nav>
 
             <Nav className="justify-content-end">
-              <NavLink to="/UserSignIn" className="nav-link" activeClassName="active">Register</NavLink>
+              <NavLink to="/UserSignUp" className="nav-link" activeClassName="active">Register</NavLink>
               <NavLink to="/adminSignIn" className="nav-link" activeClassName="active">Admin</NavLink>
             </Nav>
           </Navbar.Collapse>

@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
 import ManageBooks2 from './ManageBooks2';
-import ManageUsers from './ManageUsers';
-import ManageIssuedBooks from './ManageIssuedBooks';
+// import ManageUsers from './ManageUsers';
+// import ManageIssuedBooks from './ManageIssuedBooks';
 import ManageRequestedBooks from './ManageRequestedBooks';
 import { Button } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom'
+import ManageUsers2 from './ManageUsers2';
+import ManageIssuedBooks2 from './ManageIssuedBooks2';
+import ManageRequestedBooks2 from './ManageRequestedBooks2';
 
 const AdminDashboard = () => {
   const [selectedPage, setSelectedPage] = useState('');
@@ -14,12 +17,12 @@ const AdminDashboard = () => {
     switch (selectedPage) {
       case 'manageBooks2':
         return <ManageBooks2 />;
-      case 'manageUsers':
-        return <ManageUsers />;
-      case 'manageIssuedBooks':
-        return <ManageIssuedBooks />;
-      case 'manageRequestedBooks':
-        return <ManageRequestedBooks />;
+      case 'manageUsers2':
+        return <ManageUsers2 />;
+      case 'manageIssuedBooks2':
+        return <ManageIssuedBooks2 />;
+      case 'manageRequestedBooks2':
+        return <ManageRequestedBooks2 />;
       default:
         return <ManageBooks2 />;
     }
@@ -50,9 +53,9 @@ const handleClick = () => {
           
           <Nav className="flex-column">
             <Nav.Link onClick={() => setSelectedPage('manageBooks2')} style={{ color: '#fff', fontSize: '18px', marginBottom: '10px', paddingLeft: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Manage Books</Nav.Link>
-            <Nav.Link onClick={() => setSelectedPage('manageUsers')} style={{ color: '#fff', fontSize: '18px', marginBottom: '10px', paddingLeft: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Manage Users</Nav.Link>
-            <Nav.Link onClick={() => setSelectedPage('manageIssuedBooks')} style={{ color: '#fff', fontSize: '18px', marginBottom: '10px', paddingLeft: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Issued Books</Nav.Link>
-            <Nav.Link onClick={() => setSelectedPage('manageRequestedBooks')} style={{ color: '#fff', fontSize: '18px', marginBottom: '10px', paddingLeft: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Message Requests</Nav.Link>
+            <Nav.Link onClick={() => setSelectedPage('manageUsers2')} style={{ color: '#fff', fontSize: '18px', marginBottom: '10px', paddingLeft: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Manage Users</Nav.Link>
+            <Nav.Link onClick={() => setSelectedPage('manageIssuedBooks2')} style={{ color: '#fff', fontSize: '18px', marginBottom: '10px', paddingLeft: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Issued Books</Nav.Link>
+            <Nav.Link onClick={() => setSelectedPage('manageRequestedBooks2')} style={{ color: '#fff', fontSize: '18px', marginBottom: '10px', paddingLeft: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>Message Requests</Nav.Link>
          <Button variant="outline-light" onClick={handleClick}>Logout</Button>
           </Nav>
         </Col>
