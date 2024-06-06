@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-export default function AdminSignIn() {
+export default function UserSignIn() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,9 +29,11 @@ export default function AdminSignIn() {
 
       if (response.data.message === "User Login Successfully!") {
         console.log("Login successful");
+        window.sessionStorage.setItem("name", response.data.data.name);
+        window.sessionStorage.setItem("email", response.data.data.email);
         alert(response.data.message);
         setError("");
-        navigate("/BooksGallery", { state: email });
+        navigate("/main1");
       } else {
         setError(response.data.message);
         alert("Invalid email or password. Please try again");

@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
-import Badge from '@mui/material/Badge';
-import IconButton from '@mui/material/IconButton';
-import LogoutIcon from '@mui/icons-material/Logout';
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import Badge from "@mui/material/Badge";
+import IconButton from "@mui/material/IconButton";
+import LogoutIcon from "@mui/icons-material/Logout";
+import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 
 const Header2 = () => {
   const navigate = useNavigate();
   const [showLogoutBadge, setShowLogoutBadge] = useState(false);
 
+  const name = window.sessionStorage.getItem("name");
+
   const handleLogout = () => {
-    navigate('/');
+    window.sessionStorage.clear();
+    navigate("/");
   };
 
   return (
@@ -21,7 +25,7 @@ const Header2 = () => {
           <Navbar.Brand as={Link} to="/">
             <h1
               style={{
-                paddingLeft:"30px",
+                paddingLeft: "30px",
                 fontFamily: "'Lobster', cursive",
                 fontWeight: "bold",
                 fontSize: "2.2rem",
@@ -34,28 +38,61 @@ const Header2 = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="justify-content-center" style={{ width: "80%" }}>
-              <NavLink to="/main1" className="nav-link" activeClassName="active">HOME</NavLink>
-              <NavLink to="/BooksGallery" className="nav-link" activeClassName="active">BOOK STORE</NavLink>
-              <NavLink to="/about2" className="nav-link" activeClassName="active">ABOUT US</NavLink>
-              <NavLink to="/contactUs2" className="nav-link" activeClassName="active">CONTACT US</NavLink>
+              <NavLink
+                to="/main1"
+                className="nav-link"
+                activeClassName="active"
+              >
+                HOME
+              </NavLink>
+              <NavLink
+                to="/BooksGallery2"
+                className="nav-link"
+                activeClassName="active"
+              >
+                BOOK STORE
+              </NavLink>
+              <NavLink
+                to="/about2"
+                className="nav-link"
+                activeClassName="active"
+              >
+                ABOUT US
+              </NavLink>
+              <NavLink
+                to="/contactUs2"
+                className="nav-link"
+                activeClassName="active"
+              >
+                CONTACT US
+              </NavLink>
+              <NavLink
+                to="/cart"
+                className="nav-link ms-5"
+                activeClassName="active"
+              >
+                <BusinessCenterIcon />
+                BAG
+              </NavLink>
             </Nav>
           </Navbar.Collapse>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <Avatar
               alt="Remy Sharp"
-              src="https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png"
+              src="https://t4.ftcdn.net/jpg/04/29/87/51/240_F_429875198_7dRMqVGcPOcAFhyODDyjdJy1RwgAG1VE.jpg"
               onClick={() => setShowLogoutBadge(true)}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             />
+            {name}
             {showLogoutBadge && (
               <Badge
                 badgeContent="LOGOUT"
                 anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
+                  vertical: "bottom",
+                  horizontal: "right",
                 }}
                 onClick={handleLogout}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: "pointer" }}
               >
                 <IconButton size="small">
                   <LogoutIcon />

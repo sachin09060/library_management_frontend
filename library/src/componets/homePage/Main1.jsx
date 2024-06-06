@@ -1,7 +1,7 @@
-import React from 'react';
-import Hero from './Hero';
-import Header2 from './Header2';
-import Footer from './Footer';
+import React from "react";
+import Hero from "./Hero";
+import Header2 from "./Header2";
+import Footer from "./Footer";
 
 const Main1 = () => {
   return (
