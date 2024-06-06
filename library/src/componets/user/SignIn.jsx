@@ -31,13 +31,9 @@ export default function AdminSignIn() {
             password: password
         });
 
-        // window.sessionStorage.setItem("name",response.data.data)
-        // window.sessionStorage.setItem("email",response.data.data)
-
-
-     
-
         if (response.data.message === "User Login Successfully!") {
+           window.sessionStorage.setItem("name",response.data.data.username)
+           window.sessionStorage.setItem("email",response.data.data.email)
             console.log("Login successful");
             alert(response.data.message);
             // alert("Login successful");

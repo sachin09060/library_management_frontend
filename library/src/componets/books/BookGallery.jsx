@@ -7,20 +7,20 @@ import axios from 'axios';
 
 const BookGallery = ({ books }) => {
   const [show, setShow] = useState(false);
-  const [userId, setUser] = useState("");
+  const [email, setEmail] = useState(window.sessionStorage.getItem("email"));
   const [selectedBookId, setSelectedBookId] = useState("");
-  const [userIdError, setUserIdError] = useState(false);
+  const [userEmailError, setUserEmailError] = useState(false);
 
   const handleClose = () => {
     setShow(false);
-    setUserIdError(false);
+    setUserEmailError(false);
   };
 
   const handleShow = () => setShow(true);
 
   const handleSubmit = () => {
-    if (!userId.trim()) {
-      setUserIdError(true);
+    if (!email.trim()) {
+      setUserEmailError(true);
       return;
     }
 
@@ -33,7 +33,7 @@ const BookGallery = ({ books }) => {
     dueDate.setDate(dueDate.getDate() + 1);
     const formattedDueDate = dueDate.toISOString().split("T")[0];
     const requestBody = {
-      userId: userId,
+      email: email,
       bookId: selectedBookId,
       issuedDate: formattedCurrentDate,
       dueDate: formattedDueDate,
@@ -63,22 +63,22 @@ const BookGallery = ({ books }) => {
     <>
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Enter your user ID to get Book!</Modal.Title>
+          <Modal.Title>Confirm your Email to get Book!</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>User ID</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter your user ID"
                 autoFocus
-                value={userId}
+                value={email}
+                disabled
                 onChange={(e) => {
-                  setUser(e.target.value);
-                  setUserIdError(false);
+                  setEmail(e.target.value);
+                  setUserEmailError(false);
                 }}
-                isInvalid={userIdError}
+                isInvalid={userEmailError}
               />
               <Form.Control.Feedback type="invalid">
                 Please enter your user ID.

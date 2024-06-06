@@ -1,7 +1,11 @@
 import React from "react";
 import { Container, Row, Col, Image } from "react-bootstrap";
 
+
 const Hero = () => {
+
+  const name = window.sessionStorage.getItem("name");
+
   return (
     <section
       className="hero d-flex align-items-center justify-content-left"
@@ -20,7 +24,7 @@ const Hero = () => {
                 textAlign: "left",
               }}
             >
-              Start your reading journey today
+              Hi {name} Start your reading journey today
             </h1>
             <p style={{ color: "#666", lineHeight: "1.5", textAlign: "left" }}>
               Where every page is a new adventure.

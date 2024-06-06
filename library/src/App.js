@@ -12,6 +12,8 @@ import AdminDash from './componets/admin/AdminDash'
 import NewsBlog from './componets/homePage/NewsBlog';
 import AboutUs from './componets/homePage/AboutUs';
 import ContactForm from './componets/homePage/ContatUs';
+import AboutUs2 from './componets/homePage/AboutUs2';
+import ContactForm2 from './componets/homePage/ContatUs2';
 import ManageBooks from './componets/admin/ManageBooks';
 import ManageUsers from './componets/admin/ManageUsers';
 import ManageIssuedBooks from './componets/admin/ManageIssuedBooks';
@@ -28,7 +30,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Main />} />
-          <Route path='/MAin2' element={<Main2 />} />
+          <Route path='/main2' element={<Main2 />} />
           <Route path='/adminDash' element={<AdminDash />} />
           <Route path='/adminSignIn' element={<AdminSignIn />} />
           <Route path='/UserSignIn' element={<UserSignIn />} />
@@ -37,6 +39,8 @@ function App() {
           <Route path='/BooksGallery' element={<BookTabs />} />
           <Route path='/news' element={<NewsBlog />} />
           <Route path='/about' element={<AboutUs />} />
+          <Route path='/contactUs2' element={<ContactForm2 />} />
+          <Route path='/about2' element={<AboutUs2 />} />
           <Route path='/contactUs' element={<ContactForm />} />
           <Route path='/manageBooks' element={<ManageBooks />} />
           <Route path='/manageBooks2' element={<ManageBooks2 />} />
@@ -46,7 +50,6 @@ function App() {
           <Route path='/manageIssuedBooks2' element={<ManageIssuedBooks2 />} />=
           <Route path='/manageRequestedBooks' element={<ManageRequestedBooks />} />
           <Route path='/manageRequestedBooks2' element={<ManageRequestedBooks2 />} />
-
         </Routes>
       </BrowserRouter>
     </div>
