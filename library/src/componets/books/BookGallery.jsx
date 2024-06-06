@@ -4,12 +4,15 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const BookGallery = ({ books }) => {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState(window.sessionStorage.getItem("email"));
   const [selectedBookId, setSelectedBookId] = useState("");
   const [userEmailError, setUserEmailError] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleClose = () => {
     setShow(false);
@@ -55,10 +58,16 @@ const BookGallery = ({ books }) => {
   };
 
   const handleSelectBook = (bookId) => {
-    setSelectedBookId(bookId);
-    handleShow();
+    if(email === null){
+      alert("Please Regiseter Or SignIn")
+      navigate('/UserSignIn')
+    }
+    else{
+      setSelectedBookId(bookId);
+      handleShow();
+    }
   };
-
+  
   return (
     <>
       <Modal show={show} onHide={handleClose} centered>
@@ -70,7 +79,6 @@ const BookGallery = ({ books }) => {
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Control
                 type="text"
-                placeholder="Enter your user ID"
                 autoFocus
                 value={email}
                 disabled
@@ -80,9 +88,6 @@ const BookGallery = ({ books }) => {
                 }}
                 isInvalid={userEmailError}
               />
-              <Form.Control.Feedback type="invalid">
-                Please enter your user ID.
-              </Form.Control.Feedback>
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -121,10 +126,10 @@ const BookGallery = ({ books }) => {
                 color="text.secondary"
                 gutterBottom
               >
-                By: {book.author}
+                By: {book.bookAuthor}
               </Typography>
               <Typography variant="body2" color="text.secondary" gutterBottom>
-                Genre: {book.genre}
+                Genre: {book.genres}
               </Typography>
               <Typography
                 variant="body2"

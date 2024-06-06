@@ -23,6 +23,7 @@ import ManageUsers2 from './componets/admin/ManageUsers2';
 import ManageIssuedBooks2 from './componets/admin/ManageIssuedBooks2';
 import ManageRequestedBooks2 from './componets/admin/ManageRequestedBooks2';
 import Main2 from './componets/homePage/Main2';
+import BookTabs2 from './componets/books/BookTabs2';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path='/UserSignUp' element={<RegisterPage />} />
           <Route path='/Forgot' element={<ForgotPassword />} />
           <Route path='/BooksGallery' element={<BookTabs />} />
+          <Route path='/BooksGallery2' element={<BookTabs2 />} />
           <Route path='/news' element={<NewsBlog />} />
           <Route path='/about' element={<AboutUs />} />
           <Route path='/contactUs2' element={<ContactForm2 />} />
