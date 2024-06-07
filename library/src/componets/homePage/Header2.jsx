@@ -79,7 +79,7 @@ const Header2 = () => {
           <div style={{ display: "flex", alignItems: "center" }}>
             <Avatar
               alt="Remy Sharp"
-              src="https://t4.ftcdn.net/jpg/04/29/87/51/240_F_429875198_7dRMqVGcPOcAFhyODDyjdJy1RwgAG1VE.jpg"
+              src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
               onClick={() => setShowLogoutBadge(true)}
               style={{ cursor: "pointer" }}
             />
