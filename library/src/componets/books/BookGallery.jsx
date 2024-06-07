@@ -67,9 +67,13 @@ const BookGallery = ({ books }) => {
       .post("http://localhost:8055/api/history/add", requestBody)
       .then((response) => {
         console.log(response.data);
-        alert("One transaction added Successfully!");
-        handleClose();
-        window.location.reload();
+        if (response.data.error) {
+          alert(response.data.message);
+        } else {
+          alert("One transaction added Successfully!");
+          handleClose();
+          window.location.reload();
+        }
       })
       .catch((error) => {
         console.data.error("Error:", error);
