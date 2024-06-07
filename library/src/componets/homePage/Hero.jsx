@@ -2,10 +2,16 @@ import React from "react";
 import { Container, Row, Col, Image } from "react-bootstrap";
 
 const Hero = () => {
+  const name = window.sessionStorage.getItem("name");
   return (
     <section
       className="hero d-flex align-items-center justify-content-left"
-      style={{ backgroundColor: "#f5f5f5", minHeight: "65vh", margin: 0, padding: 0 }} 
+      style={{
+        backgroundColor: "#f5f5f5",
+        minHeight: "65vh",
+        margin: 0,
+        padding: 0,
+      }}
     >
       <Container>
         <Row className="justify-content-center">
@@ -20,7 +26,7 @@ const Hero = () => {
                 textAlign: "left",
               }}
             >
-              Start your reading journey today
+              Hi {name}! Start your reading journey today
             </h1>
             <p style={{ color: "#666", lineHeight: "1.5", textAlign: "left" }}>
               Where every page is a new adventure.
@@ -58,7 +64,11 @@ const Hero = () => {
               src="https://libromaniacs.com/wp-content/uploads/2023/06/books-like-all-the-light-we-cannot-see-1024x768.jpg"
               alt="Bookstore Hero Image"
               fluid
-              style={{ borderRadius: "5px", marginTop: "20px", maxWidth: "100%" }}
+              style={{
+                borderRadius: "5px",
+                marginTop: "20px",
+                maxWidth: "100%",
+              }}
             />
           </Col>
         </Row>

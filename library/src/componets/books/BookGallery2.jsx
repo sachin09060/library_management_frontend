@@ -4,17 +4,15 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
-const BookGallery = ({ books }) => {
+const BookGallery2 = ({ books }) => {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState(window.sessionStorage.getItem("email"));
   const [selectedBookId, setSelectedBookId] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [users, setUsers] = useState([]);
+  const [selectedAction, setSelectedAction] = useState("");
   const name = window.sessionStorage.getItem("name");
-
-  const navigate = useNavigate();
 
   console.log(email);
 
@@ -33,12 +31,13 @@ const BookGallery = ({ books }) => {
     setShow(false);
     setEmail("");
     setEmailError(false);
+    setSelectedAction("");
     window.location.reload();
   };
 
   const handleShow = () => setShow(true);
 
-  const handleSubmit = () => {
+  const handleSubmit = (actionType) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email.trim() || !emailPattern.test(email) || !users.includes(email)) {
       setEmailError(true);
@@ -53,7 +52,8 @@ const BookGallery = ({ books }) => {
     const dueDate = new Date(returnDate);
     dueDate.setDate(dueDate.getDate() + 1);
     const formattedDueDate = dueDate.toISOString().split("T")[0];
-    const requestBody = {
+
+    let requestBody = {
       email: email,
       bookId: selectedBookId,
       issuedDate: formattedCurrentDate,
@@ -63,27 +63,29 @@ const BookGallery = ({ books }) => {
       renewed: false,
     };
 
+    if (actionType === "return") {
+      requestBody.returned = true;
+      requestBody.returnDate = formattedCurrentDate;
+    } else if (actionType === "renew") {
+      requestBody.renewed = true;
+    }
+
     axios
-      .post("http://localhost:8055/api/history/add", requestBody)
+      .put("http://localhost:8055/api/history/update", requestBody)
       .then((response) => {
         console.log(response.data);
-        alert("One transaction added Successfully!");
+        alert("Transaction updated successfully!");
         handleClose();
-        window.location.reload();
       })
       .catch((error) => {
-        console.data.error("Error:", error);
+        console.error("Error:", error);
       });
   };
 
-  const handleSelectBook = (bookId) => {
-    if (email === null) {
-      alert("Please Signin to get book!");
-      navigate("/UserSignIn");
-    } else {
-      setSelectedBookId(bookId);
-      handleShow();
-    }
+  const handleSelectBook = (bookId, actionType) => {
+    setSelectedBookId(bookId);
+    setSelectedAction(actionType);
+    handleShow();
   };
 
   return (
@@ -122,9 +124,16 @@ const BookGallery = ({ books }) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="info" onClick={handleSubmit}>
-            Submit
-          </Button>
+          {selectedAction === "return" && (
+            <Button variant="info" onClick={() => handleSubmit("return")}>
+              Return Book
+            </Button>
+          )}
+          {selectedAction === "renew" && (
+            <Button variant="info" onClick={() => handleSubmit("renew")}>
+              Renew Book
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
 
@@ -171,9 +180,20 @@ const BookGallery = ({ books }) => {
               </Typography>
               <Button
                 variant="outline-info"
-                onClick={() => handleSelectBook(book.bookId)}
+                size="sm"
+                className="ms"
+                onClick={() => handleSelectBook(book.bookId, "return")}
               >
-                Get Book
+                Return Book
+              </Button>
+
+              <Button
+                variant="outline-info"
+                size="sm"
+                className="ms"
+                onClick={() => handleSelectBook(book.bookId, "renew")}
+              >
+                Renew Book
               </Button>
             </CardContent>
           </Card>
@@ -183,4 +203,4 @@ const BookGallery = ({ books }) => {
   );
 };
 
-export default BookGallery;
+export default BookGallery2;

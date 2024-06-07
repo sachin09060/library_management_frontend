@@ -13,7 +13,7 @@ export default function RegisterPage() {
     address: "",
     password: "",
     confirmPassword: "",
-    createdAt: new Date().toISOString('en-US', { timeZone: 'Asia/Kolkata' }),
+    createdAt: new Date().toISOString("en-US", { timeZone: "Asia/Kolkata" }),
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -44,6 +44,7 @@ export default function RegisterPage() {
         "http://localhost:8055/api/user/add",
         formData
       );
+      window.sessionStorage.setItem("name", response.data.data.name);
       if (!response.data.error) {
         alert("User added successfully!");
         navigate("/UserSignIn");
@@ -105,7 +106,9 @@ export default function RegisterPage() {
         <Row className="justify-content-md-center">
           <Col xs={12} md={6}>
             <Form onSubmit={handleSubmit}>
-              <h1 className="text-center mb-4" style={{color:"#fff"}}>Register Here</h1>
+              <h1 className="text-center mb-4" style={{ color: "#fff" }}>
+                Register Here
+              </h1>
               <Form.Group controlId="name">
                 <Form.Control
                   type="text"
@@ -177,7 +180,7 @@ export default function RegisterPage() {
                 </Form.Text>
               </Form.Group>
 
-              <Form.Group controlId="gender" style={{color:"#fff"}}>
+              <Form.Group controlId="gender" style={{ color: "#fff" }}>
                 <Form.Check
                   inline
                   type="radio"
@@ -206,8 +209,11 @@ export default function RegisterPage() {
               <Button variant="primary" type="submit" block>
                 Create Account
               </Button>
-              <div className="text-center mt-3" style={{color:"#fff"}}>
-                Already have an account? <Link to="/UserSignIn" style={{color:"#fff"}}>Sign-In</Link>
+              <div className="text-center mt-3" style={{ color: "#fff" }}>
+                Already have an account?{" "}
+                <Link to="/UserSignIn" style={{ color: "#fff" }}>
+                  Sign-In
+                </Link>
               </div>
             </Form>
           </Col>
