@@ -28,17 +28,17 @@ const ManageBooks = () => {
   const [totalCopies, setTotalCopies] = useState('')
   const [availableCopies, setAvailableCopies] = useState('')
 
-   // const [newBook, setNewBook] = useState({
-  //   bookId: "",
-  //   bookName: "",
-  //   bookUrl: "",
-  //   bookAuthor: "",
-  //   genres: "",
-  //   description: "",
-  //   addedDate: "",
-  //   totalCopies: "",
-  //   availableCopies: "",
-  // });
+   const [newBook, setNewBook] = useState({
+    bookId: "",
+    bookName: "",
+    bookUrl: "",
+    bookAuthor: "",
+    genres: "",
+    description: "",
+    addedDate: "",
+    totalCopies: "",
+    availableCopies: "",
+  });
   
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");

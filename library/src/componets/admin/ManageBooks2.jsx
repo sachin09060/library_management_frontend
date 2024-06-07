@@ -13,13 +13,11 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Snackbar,
 } from "@mui/material";
 
 const ManageBooks2 = () => {
 
     const[books, setBooks] = useState([])
-    const[book,setBook]=useState('')
     const[bookId, setBookId] = useState('')
     const[bookName, setBookName] = useState('')
     const[bookUrl, setBookUrl] = useState('')
