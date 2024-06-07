@@ -72,7 +72,7 @@ const BookGallery = ({ books }) => {
         window.location.reload();
       })
       .catch((error) => {
-        console.error("Error:", error);
+        console.data.error("Error:", error);
       });
   };
 

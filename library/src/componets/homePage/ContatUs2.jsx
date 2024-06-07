@@ -24,6 +24,9 @@ const ContactForm2 = () => {
   const [openSuccessAlert, setOpenSuccessAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
+  const name = window.sessionStorage.getItem("name");
+  const email = window.sessionStorage.getItem("email");
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -69,9 +72,8 @@ const ContactForm2 = () => {
         >
           Contact Us
         </Typography>
-        <Typography
-        style={{ fontFamily: "Arial, sans-serif" }}>
-        <p>"Request the librarian to register new users at the library."</p>
+        <Typography style={{ fontFamily: "Arial, sans-serif" }}>
+          <p>"Request the librarian to register new users at the library."</p>
         </Typography>
         <Card elevation={3} style={{ padding: 20 }}>
           <CardContent>
@@ -83,7 +85,8 @@ const ContactForm2 = () => {
                     label="Name"
                     name="name"
                     variant="outlined"
-                    value={formData.name}
+                    value={name}
+                    disabled
                     onChange={handleChange}
                     style={{
                       fontFamily: "Arial, sans-serif",
@@ -99,7 +102,8 @@ const ContactForm2 = () => {
                     name="contactEmail"
                     type="email"
                     variant="outlined"
-                    value={formData.contactEmail}
+                    value={email}
+                    disabled
                     onChange={handleChange}
                     style={{
                       fontFamily: "Arial, sans-serif",

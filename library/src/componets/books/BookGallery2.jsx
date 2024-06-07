@@ -65,17 +65,17 @@ const BookGallery2 = ({ books }) => {
 
     if (actionType === "return") {
       requestBody.returned = true;
+      requestBody.returnDate = formattedCurrentDate;
     } else if (actionType === "renew") {
       requestBody.renewed = true;
     }
 
     axios
-      .post("http://localhost:8055/api/history/add", requestBody)
+      .put("http://localhost:8055/api/history/update", requestBody)
       .then((response) => {
         console.log(response.data);
-        alert("One transaction added Successfully!");
+        alert("Transaction updated successfully!");
         handleClose();
-        window.location.reload();
       })
       .catch((error) => {
         console.error("Error:", error);
