@@ -15,6 +15,8 @@ import {
   Paper,
   Snackbar,
 } from "@mui/material";
+import { Modal } from "react-bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ManageBooks = () => {
   const [books, setBooks] = useState([]);
@@ -30,6 +32,19 @@ const ManageBooks = () => {
     availableCopies: "",
   });
 
+  const [updateBook, setUpdateBook] = useState({
+    bookId: "",
+    bookName: "",
+    bookImgUrl: "",
+    author: "",
+    genre: "",
+    description: "",
+    addedDate: "",
+    totalCopies: "",
+    availableCopies: "",
+  });
+
+  const [modalShow, setModalShow] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -96,14 +111,11 @@ const ManageBooks = () => {
     }
   };
 
-  const handleDeleteAndUpdateBook = async (bookId) => {
+  const handleDeleteBook = async (bookId) => {
     try {
       await axios.delete("http://localhost:8055/api/book/delete", {
-        data: {
-          bookId: bookId,
-        },
+        data: { bookId: bookId },
       });
-
       fetchBooks();
     } catch (error) {
       console.error("Error deleting book:", error);
@@ -114,13 +126,13 @@ const ManageBooks = () => {
     try {
       const response = await axios.put(
         "http://localhost:8055/api/book/update",
-        newBook
+        updateBook
       );
       console.log("Book updated:", response.data.data);
 
       fetchBooks();
 
-      setNewBook({
+      setUpdateBook({
         bookId: "",
         bookName: "",
         bookImgUrl: "",
@@ -131,9 +143,15 @@ const ManageBooks = () => {
         totalCopies: "",
         availableCopies: "",
       });
+      setModalShow(false);
     } catch (error) {
       console.error("Error updating book:", error);
     }
+  };
+
+  const handleEditBook = (book) => {
+    setUpdateBook(book);
+    setModalShow(true);
   };
 
   const handleSnackbarClose = (event, reason) => {
@@ -282,7 +300,6 @@ const ManageBooks = () => {
             style={{ width: "200px", margin: "10px" }}
             InputLabelProps={{ shrink: true }}
           />
-
           <TextField
             label="Total Copies"
             value={newBook.totalCopies}
@@ -409,14 +426,14 @@ const ManageBooks = () => {
                         <Button
                           variant="outlined"
                           color="secondary"
-                          onClick={() => handleDeleteAndUpdateBook(book.bookId)}
+                          onClick={() => handleDeleteBook(book.bookId)}
                         >
                           Delete
                         </Button>
                         <Button
                           variant="outlined"
                           color="primary"
-                          onClick={() => handleUpdateBook(book.bookId)}
+                          onClick={() => handleEditBook(book)}
                         >
                           Update
                         </Button>
@@ -439,6 +456,88 @@ const ManageBooks = () => {
           {snackbarMessage}
         </MuiAlert>
       </Snackbar>
+
+      <Modal show={modalShow} onHide={() => setModalShow(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Update Book</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <TextField
+            label="Book ID"
+            value={updateBook.bookId}
+            onChange={(e) => setUpdateBook({ ...updateBook, bookId: e.target.value })}
+            style={{ width: "100%", marginBottom: "10px" }}
+          />
+          <TextField
+            label="Book Name"
+            value={updateBook.bookName}
+            onChange={(e) => setUpdateBook({ ...updateBook, bookName: e.target.value })}
+            style={{ width: "100%", marginBottom: "10px" }}
+          />
+          <TextField
+            label="Book Image URL"
+            value={updateBook.bookImgUrl}
+            onChange={(e) => setUpdateBook({ ...updateBook, bookImgUrl: e.target.value })}
+            style={{ width: "100%", marginBottom: "10px" }}
+          />
+          <TextField
+            label="Author"
+            value={updateBook.author}
+            onChange={(e) => setUpdateBook({ ...updateBook, author: e.target.value })}
+            style={{ width: "100%", marginBottom: "10px" }}
+          />
+          <TextField
+            select
+            label="Genre"
+            value={updateBook.genre}
+            onChange={(e) => setUpdateBook({ ...updateBook, genre: e.target.value })}
+            style={{ width: "100%", marginBottom: "10px" }}
+            SelectProps={{ native: true }}
+          >
+            <option value="">Select genre</option>
+            {allGenres.map((genre) => (
+              <option key={genre} value={genre}>
+                {genre}
+              </option>
+            ))}
+          </TextField>
+          <TextField
+            label="Description"
+            value={updateBook.description}
+            onChange={(e) => setUpdateBook({ ...updateBook, description: e.target.value })}
+            style={{ width: "100%", marginBottom: "10px" }}
+          />
+          <TextField
+            label="Added Date"
+            type="datetime-local"
+            variant="outlined"
+            value={updateBook.addedDate}
+            onChange={(e) => setUpdateBook({ ...updateBook, addedDate: e.target.value })}
+            style={{ width: "100%", marginBottom: "10px" }}
+            InputLabelProps={{ shrink: true }}
+          />
+          <TextField
+            label="Total Copies"
+            value={updateBook.totalCopies}
+            onChange={(e) => setUpdateBook({ ...updateBook, totalCopies: e.target.value })}
+            style={{ width: "100%", marginBottom: "10px" }}
+          />
+          <TextField
+            label="Available Copies"
+            value={updateBook.availableCopies}
+            onChange={(e) => setUpdateBook({ ...updateBook, availableCopies: e.target.value })}
+            style={{ width: "100%", marginBottom: "10px" }}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setModalShow(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleUpdateBook}>
+            Update
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };

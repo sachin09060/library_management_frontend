@@ -16,8 +16,6 @@ const BookGallery = ({ books }) => {
 
   const navigate = useNavigate();
 
-  console.log(email);
-
   useEffect(() => {
     axios
       .get("http://localhost:8055/api/user")
@@ -31,53 +29,70 @@ const BookGallery = ({ books }) => {
 
   const handleClose = () => {
     setShow(false);
-    setEmail("");
     setEmailError(false);
-    window.location.reload();
   };
 
   const handleShow = () => setShow(true);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email.trim() || !emailPattern.test(email) || !users.includes(email)) {
       setEmailError(true);
       return;
     }
 
-    const currentDate = new Date();
-    const formattedCurrentDate = currentDate.toISOString().split("T")[0];
-    const returnDate = new Date(currentDate);
-    returnDate.setDate(returnDate.getDate() + 15);
-    const formattedReturnDate = returnDate.toISOString().split("T")[0];
-    const dueDate = new Date(returnDate);
-    dueDate.setDate(dueDate.getDate() + 1);
-    const formattedDueDate = dueDate.toISOString().split("T")[0];
-    const requestBody = {
-      email: email,
-      bookId: selectedBookId,
-      issuedDate: formattedCurrentDate,
-      dueDate: formattedDueDate,
-      returnDate: formattedReturnDate,
-      returned: false,
-      renewed: false,
-    };
+    try {
+      const transactionResponse = await axios.get(
+        `http://localhost:8055/api/history?email=${email}&bookId=${selectedBookId}`
+      );
+      const existingTransaction = transactionResponse.data.data;
 
-    axios
-      .post("http://localhost:8055/api/history/add", requestBody)
-      .then((response) => {
-        console.log(response.data);
-        if (response.data.error) {
-          alert(response.data.message);
-        } else {
-          alert("One transaction added Successfully!");
-          handleClose();
+      const existingTransactionForBook = existingTransaction.find(
+        (transaction) => transaction.bookId === selectedBookId
+      );
+
+      const currentDate = new Date();
+      const formattedCurrentDate = currentDate.toISOString().split("T")[0];
+      const returnDate = new Date(currentDate);
+      returnDate.setDate(returnDate.getDate() + 15);
+      const formattedReturnDate = returnDate.toISOString().split("T")[0];
+      const dueDate = new Date(returnDate);
+      dueDate.setDate(dueDate.getDate() + 1);
+      const formattedDueDate = dueDate.toISOString().split("T")[0];
+
+      const requestBody = {
+        email: email,
+        bookId: selectedBookId,
+        issuedDate: formattedCurrentDate,
+        dueDate: formattedDueDate,
+        returnDate: formattedReturnDate,
+        returned: false,
+      };
+
+      if (existingTransactionForBook) {
+        if (existingTransactionForBook.returned) {
+          requestBody._id = existingTransactionForBook._id;
+          await axios.put(
+            "http://localhost:8055/api/history/update",
+            requestBody
+          );
+          alert("Book transaction updated successfully!");
           window.location.reload();
+        } else {
+          alert("You have already taken this book and not returned it yet.");
         }
-      })
-      .catch((error) => {
-        console.data.error("Error:", error);
-      });
+      } else {
+        await axios.post("http://localhost:8055/api/history/add", requestBody);
+        alert("New transaction added successfully!");
+        window.location.reload();
+      }
+
+      setSelectedBookId("");
+      setEmail("");
+      setEmailError(false);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   const handleSelectBook = (bookId) => {
