@@ -16,8 +16,6 @@ const BookGallery = ({ books }) => {
 
   const navigate = useNavigate();
 
-  console.log(email);
-
   useEffect(() => {
     axios
       .get("http://localhost:8055/api/user")
@@ -44,41 +42,54 @@ const BookGallery = ({ books }) => {
     }
 
     try {
-      const transactionResponse = await axios.get(`http://localhost:8055/api/history?email=${email}&bookId=${selectedBookId}`);
+      const transactionResponse = await axios.get(
+        `http://localhost:8055/api/history?email=${email}&bookId=${selectedBookId}`
+      );
       const existingTransaction = transactionResponse.data.data;
 
-      if (existingTransaction.length > 0 && !existingTransaction[0].returned) {
-        alert("You have already taken this book and not returned it yet.");
-      } else {
-        const currentDate = new Date();
-        const formattedCurrentDate = currentDate.toISOString().split("T")[0];
-        const returnDate = new Date(currentDate);
-        returnDate.setDate(returnDate.getDate() + 15);
-        const formattedReturnDate = returnDate.toISOString().split("T")[0];
-        const dueDate = new Date(returnDate);
-        dueDate.setDate(dueDate.getDate() + 1);
-        const formattedDueDate = dueDate.toISOString().split("T")[0];
-        const requestBody = {
-          email: email,
-          bookId: selectedBookId,
-          issuedDate: formattedCurrentDate,
-          dueDate: formattedDueDate,
-          returnDate: formattedReturnDate,
-          returned: false,
-          renewed: false,
-        };
+      const existingTransactionForBook = existingTransaction.find(
+        (transaction) => transaction.bookId === selectedBookId
+      );
 
-        if (existingTransaction.length > 0 && existingTransaction[0].returned) {
-          requestBody._id = existingTransaction[0]._id; // Assuming you use MongoDB or another DB where _id is unique identifier
-          await axios.put("http://localhost:8055/api/history/update", requestBody);
+      const currentDate = new Date();
+      const formattedCurrentDate = currentDate.toISOString().split("T")[0];
+      const returnDate = new Date(currentDate);
+      returnDate.setDate(returnDate.getDate() + 15);
+      const formattedReturnDate = returnDate.toISOString().split("T")[0];
+      const dueDate = new Date(returnDate);
+      dueDate.setDate(dueDate.getDate() + 1);
+      const formattedDueDate = dueDate.toISOString().split("T")[0];
+
+      const requestBody = {
+        email: email,
+        bookId: selectedBookId,
+        issuedDate: formattedCurrentDate,
+        dueDate: formattedDueDate,
+        returnDate: formattedReturnDate,
+        returned: false,
+      };
+
+      if (existingTransactionForBook) {
+        if (existingTransactionForBook.returned) {
+          requestBody._id = existingTransactionForBook._id;
+          await axios.put(
+            "http://localhost:8055/api/history/update",
+            requestBody
+          );
           alert("Book transaction updated successfully!");
+          window.location.reload();
         } else {
-          await axios.post("http://localhost:8055/api/history/add", requestBody);
-          alert("One transaction added Successfully!");
+          alert("You have already taken this book and not returned it yet.");
         }
-        handleClose();
+      } else {
+        await axios.post("http://localhost:8055/api/history/add", requestBody);
+        alert("New transaction added successfully!");
         window.location.reload();
       }
+
+      setSelectedBookId("");
+      setEmail("");
+      setEmailError(false);
     } catch (error) {
       console.error("Error:", error);
     }

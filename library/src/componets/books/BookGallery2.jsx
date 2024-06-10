@@ -74,7 +74,7 @@ const BookGallery2 = ({ books }) => {
       .put("http://localhost:8055/api/history/update", requestBody)
       .then((response) => {
         console.log(response.data);
-        alert("Transaction updated successfully!");
+        alert("Book returned successfully!");
         handleClose();
       })
       .catch((error) => {
