@@ -37,7 +37,7 @@ const BookGallery2 = ({ books }) => {
 
   const handleShow = () => setShow(true);
 
-  const handleSubmit = (actionType) => {
+  const handleSubmit = async (actionType) => {
     if (!email.trim() || !users.includes(email)) {
       setEmailError(true);
       return;
@@ -70,6 +70,12 @@ const BookGallery2 = ({ books }) => {
     if (actionType === "return") {
       requestBody.returned = true;
       alert("One Book Returned successful!");
+
+      // Call the API to increment available copies
+      await axios.put(
+        "http://localhost:8055/api/history/incrementAvailableBook",
+        { bookId: selectedBookId }
+      );
     } else if (actionType === "renew") {
       requestBody.renewed = true;
       alert("One Book Renewed successful!");
