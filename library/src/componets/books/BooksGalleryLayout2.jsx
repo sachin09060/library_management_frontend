@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import BookGallery from "./BookGallery";
+import BookGallery from "./BookCard";
 import { Typography, Pagination } from "@mui/material";
 
 const BooksGalleryLayout2 = () => {
@@ -30,8 +30,18 @@ const BooksGalleryLayout2 = () => {
   const paginatedBooks = books.slice(startIndex, endIndex);
 
   return (
-    <div className="App" style={{ backgroundColor: "#f5f5f5", minHeight: "100vh" }}>
-      <div style={{ maxWidth: "1024px", margin: "0 auto", padding: "20px", textAlign: "left" }}>
+    <div
+      className="App"
+      style={{ backgroundColor: "#f5f5f5", minHeight: "100vh" }}
+    >
+      <div
+        style={{
+          maxWidth: "1024px",
+          margin: "0 auto",
+          padding: "20px",
+          textAlign: "left",
+        }}
+      >
         <h1 style={{ textAlign: "center" }}>Our Book Gallery</h1>
         {paginatedBooks.length > 0 ? (
           <>

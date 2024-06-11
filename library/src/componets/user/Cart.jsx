@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import BookGallery2 from "./../books/BookGallery2";
+import BookGallery2 from "../books/BookCard2";
 import { Typography, Pagination } from "@mui/material";
 import Header2 from "../homePage/Header2";
 import Footer from "../homePage/Footer";

@@ -3,7 +3,7 @@ import { Container, Row, Col, Nav } from "react-bootstrap";
 import ManageBooks from "./ManageBooks";
 import ManageUsers from "./ManageUsers";
 import ManageIssuedBooks from "./ManageIssuedBooks";
-import ManageRequestedBooks from "./ManageRequestedBooks";
+import ManageRequestedBooks from "./ManageRequests";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 

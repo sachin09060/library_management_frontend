@@ -18,14 +18,14 @@ import axios from "axios";
 const ContactForm2 = () => {
   const [formData, setFormData] = useState({
     name: "",
-    contactEmail: "",
+    email: "",
     message: "",
   });
   const [openSuccessAlert, setOpenSuccessAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
-  const name = window.sessionStorage.getItem("name");
-  const email = window.sessionStorage.getItem("email");
+  const name = window.sessionStorage.getItem("name") || "";
+  const email = window.sessionStorage.getItem("email") || "";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,16 +38,15 @@ const ContactForm2 = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log("Submitting with formData:", formData);
       const response = await axios.post(
         "http://localhost:8055/api/contact/add",
-        formData
+        { ...formData, name, email }
       );
       console.log(response.data);
       setAlertMessage(response.data.message);
       setOpenSuccessAlert(true);
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
+      setFormData({ ...formData, message: "" });
     } catch (error) {
       console.error("Error adding message:", error);
     }
@@ -86,7 +85,6 @@ const ContactForm2 = () => {
                     name="name"
                     variant="outlined"
                     value={name}
-                    disabled
                     onChange={handleChange}
                     style={{
                       fontFamily: "Arial, sans-serif",
@@ -99,11 +97,10 @@ const ContactForm2 = () => {
                   <TextField
                     fullWidth
                     label="Email"
-                    name="contactEmail"
+                    name="email"
                     type="email"
                     variant="outlined"
                     value={email}
-                    disabled
                     onChange={handleChange}
                     style={{
                       fontFamily: "Arial, sans-serif",

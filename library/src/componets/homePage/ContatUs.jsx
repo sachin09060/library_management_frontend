@@ -18,7 +18,7 @@ import axios from "axios";
 const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: "",
-    contactEmail: "",
+    email: "",
     message: "",
   });
   const [openSuccessAlert, setOpenSuccessAlert] = useState(false);
@@ -69,9 +69,8 @@ const ContactForm = () => {
         >
           Contact Us
         </Typography>
-        <Typography
-        style={{ fontFamily: "Arial, sans-serif" }}>
-        <p>"Request the librarian to register new users at the library."</p>
+        <Typography style={{ fontFamily: "Arial, sans-serif" }}>
+          <p>"Request the librarian to register new users at the library."</p>
         </Typography>
         <Card elevation={3} style={{ padding: 20 }}>
           <CardContent>
@@ -96,10 +95,10 @@ const ContactForm = () => {
                   <TextField
                     fullWidth
                     label="Email"
-                    name="contactEmail"
+                    name="email"
                     type="email"
                     variant="outlined"
-                    value={formData.contactEmail}
+                    value={formData.email}
                     onChange={handleChange}
                     style={{
                       fontFamily: "Arial, sans-serif",

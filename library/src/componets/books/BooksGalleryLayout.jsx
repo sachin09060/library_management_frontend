@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import BookGallery from "./BookGallery";
+import BookGallery from "./BookCard";
 import { Typography, Pagination, TextField, MenuItem } from "@mui/material";
 
 const BooksGalleryLayout = () => {
@@ -10,7 +10,7 @@ const BooksGalleryLayout = () => {
   const [searchClicked, setSearchClicked] = useState(false);
   const booksPerPage = 8;
 
-  const fetchBooks = async () => {
+  const fetchBooks = useCallback(async () => {
     let url = "http://localhost:8055/api/book";
     if (searchParams.searchBy && searchParams.query) {
       if (searchParams.searchBy === "genre") {
@@ -25,7 +25,7 @@ const BooksGalleryLayout = () => {
     } catch (error) {
       console.error("Error fetching books:", error);
     }
-  };
+  }, [searchParams]);
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -54,7 +54,7 @@ const BooksGalleryLayout = () => {
       };
       fetchAllBooks();
     }
-  }, [searchClicked, searchParams]);
+  }, [fetchBooks, searchClicked, searchParams]);
 
   const startIndex = (page - 1) * booksPerPage;
   const endIndex = page * booksPerPage;
