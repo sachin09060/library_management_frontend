@@ -16,28 +16,41 @@ import Header2 from "./Header2";
 import axios from "axios";
 
 const ContactForm2 = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
+  
+
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   email: "",
+  //   message: "",
+  // });
+
+   // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData({
+  //     ...formData,
+  //     [name]: value,
+  //   });
+  // };
+
+
+  const sessionName = window.sessionStorage.getItem("name");
+  const sessionEmail = window.sessionStorage.getItem("email")
+
+  const [name, setName] = useState(sessionName);
+  const [email, setEmail] = useState(sessionEmail);
+  const [message, setMessage] = useState();
+
   const [openSuccessAlert, setOpenSuccessAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:8080/api/v1/library/postfeedback",
-        formData
+        {name, email,message}
       );
       console.log(response.data);
       setAlertMessage(response.data.message);
@@ -78,9 +91,10 @@ const ContactForm2 = () => {
                     fullWidth
                     label="Name"
                     name="name"
+                    disabled
                     variant="outlined"
-                    value={formData.name}
-                    onChange={handleChange}
+                    value={name}
+                    onChange={(e) => {setName(e.target.value)}}
                     style={{
                       fontFamily: "Arial, sans-serif",
                       marginBottom: 20,
@@ -94,9 +108,10 @@ const ContactForm2 = () => {
                     label="Email"
                     name="email"
                     type="email"
+                    disabled
                     variant="outlined"
-                    value={formData.email}
-                    onChange={handleChange}
+                    value={email}
+                    onChange={(e) => {setEmail(e.target.value)}}
                     style={{
                       fontFamily: "Arial, sans-serif",
                       marginBottom: 20,
@@ -112,8 +127,8 @@ const ContactForm2 = () => {
                     multiline
                     rows={4}
                     variant="outlined"
-                    value={formData.message}
-                    onChange={handleChange}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                     style={{
                       fontFamily: "Arial, sans-serif",
                       marginBottom: 20,

@@ -6,6 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import LogoutIcon from "@mui/icons-material/Logout";
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 
 
 const Header2 = () => {
@@ -45,10 +46,13 @@ const Header2 = () => {
               {/* <NavLink to="/news" className="nav-link" activeClassName="active">NEWS & BLOGS</NavLink> */}
               <NavLink to="/about2" className="nav-link" activeClassName="active">ABOUT US</NavLink>
               <NavLink to="/contactUs2" className="nav-link" activeClassName="active">CONTACT US</NavLink>
+              <NavLink to="/cart" className="nav-link" activeClassName="active"><BusinessCenterIcon/>
+              BAG</NavLink>
+              
             </Nav>
           </Navbar.Collapse>
 
-<div style={{ display: "flex", alignItems: "center" }}>
+           <div style={{ display: "flex", alignItems: "center" }}>
             <Avatar
               alt="Remy Sharp"
               src="https://t4.ftcdn.net/jpg/04/29/87/51/240_F_429875198_7dRMqVGcPOcAFhyODDyjdJy1RwgAG1VE.jpg"

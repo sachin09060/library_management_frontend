@@ -24,6 +24,7 @@ import ManageIssuedBooks2 from './componets/admin/ManageIssuedBooks2';
 import ManageRequestedBooks2 from './componets/admin/ManageRequestedBooks2';
 import Main2 from './componets/homePage/Main2';
 import BookTabs2 from './componets/books/BookTabs2';
+import Cart from './componets/general/Cart';
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
           <Route path='/manageIssuedBooks2' element={<ManageIssuedBooks2 />} />=
           <Route path='/manageRequestedBooks' element={<ManageRequestedBooks />} />
           <Route path='/manageRequestedBooks2' element={<ManageRequestedBooks2 />} />
+          <Route path='/cart' element={<Cart />} />
         </Routes>
       </BrowserRouter>
     </div>

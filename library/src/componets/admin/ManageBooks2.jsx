@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import MuiAlert from "@mui/material/Alert";
 import {
   Container,
   Typography,
@@ -14,6 +13,7 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
+import { Today } from "@mui/icons-material";
 
 const ManageBooks2 = () => {
 
@@ -27,10 +27,17 @@ const ManageBooks2 = () => {
     const[addedDate, setAddedDate] = useState ('')  
     const[totalCopies, setTotalCopies] = useState('')
     const[availableCopies, setAvailableCopies] = useState('')
+    const[currentDate, setCurrentDate] = useState('')
+    
     
     useEffect(()=>{
       getBooks(); 
+      const date = new Date();
+      // substr(0, 10)-> Get today's date in YYYY-MM-DD format
+      const formattedDate = date.toISOString().substr(0, 10);
+      setCurrentDate(formattedDate);
     },[])
+
 
 
     const clearFields = () =>{
@@ -109,8 +116,6 @@ const selectBookToUpdate = (bookId) =>{
     setAvailableCopies(selectedBook.availableCopies)
     
 
-    // setBook(selectedBook); 
-    //to put table data to fields
 }
 const updateBook=()=>{
   axios.put('http://localhost:8080/api/v1/library/updatebookbyid',{bookId,bookName, bookUrl, bookAuthor,genres,description, addedDate,totalCopies,availableCopies})
@@ -237,6 +242,7 @@ const updateBook=()=>{
           <TextField
             label="Added Date"
             type="datetime-local"
+            min={currentDate}
             variant="outlined"
             value={addedDate}
             onChange={(e) => {setAddedDate(e.target.value)}}
@@ -352,26 +358,6 @@ const updateBook=()=>{
           </TableContainer>
           </div>
         </div>
-      {/* <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={500}
-        onClose={handleSnackbarClose}
-        style={{
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          backgroundColor: "#008DDA",
-          color: "#FFFFFF",
-          borderRadius: "12px",
-          padding: "24px",
-          fontSize: "1.6rem",
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <MuiAlert onClose={handleSnackbarClose} severity={snackbarSeverity}>
-          {snackbarMessage}
-        </MuiAlert>
-      </Snackbar> */}
     </Container>
   );
 };
