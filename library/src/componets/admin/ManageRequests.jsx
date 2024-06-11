@@ -26,16 +26,22 @@ const ManageRequestedBooks = () => {
   const fetchAllMessages = async () => {
     try {
       const response = await axios.get("http://localhost:8055/api/contact");
-      setRequestedBooks(response.data.data);
+      if (response.data && Array.isArray(response.data.data)) {
+        setRequestedBooks(response.data.data);
+      } else if (Array.isArray(response.data)) {
+        setRequestedBooks(response.data);
+      } else {
+        console.error("Invalid response format:", response.data);
+      }
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
   };
 
-  const handleDeleteRequestedBook = async (contactEmail) => {
+  const handleDeleteRequestedBook = async (id) => {
     try {
       await axios.delete("http://localhost:8055/api/contact/delete", {
-        data: { contactEmail },
+        data: { id },
       });
       fetchAllMessages();
       setAlertMessage("Message request deleted successfully!");
@@ -81,17 +87,15 @@ const ManageRequestedBooks = () => {
             </thead>
             <TableBody>
               {requestedBooks.map((book) => (
-                <TableRow key={book._id} style={{ backgroundColor: "F6F5F2" }}>
+                <TableRow key={book.id} style={{ backgroundColor: "F6F5F2" }}>
                   <TableCell>{book.name}</TableCell>
-                  <TableCell>{book.contactEmail}</TableCell>
+                  <TableCell>{book.email}</TableCell>
                   <TableCell>{book.message}</TableCell>
                   <TableCell>
                     <Button
                       variant="outlined"
                       color="secondary"
-                      onClick={() =>
-                        handleDeleteRequestedBook(book.contactEmail)
-                      }
+                      onClick={() => handleDeleteRequestedBook(book.id)}
                     >
                       Delete
                     </Button>
