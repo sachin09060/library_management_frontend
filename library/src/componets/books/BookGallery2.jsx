@@ -69,12 +69,22 @@ const BookGallery2 = ({ books }) => {
     if (actionType === "return") {
       requestBody.isReturned = true;
       requestBody.returnDate = formattedCurrentDate;
+
+
+      //increemet available books
+      axios.put("http://localhost:8080/api/v1/library/available/book/increement" ,{bookId:selectedBookId})
+      .then((response) => {
+        console.log("increement",response.data.message);
+      })
+      .catch((error) => {
+        console.log("Unable to update");
+      })
+
     } else if (actionType === "renew") {
       requestBody.isRenewed = true;
     }
   
-    axios
-      .put("http://localhost:8080/api/v1/library/updatetransaction", requestBody)
+    axios.put("http://localhost:8080/api/v1/library/updatetransaction", requestBody)
       .then((response) => {
         console.log(response.data);
         alert("Transaction updated successfully!");

@@ -49,6 +49,16 @@ const BookGallery = ({ books }) => {
       .then((response) => {
         console.log(response.data);
         alert("One transaction added Successfully!");
+
+        //decreement available book
+        axios.put("http://localhost:8080/api/v1/library/available/book/decrement", { bookId: selectedBookId })
+        .then((response) => {
+            console.log("available book decremented", response.data.message);
+        })
+        .catch((error) => {
+            console.error("Unable to decrement available book:", error);
+        });
+
         handleClose();
         window.location.reload();
       })
