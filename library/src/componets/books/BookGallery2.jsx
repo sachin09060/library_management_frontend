@@ -18,7 +18,7 @@ const BookGallery2 = ({ books }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/v1/library/alluser" ,{email})
+      .get("http://localhost:8080/api/v1/library/alluser")
       .then((response) => {
         setUsers(response.data.data.map((user) => user.email));
       })
@@ -38,12 +38,15 @@ const BookGallery2 = ({ books }) => {
   const handleShow = () => setShow(true);
 
   const handleSubmit = (actionType) => {
-    if (!email.trim() || email
- || !users.includes(email)) {
+    console.log("Email:", email);
+    console.log("Email Error:", emailError);
+  
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim() || !emailPattern.test(email) || !users.includes(email)) {
       setEmailError(true);
       return;
     }
-
+  
     const currentDate = new Date();
     const formattedCurrentDate = currentDate.toISOString().split("T")[0];
     const returnDate = new Date(currentDate);
@@ -52,24 +55,24 @@ const BookGallery2 = ({ books }) => {
     const dueDate = new Date(returnDate);
     dueDate.setDate(dueDate.getDate() + 1);
     const formattedDueDate = dueDate.toISOString().split("T")[0];
-
+  
     let requestBody = {
       email: email,
       bookId: selectedBookId,
       issuedDate: formattedCurrentDate,
       dueDate: formattedDueDate,
       returnDate: formattedReturnDate,
-      returned: false,
-      renewed: false,
+      isReturned: false,
+      isRenewed: false,
     };
-
+  
     if (actionType === "return") {
-      requestBody.returned = true;
+      requestBody.isReturned = true;
       requestBody.returnDate = formattedCurrentDate;
     } else if (actionType === "renew") {
-      requestBody.renewed = true;
+      requestBody.isRenewed = true;
     }
-
+  
     axios
       .put("http://localhost:8080/api/v1/library/updatetransaction", requestBody)
       .then((response) => {
@@ -81,6 +84,7 @@ const BookGallery2 = ({ books }) => {
         console.error("Error:", error);
       });
   };
+  
 
   const handleSelectBook = (bookId, actionType) => {
     setSelectedBookId(bookId);
@@ -98,10 +102,12 @@ const BookGallery2 = ({ books }) => {
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>
-                Please confirm your choice before clicking Submit!
+                Please confirm your registered email before clicking Submit!
               </Form.Label>
               <Form.Control
-                type="email" 
+                type="email"
+                placeholder="Enter your email id"
+                autoFocus
                 value={email}
                 disabled
                 onChange={(e) => {
@@ -160,10 +166,10 @@ const BookGallery2 = ({ books }) => {
                 color="text.secondary"
                 gutterBottom
               >
-                By: {book.author}
+                By: {book.bookAuthor}
               </Typography>
               <Typography variant="body2" color="text.secondary" gutterBottom>
-                Genre: {book.genre}
+                Genre: {book.genres}
               </Typography>
               <Typography
                 variant="body2"

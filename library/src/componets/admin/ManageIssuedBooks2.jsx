@@ -16,47 +16,58 @@ import {
 } from "@mui/material";
 
 const ManageIssuedBooks2 = () => {
-const[transactions, setTransactions] = useState(''); 
-const[bookId,setBookId] = useState('');
-const[email, setEmail] = useState('');
-const[issuedDate,setIssuedDate] = useState('');
-const[dueDate,setDueDate] = useState('');
-const[returnDate, setReturnDate] = useState('')
+  const [transactions, setTransactions] = useState("");
+  const [bookId, setBookId] = useState("");
+  const [email, setEmail] = useState("");
+  const [issuedDate, setIssuedDate] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [returnDate, setReturnDate] = useState("");
+  const [isReturned, setReturned] = useState("");
+  const [isRenewed, setRenewed] = useState("");
 
-const clearFields = () =>{
-    setBookId('');
-    setEmail('');
-    setIssuedDate('');
-    setDueDate('');
-    setReturnDate('');
-}
+  const clearFields = () => {
+    setBookId("");
+    setEmail("");
+    setIssuedDate("");
+    setDueDate("");
+    setReturnDate("");
+    setReturned("");
+    setRenewed("");
+  };
 
-useEffect(() => {
-    getTransactions()
-},[])
+  useEffect(() => {
+    getTransactions();
+  }, []);
 
-const addTransaction = () =>{
-    axios.post('http://localhost:8080/api/v1/library/atransaction',{
-        bookId,email,issuedDate,dueDate,returnDate
-    })
-    .then(res =>{
+  const addTransaction = () => {
+    axios
+      .post("http://localhost:8080/api/v1/library/atransaction", {
+        bookId,
+        email,
+        issuedDate,
+        dueDate,
+        returnDate,
+        isReturned,
+        isRenewed,
+      })
+      .then((res) => {
         console.log("Transaction added", res);
-        alert("transaction added")
-        clearFields()
-    })
-    .catch(err => {
-        console.log("unable to do transation" , err);
-    })
-}
+        alert("transaction added");
+        clearFields();
+      })
+      .catch((err) => {
+        console.log("unable to do transation", err);
+      });
+  };
 
-const getTransactions = () =>{
-    axios.get('http://localhost:8080/api/v1/library/alltransaction')
-    .then(res => {
-        console.log("transactions are fetched",res);
-        setTransactions(res.data.data || [])
-    })
-}
-  
+  const getTransactions = () => {
+    axios
+      .get("http://localhost:8080/api/v1/library/alltransaction")
+      .then((res) => {
+        console.log("transactions are fetched", res);
+        setTransactions(res.data.data || []);
+      });
+  };
 
   return (
     <Container
@@ -94,7 +105,9 @@ const getTransactions = () =>{
             variant="outlined"
             fullWidth
             value={email}
-            onChange={(e) => {setEmail(e.target.value)}}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
             style={{ width: "200px", margin: "10px" }}
           />
           <TextField
@@ -102,7 +115,9 @@ const getTransactions = () =>{
             variant="outlined"
             fullWidth
             value={bookId}
-            onChange={(e) => {setBookId(e.target.value)}}
+            onChange={(e) => {
+              setBookId(e.target.value);
+            }}
             style={{ width: "200px", margin: "10px" }}
           />
 
@@ -112,7 +127,9 @@ const getTransactions = () =>{
             variant="outlined"
             fullWidth
             value={issuedDate}
-            onChange={(e) => {setIssuedDate(e.target.value)}}
+            onChange={(e) => {
+              setIssuedDate(e.target.value);
+            }}
             InputLabelProps={{ shrink: true }}
             style={{ width: "200px", margin: "10px" }}
           />
@@ -132,10 +149,35 @@ const getTransactions = () =>{
             variant="outlined"
             fullWidth
             value={returnDate}
-            onChange={(e) => {setReturnDate(e.target.value)}}
+            onChange={(e) => {
+              setReturnDate(e.target.value);
+            }}
             InputLabelProps={{ shrink: true }}
             style={{ width: "200px", margin: "10px" }}
           />
+
+          <TextField
+            label="Returned"
+            variant="outlined"
+            fullWidth
+            value={isReturned}
+            onChange={(e) => {
+              setReturned(e.target.value); 
+            }}
+            style={{ width: "200px", margin: "10px" }}
+          />
+
+          <TextField
+            label="Renewed"
+            variant="outlined"
+            fullWidth
+            value={isRenewed}
+            onChange={(e) => {
+              setRenewed(e.target.value);
+            }}
+            style={{ width: "200px", margin: "10px" }}
+          />
+
           <Button
             variant="contained"
             color="primary"
@@ -177,24 +219,29 @@ const getTransactions = () =>{
                     <TableCell>Issued Date</TableCell>
                     <TableCell>Due Date</TableCell>
                     <TableCell>Return Date</TableCell>
+                    <TableCell>Return</TableCell>
+                    <TableCell>Renewed</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {transactions && transactions.map((book) => (
-                    <TableRow
-                      key={book.id}
-                      style={{
-                        height: "40px",
-                        backgroundColor: "#F6F5F2",
-                      }}
-                    >
-                      <TableCell>{book.email}</TableCell>
-                      <TableCell>{book.bookId}</TableCell>
-                      <TableCell>{book.issuedDate}</TableCell>
-                      <TableCell>{book.dueDate}</TableCell>
-                      <TableCell>{book.returnDate}</TableCell>
-                    </TableRow>
-                  ))}
+                  {transactions &&
+                    transactions.map((book) => (
+                      <TableRow
+                        key={book.id}
+                        style={{
+                          height: "40px",
+                          backgroundColor: "#F6F5F2",
+                        }}
+                      >
+                        <TableCell>{book.email}</TableCell>
+                        <TableCell>{book.bookId}</TableCell>
+                        <TableCell>{book.issuedDate}</TableCell>
+                        <TableCell>{book.dueDate}</TableCell>
+                        <TableCell>{book.returnDate}</TableCell>
+                        <TableCell>{book.isReturned}</TableCell>
+                        <TableCell>{book.isRenewed}</TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </TableContainer>

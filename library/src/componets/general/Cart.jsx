@@ -16,26 +16,40 @@ function Cart() {
 
   const fetchBooks = async () => {
     try {
-      const userEmail = sessionStorage.getItem("email");
-      if (!userEmail) {
-        console.error("User email not found in sessionStorage");
-        return;
-      }
-      const response = await axios.get(
-        `http://localhost:8080/api/v1/library/alltransaction?email=${userEmail}`
-      );
-      const nonReturnedTransactions = response.data.data.filter(
-        (transaction) => !transaction.returned
-      );
-      const bookIds = nonReturnedTransactions.map(
-        (transaction) => transaction.bookId
-      );
-      const bookData = await fetchBooksData(bookIds);
-      setBooks(bookData);
+        const userEmail = sessionStorage.getItem("email");
+        if (!userEmail) {
+            console.error("User email not found in sessionStorage");
+            return;
+        }
+
+        // Fetch transactions for the user
+        const transactionResponse = await axios.get(`http://localhost:8080/api/v1/library/alltransaction?email=${userEmail}`);
+        const transactions = transactionResponse.data.data;
+
+        // Filter transactions where isReturned is false
+        const nonReturnedTransactions = transactions.filter((transaction) => transaction.isReturned === false);
+        console.log("Non-returned transactions:", nonReturnedTransactions);
+
+        // Extract bookIds from non-returned transactions
+        const bookIds = nonReturnedTransactions.map((transaction) => transaction.bookId);
+        console.log("Book IDs of non-returned books:", bookIds);
+
+        // Fetch books using the extracted bookIds
+        const bookResponse = await axios.get(`http://localhost:8080/api/v1/library/allbook`);
+        const books = bookResponse.data.data;
+
+        // Filter books based on bookIds
+        const filteredBooks = books.filter((book) => bookIds.includes(book.bookId));
+        console.log("Filtered books:", filteredBooks);
+
+        // Set the state with filtered books
+        setBooks(filteredBooks);
     } catch (error) {
-      console.error("Error fetching books:", error);
+        console.error("Error fetching books:", error);
     }
-  };
+};
+
+
 
   const fetchBooksData = async (bookIds) => {
     try {

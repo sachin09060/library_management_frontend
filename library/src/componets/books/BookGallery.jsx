@@ -41,8 +41,8 @@ const BookGallery = ({ books }) => {
       issuedDate: formattedCurrentDate,
       dueDate: formattedDueDate,
       returnDate: formattedReturnDate,
-      returned: true,
-      renewed: false,
+      isReturned: false,
+      isRenewed: false,
     };
 
     axios.post("http://localhost:8080/api/v1/library/atransaction", requestBody)
