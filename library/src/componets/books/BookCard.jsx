@@ -76,12 +76,20 @@
 //             "http://localhost:8055/api/history/update",
 //             requestBody
 //           );
-//           alert("New transaction added successfully!");
+//           await axios.put(
+//             "http://localhost:8055/api/history/decrementAvailableBook",
+//             { bookId: selectedBookId }
+//           );
+//           alert("Transaction updated successfully!");
 //           window.location.reload();
 //         } else {
 //           alert("You have already taken this book and not returned it yet.");
 //         }
 //       } else {
+//         await axios.put(
+//           "http://localhost:8055/api/history/decrementAvailableBook",
+//           { bookId: selectedBookId }
+//         );
 //         await axios.post("http://localhost:8055/api/history/add", requestBody);
 //         alert("New transaction added successfully!");
 //         window.location.reload();
@@ -236,6 +244,7 @@ const BookGallery = ({ books }) => {
   const handleClose = () => {
     setShow(false);
     setEmailError(false);
+    window.location.reload();
   };
 
   const handleShow = () => setShow(true);
@@ -244,6 +253,7 @@ const BookGallery = ({ books }) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email.trim() || !emailPattern.test(email) || !users.includes(email)) {
       setEmailError(true);
+      window.location.reload();
       return;
     }
 
@@ -286,10 +296,11 @@ const BookGallery = ({ books }) => {
             "http://localhost:8055/api/history/decrementAvailableBook",
             { bookId: selectedBookId }
           );
-          alert("Transaction updated successfully!");
+          alert("New transaction added successfully!");
           window.location.reload();
         } else {
           alert("You have already taken this book and not returned it yet.");
+          window.location.reload();
         }
       } else {
         await axios.put(
@@ -365,17 +376,24 @@ const BookGallery = ({ books }) => {
         style={{
           display: "flex",
           flexWrap: "wrap",
-          justifyContent: "left",
+          justifyContent: "center",
           gap: "20px",
         }}
       >
         {books.map((book) => (
-          <Card key={book.bookId} style={{ width: "calc(25% - 20px)" }}>
+          <Card
+            key={book.bookId}
+            style={{ width: "100%", maxWidth: "300px", marginBottom: "20px" }}
+          >
             <CardMedia
               component="img"
               image={book.bookImgUrl}
               alt={book.bookName}
-              sx={{ width: "225px", height: "268px", objectFit: "cover" }}
+              sx={{
+                width: "100%",
+                height: "280px",
+                objectFit: "cover",
+              }}
             />
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
