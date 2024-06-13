@@ -14,23 +14,43 @@ function BookTabs1() {
   };
 
   return (
-    <div>
+    <div style={styles.container}>
       <Header2 />
       <Tabs
         value={value}
         onChange={handleChange}
         centered
         aria-label="Horizontal tabs example"
-        sx={{ backgroundColor: "#f5f5f5" }}
+        sx={{
+          backgroundColor: "#f5f5f5",
+          "& .MuiTab-label": {
+            "@media only screen and (max-width: 480px)": {
+              fontSize: "0.8rem",
+            },
+          },
+        }}
       >
         <Tab label="All Available Books" value={0} />
         <Tab label="Recently Added Book" value={1} />
       </Tabs>
-      {value === 0 && <BooksGalleryLayout />}
-      {value === 1 && <BooksGalleryLayout2 />}
+      <div style={styles.content}>
+        {value === 0 && <BooksGalleryLayout />}
+        {value === 1 && <BooksGalleryLayout2 />}
+      </div>
       <Footer />
     </div>
   );
 }
+
+const styles = {
+  container: {
+    maxWidth: "1200px",
+    margin: "0 auto",
+    padding: "20px",
+  },
+  content: {
+    padding: "20px 0",
+  },
+};
 
 export default BookTabs1;

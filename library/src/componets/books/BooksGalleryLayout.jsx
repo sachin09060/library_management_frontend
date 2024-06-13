@@ -8,7 +8,7 @@ const BooksGalleryLayout = () => {
   const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useState({ searchBy: "", query: "" });
   const [searchClicked, setSearchClicked] = useState(false);
-  const booksPerPage = 8;
+  const booksPerPage = 6;
 
   const fetchBooks = useCallback(async () => {
     let url = "http://localhost:8055/api/book";
