@@ -6,7 +6,7 @@ import { Typography, Pagination } from "@mui/material";
 const BooksGalleryLayout2 = () => {
   const [books, setBooks] = useState([]);
   const [page, setPage] = useState(1);
-  const booksPerPage = 4;
+  const booksPerPage = 3;
 
   useEffect(() => {
     fetchBooks();
