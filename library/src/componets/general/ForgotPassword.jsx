@@ -94,7 +94,7 @@ export default function ForgotPassword() {
           <Form.Group controlId="email" style={{ marginBottom: "15px" }}>
             <Form.Control
               type="email"
-              placeholder="email"
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               style={{ borderRadius: "5px" }}
