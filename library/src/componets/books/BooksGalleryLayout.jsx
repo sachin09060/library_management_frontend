@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import BookGallery from "./BookGallery";
-import { Typography, Pagination, TextField, Button, MenuItem, CircularProgress } from "@mui/material";
+import { Typography, Pagination, TextField, Button, MenuItem} from "@mui/material";
 
 const BooksGalleryLayout = () => {
   const [books, setBooks] = useState([]);
   const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useState({ searchBy: "", query: "" });
-  const [searchClicked, setSearchClicked] = useState(false);
+
   const booksPerPage = 8;
 
   const fetchBooks = async () => {
@@ -35,13 +35,18 @@ const BooksGalleryLayout = () => {
     }));
   };
 
-  const handleSearch = () => {
-    setSearchClicked(true);
+  const handleSearch = async () => {
+    await fetchBooks(); // Fetch books based on search criteria
+  };
+
+  const handleClearSearch = () => {
+    setSearchParams({ searchBy: "", query: "" }); // Reset search fields
+    fetchBooks(); // Fetch all books again
   };
 
   useEffect(() => {
-    fetchBooks();
-  }, [searchClicked]);
+    fetchBooks(); // Fetch books initially and whenever searchParams change
+  }, [searchParams]); // Add books.length to ensure all books are fetched after clearing search
 
   const startIndex = (page - 1) * booksPerPage;
   const endIndex = page * booksPerPage;
@@ -61,7 +66,6 @@ const BooksGalleryLayout = () => {
           value={searchParams.searchBy}
           onChange={handleSearchChange}
         >
-          <MenuItem value="bookId">Book ID</MenuItem>
           <MenuItem value="bookName">Book Name</MenuItem>
           <MenuItem value="author">Author</MenuItem>
           <MenuItem value="genre">Genre</MenuItem>
@@ -77,6 +81,9 @@ const BooksGalleryLayout = () => {
         />
         <Button variant="contained" onClick={handleSearch} style={{ marginBottom: 20 }}>
           Search
+        </Button>
+        <Button variant="outlined" onClick={handleClearSearch} style={{ marginBottom: 20, marginLeft: 10 }}>
+          Clear Search
         </Button>
         {paginatedBooks.length > 0 ? (
           <>

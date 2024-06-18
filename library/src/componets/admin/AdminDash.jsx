@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
-import ManageBooks2 from './ManageBooks2';
-// import ManageUsers from './ManageUsers';
-// import ManageIssuedBooks from './ManageIssuedBooks';
-import ManageRequestedBooks from './ManageRequestedBooks';
+import ManageBooks2 from './ManageBooks';
 import { Button } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom'
-import ManageUsers2 from './ManageUsers2';
-import ManageIssuedBooks2 from './ManageIssuedBooks2';
-import ManageRequestedBooks2 from './ManageRequestedBooks2';
+import ManageUsers2 from './ManageUsers';
+import ManageIssuedBooks2 from './ManageIssuedBooks';
+import ManageRequestedBooks2 from './ManageRequestedBooks';
 
 const AdminDashboard = () => {
   const [selectedPage, setSelectedPage] = useState('');

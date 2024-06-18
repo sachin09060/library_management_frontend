@@ -12,136 +12,67 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Snackbar,
 } from "@mui/material";
-import MuiAlert from "@mui/material/Alert";
 
-const ManageUsers = () => {
-  const [newUser, setNewUser] = useState({
-    userId: "",
-    username: "",
-    gender: "",
-    phoneNo: "",
-    email: "",
-    address: ""
-  });
+const ManageUsers2 = () => {
+const[users, setUsers] = useState([]);
+const[userId,setUserId] = useState('');
+const[username, setUsername] = useState('');
+const[gender, setGender] = useState('');
+const[phoneNo, setPhoneNo] = useState('')
+const[email, setEmail] = useState('');
+const[address, setAddress] = useState('')
 
-  const [users, setUsers] = useState([]);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+useEffect(() => {
+    getUsers()
+},[])
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
 
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/api/v1/library/alluser");
-      setUsers(response.data.data);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
+const clearFields = () => {
+    setUserId('');
+    setUsername('');
+    setEmail('');
+    setGender('');
+    setPhoneNo('');
+    setAddress('');
+}
 
-  const addUserToDatabase = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/library/auser",
-        newUser
-      );
-      console.log("User added:"+ response.data);
-  
-      if (response.data) {
-        fetchUsers();
-        setNewUser({
-          userId: "",
-          username: "",
-          gender: "",
-          phoneNo: "",
-          email: "",
-          address: ""
-        });
-        setSnackbarSeverity("success");
-        setSnackbarMessage(response.data.message);
-        setSnackbarOpen(true);
-      }
-      if(response.data.error){
-        setSnackbarSeverity("error");
-        setSnackbarMessage(response.data.message);
-        setSnackbarOpen(true);
-      }
-    } catch (error) {
-      if (error.response) {
-      } else {
-        console.error("Error adding user:", error.message);
-      }
-    }
-  };
-  
+const getUsers = () => {
+    axios.get('http://localhost:8080/api/v1/library/alluser')
+    .then(response => {
+        console.log('user fetched',response);
+        setUsers(response.data.data || [])
+    })
+    .catch(error => {
+        console.log("unable to fetch",error);
+    })
+}
 
-  const handleAddUser = () => {
-    addUserToDatabase();
-  };
+const selectUser = (email) =>{
+    const seletedUser = users.find(user =>email === user.email)
+    setUserId(seletedUser.userId)
+    setUsername(seletedUser.username)
+    setGender(seletedUser.gender)
+    setEmail(seletedUser.email)
+    setPhoneNo(seletedUser.phoneNo)
+    setAddress(seletedUser.address)
+}
 
-  const handleDeleteUser = async (userId) => {
-    try {
-      await axios.delete("http://localhost:8080/api/v1/library/deleteuserbyid", {
-        data: {
-          userId: userId,
-        },
-      });
-      fetchUsers();
-      setSnackbarSeverity("success");
-      setSnackbarMessage("User deleted successfully!");
-      setSnackbarOpen(true);
-    } catch (error) {
-      console.error("Error deleting user:", error);
-    }
-  };
+const updateUser = () => {
+    axios.put('http://localhost:8080/api/v1/library/updateuserbyid',{
+        userId,username,gender,email,phoneNo,address
+    })
+    .then(response => {
+        console.log("user updated" ,response);
+        clearFields()
+        getUsers()
+    })
+    .catch(error => {
+        console.log("unaple to update", error);
+    })
+}
 
-  const handleUpdateUser = async (userId) => {
-    try {
-      const response = await axios.put(
-        `http://localhost:8080/api/v1/library/updateuserbyid`,
-        newUser
-      );
-      console.log("User updated:", response.data);
 
-      fetchUsers();
-
-      setNewUser({
-        userId: "",
-        username: "",
-        gender: "",
-        phoneNo: "",
-        email: "",
-        address: ""
-      });
-    } catch (error) {
-      console.error("Error updating user:", error);
-    }
-  };
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setSnackbarOpen(false);
-  };
-
-  const snackbarStyle = {
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    backgroundColor: "#008DDA",
-    color: "#FFFFFF",
-    borderRadius: "12px",
-    padding: "24px",
-    fontSize: "1.6rem",
-    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-  };
 
   return (
     <Container
@@ -177,72 +108,58 @@ const ManageUsers = () => {
             label="User ID"
             variant="outlined"
             fullWidth
-            value={newUser.userId}
-            onChange={(e) => setNewUser({ ...newUser, userId: e.target.value })}
+            value={userId}
+            onChange={(e) => setUserId(e.target.value )}
             style={{ width: "200px", margin: "10px" }}
           />
           <TextField
             label="Name"
             variant="outlined"
             fullWidth
-            value={newUser.username}
-            onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
+            value={username}
+            onChange={(e) => {setUsername(e.target.value)}}
             style={{ width: "200px", margin: "10px" }}
           />
           <TextField
             label="Gender"
             variant="outlined"
             fullWidth
-            value={newUser.gender}
-            onChange={(e) => setNewUser({ ...newUser, gender: e.target.value })}
+            value={gender}
+            onChange={(e) => {setGender(e.target.value)}}
             style={{ width: "200px", margin: "10px" }}
           />
           <TextField
             label="Phone"
             variant="outlined"
             fullWidth
-            value={newUser.phoneNo}
-            onChange={(e) => setNewUser({ ...newUser, phoneNo: e.target.value })}
+            value={phoneNo}
+            onChange={(e) =>{setPhoneNo(e.target.value)}}
             style={{ width: "200px", margin: "10px" }}
           />
           <TextField
             label="Email"
             variant="outlined"
             fullWidth
-            value={newUser.email}
-            onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+            value={email}
+            onChange={(e) => {setEmail(e.target.value)}}
             style={{ width: "200px", margin: "10px" }}
           />
           <TextField
             label="Address"
             variant="outlined"
             fullWidth
-            value={newUser.address}
-            onChange={(e) =>
-              setNewUser({ ...newUser, address: e.target.value })
-            }
+            value={address}
+            onChange={(e) => {setAddress(e.target.value)}}            
             style={{ width: "200px", margin: "10px" }}
           />
-          {/* <TextField
-            label="Created At"
-            type="date"
-            variant="outlined"
-            fullWidth
-            value={newUser.createdAt}
-            onChange={(e) =>
-              setNewUser({ ...newUser, createdAt: e.target.value })
-            }
-            style={{ width: "200px", margin: "10px" }}
-            InputLabelProps={{ shrink: true }}
-          /> */}
         </div>
         <Button
           variant="contained"
           color="primary"
-          onClick={handleAddUser}
+          onClick={() => updateUser()}
           style={{ width: "80%", margin: "20px 0" }}
         >
-          Add
+          update
         </Button>
       </div>
       <div
@@ -289,14 +206,14 @@ const ManageUsers = () => {
                       <Button
                         variant="outlined"
                         color="secondary"
-                        onClick={() => handleDeleteUser(user.userId)}
+                        // onClick={() => handleDeleteUser(user.userId)}
                       >
                         Delete
                       </Button>
                       <Button
                         variant="outlined"
                         color="primary"
-                        onClick={() => handleUpdateUser(user.userId)}
+                        onClick={() => selectUser(user.email)}
                       >
                         {" "}
                         {/* Update button */}
@@ -309,20 +226,9 @@ const ManageUsers = () => {
             </Table>
           </TableContainer>
         </div>
-
       </div>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={1000}
-        onClose={handleSnackbarClose}
-        style={snackbarStyle}
-      >
-        <MuiAlert onClose={handleSnackbarClose} severity={snackbarSeverity}>
-          {snackbarMessage}
-        </MuiAlert>
-      </Snackbar>
     </Container>
   );
 };
 
-export default ManageUsers;
+export default ManageUsers2;

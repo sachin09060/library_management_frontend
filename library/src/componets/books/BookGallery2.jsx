@@ -83,7 +83,7 @@ const BookGallery2 = ({ books }) => {
     } else if (actionType === "renew") {
       requestBody.isRenewed = true;
     }
-  
+ 
     axios.put("http://localhost:8080/api/v1/library/updatetransaction", requestBody)
       .then((response) => {
         console.log(response.data);

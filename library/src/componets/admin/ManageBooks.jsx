@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import MuiAlert from "@mui/material/Alert";
 import {
   Container,
   Typography,
@@ -13,166 +12,122 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Snackbar,
 } from "@mui/material";
 
-const ManageBooks = () => {
-  const [books, setBooks] = useState([]);
-  const [bookId,setBookId] = useState('')
-  const [bookName,setBookName] = useState('')
-  const [bookAuthor, setBookAuthor] = useState('')
-  const [bookUrl, setBookUrl] = useState('')
-  const [genres, setGenres] = useState('')
-  const [description, setDescirption] = useState('')
-  const [addedDate, setAddedDate] = useState('')
-  const [totalCopies, setTotalCopies] = useState('')
-  const [availableCopies, setAvailableCopies] = useState('')
+const ManageBooks2 = () => {
 
-   const [newBook, setNewBook] = useState({
-    bookId: "",
-    bookName: "",
-    bookUrl: "",
-    bookAuthor: "",
-    genres: "",
-    description: "",
-    addedDate: "",
-    totalCopies: "",
-    availableCopies: "",
-  });
-  
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-
-  useEffect(() => {
-    fetchBooks();
-  }, []);
-
-  const fetchBooks = async () => {
-   
-    try {
-      const response = await axios.get("http://localhost:8080/api/v1/library/allbook");
-      setBooks(response.data.data || []);
-    } catch (error) {
-      console.error("Error fetching books:", error);
-    }
-  };
-
-
-  const addBooks = () => {
-   
-    axios.post('http://localhost:8080/api/v1/library/abook',{
-      bookId:bookId,
-      bookName:bookName,
-      bookUrl:bookUrl,
-      bookAuthor:bookAuthor,
-      genres: genres,
-      description: description,
-      addedDate: addedDate,
-      totalCopies:totalCopies,
-      availableCopies: availableCopies,
-
-    }).then(response=>{
-      console.log("Books add",response);
-    }).catch(error=>{
-      console.log("Books add",error);
-    })
-  }
-
-
-
-  // const addBookToDatabase = async () => {
-  //   try {
-  //     const response = await axios.post(
-  //       "http://localhost:8080/api/v1/library/abook",
-  //       newBook
-  //     );
-  //     console.log("Book added:", response.data);
-
-  //     fetchBooks();
-
-  //     setNewBook({
-  //       bookId: "",
-  //       bookName: "",
-  //       bookUrl: "",
-  //       bookAuthor: "",
-  //       genres: "",
-  //       description: "",
-  //       addedDate: "",
-  //       totalCopies: "",
-  //       availableCopies: "",
-  //     });
-  //     setSnackbarSeverity("success");
-  //     setSnackbarMessage(response.data.message);
-  //     setSnackbarOpen(true);
-  //   } catch (error) {
-  //     console.error("Error adding book:", error);
-  //   }
-  // };
-
-  // const handleAddBook = () => {
-  //   if (
-  //     newBook.bookId &&
-  //     newBook.bookUrl &&
-  //     newBook.bookName &&
-  //     newBook.bookAuthor &&
-  //     newBook.genres &&
-  //     newBook.description &&
-  //     newBook.addedDate &&
-  //     newBook.totalCopies &&
-  //     newBook.availableCopies
-  //   ) {
-  //     addBookToDatabase();
-  //   }
-  // };
-
-  const handleDeleteAndUpdateBook = async (bookId) => {
-    try {
-      await axios.delete("http://localhost:8080/api/v1/library/deletebookbyid", {
-        data: {
-          bookId: bookId,
-        },
-      });
-
-      fetchBooks();
-    } catch (error) {
-      console.error("Error deleting book:", error);
-    }
-  };
-
-  const handleUpdateBook = async (bookId) => {
-    try {
-      const response = await axios.put(
-        "http://localhost:8080/api/v1/library/updatebookbyid",{bookId}
-        
-      );
-      console.log("Book updated:", response.data.data);
-
-      fetchBooks();
+    const[books, setBooks] = useState([])
+    const[bookId, setBookId] = useState('')
+    const[bookName, setBookName] = useState('')
+    const[bookUrl, setBookUrl] = useState('')
+    const[bookAuthor, setBookAuthor] = useState('')
+    const[genres, setGenres] = useState('')
+    const[description, setDescirption] = useState('')
+    const[addedDate, setAddedDate] = useState ('')  
+    const[totalCopies, setTotalCopies] = useState('')
+    const[availableCopies, setAvailableCopies] = useState('')
+    const[currentDate, setCurrentDate] = useState('')
     
-      
-        // setBookId(bookId),
-        // setBookName( bookName),
-        // setBookUrl(bookUrl),
-        // setBookAuthor( bookAuthor),
-        // setGenress(genres),
-        // setDescirptionn(description),
-        // setAddedDate(addedDate),
-        // setTotalCopiess(totalCopies),
-        // setAvailableCopieses(availableCopies)
-      
-    } catch (error) {
-      console.error("Error updating book:", error);
-    }
-  };
+    
+    useEffect(()=>{
+      getBooks(); 
+      const date = new Date();
+      // substr(0, 10)-> Get today's date in YYYY-MM-DD format
+      const formattedDate = date.toISOString().substr(0, 10);
+      setCurrentDate(formattedDate);
+    },[])
 
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
+
+
+    const clearFields = () =>{
+      setBookId('');
+      setBookName('');
+      setBookUrl('');
+      setBookAuthor('');
+      setDescirption('');
+      setGenres('');
+      setAddedDate('');
+      setTotalCopies('');
+      setAvailableCopies('')
     }
 
-    setSnackbarOpen(false);
-  };
+
+    const getBooks = () =>{
+      axios.get('http://localhost:8080/api/v1/library/allbook')
+      .then(response =>{
+        console.log("Books are getched", response);
+        setBooks(response.data.data || [])
+      })
+      .catch(error => {
+        console.log("failed to fetch",error);
+      })
+    }
+
+
+const addBooks = () => {
+     console.log(bookId, bookName, bookUrl, bookAuthor,genres,description, addedDate,totalCopies,availableCopies);
+    if(!bookId || !bookName || !bookUrl || !bookAuthor || !genres || !description || !addedDate || !totalCopies
+        || !availableCopies){
+        alert('Fill all the fields');
+    }
+    else{
+    axios.post('http://localhost:8080/api/v1/library/abook' ,{bookId,bookName,bookUrl,
+        bookAuthor,genres,description,addedDate,totalCopies,availableCopies})
+        .then(response =>{
+          if(response.data.message === "Book added"){
+            console.log("added successfully",response.data.data);
+            alert("successful added")
+            clearFields()
+            getBooks();
+          }
+          else{
+            alert("book already present")
+          }   
+        })
+        .catch(error => {
+            console.log("Unable to add",error);
+        })
+
+    }
+}  
+
+const deletBook = (bookId) =>{
+    axios.delete('http://localhost:8080/api/v1/library/deletebookbyid',{data:{bookId}})
+    .then(response => {
+      console.log("deleted successfully", response);
+      getBooks();
+    })
+    .catch(error => {
+      console.log("failed to delete",error);
+    })
+}
+
+const selectBookToUpdate = (bookId) =>{
+    const selectedBook = books.find(book =>bookId===book.bookId )
+    setBookId(selectedBook.bookId)
+    setBookName(selectedBook.bookName)
+    setBookUrl(selectedBook.bookUrl)
+    setBookAuthor(selectedBook.bookAuthor)
+    setGenres(selectedBook.genres)
+    setAddedDate(selectedBook.addedDate)
+    setDescirption(selectedBook.description)
+    setTotalCopies(selectedBook.totalCopies)
+    setAvailableCopies(selectedBook.availableCopies)
+    
+
+}
+const updateBook=()=>{
+  axios.put('http://localhost:8080/api/v1/library/updatebookbyid',{bookId,bookName, bookUrl, bookAuthor,genres,description, addedDate,totalCopies,availableCopies})
+  .then(response => {
+    console.log("updated",response);
+    alert("upadated successfull")
+    getBooks();
+    clearFields()
+  })
+  .catch(error => {
+    console.log("unable to update",error);
+  })
+}
 
   const allGenres = [
     "FANTASY",
@@ -241,7 +196,7 @@ const ManageBooks = () => {
           <TextField
             label="Book ID"
             value={bookId}
-            onChange={(e) => setBookId(e.target.value)}
+            onChange={(e) => {setBookId(e.target.value)}}
             style={{ width: "200px", margin: "10px" }}
           />
           <TextField
@@ -253,13 +208,13 @@ const ManageBooks = () => {
           <TextField
             label="Book URL"
             value={bookUrl}
-            onChange={(e) => setBookUrl(e.target.value)}
+            onChange={(e) => {setBookUrl(e.target.value)}}
             style={{ width: "200px", margin: "10px" }}
           />
           <TextField
             label="Author"
             value={bookAuthor}
-            onChange={(e) => setBookAuthor(e.target.value)}
+            onChange={(e) => {setBookAuthor(e.target.value)}}
             style={{ width: "200px", margin: "10px" }}
           />
           <TextField
@@ -271,24 +226,25 @@ const ManageBooks = () => {
             SelectProps={{ native: true }}
           >
             <option value="">Select genre</option>
-            {allGenres.map((genre) => (
-              <option key={genre} value={genre}>
-                {genre}
+            {allGenres.map((genres) => (
+              <option key={genres} value={genres}>
+                {genres}
               </option>
             ))}
           </TextField>
           <TextField
             label="Description"
             value={description}
-            onChange={(e) => setDescirption(e.target.value)}
+            onChange={(e) => {setDescirption(e.target.value)}}
             style={{ width: "200px", margin: "10px" }}
           />
           <TextField
             label="Added Date"
             type="datetime-local"
+            min={currentDate}
             variant="outlined"
             value={addedDate}
-            onChange={(e) => setAddedDate(e.target.value)}
+            onChange={(e) => {setAddedDate(e.target.value)}}
             style={{ width: "200px", margin: "10px" }}
             InputLabelProps={{ shrink: true }}
           />
@@ -314,6 +270,14 @@ const ManageBooks = () => {
           style={{ width: "80%", margin: "20px 0" }}
         >
           Add
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={()=>{updateBook()}}
+          style={{ width: "80%", margin: "20px 0" }}
+        >
+         update
         </Button>
 
       </div>
@@ -367,14 +331,14 @@ const ManageBooks = () => {
                         <Button
                           variant="outlined"
                           color="secondary"
-                          onClick={() => handleDeleteAndUpdateBook(bookId)}
+                          onClick={()=>{deletBook(book.bookId)}}
                         >
                           Delete
                         </Button>
                         <Button
                           variant="outlined"
                           color="primary"
-                          onClick={() => handleUpdateBook(bookId)}
+                          onClick={() => selectBookToUpdate(book.bookId)}
                         >
                           Update
                         </Button>
@@ -393,28 +357,8 @@ const ManageBooks = () => {
           </TableContainer>
           </div>
         </div>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={500}
-        onClose={handleSnackbarClose}
-        style={{
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          backgroundColor: "#008DDA",
-          color: "#FFFFFF",
-          borderRadius: "12px",
-          padding: "24px",
-          fontSize: "1.6rem",
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <MuiAlert onClose={handleSnackbarClose} severity={snackbarSeverity}>
-          {snackbarMessage}
-        </MuiAlert>
-      </Snackbar>
     </Container>
   );
 };
 
-export default ManageBooks;
+export default ManageBooks2;

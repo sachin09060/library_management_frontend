@@ -31,7 +31,7 @@ const Header = () => {
             </Nav>
 
             <Nav className="justify-content-end">
-              <NavLink to="/UserSignUp" className="nav-link" activeClassName="active">Register</NavLink>
+              <NavLink to="/UserSignUp" className="nav-link" activeClassName="active">Register/SignIn</NavLink>
               <NavLink to="/adminSignIn" className="nav-link" activeClassName="active">Admin</NavLink>
             </Nav>
           </Navbar.Collapse>
