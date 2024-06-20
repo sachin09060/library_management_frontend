@@ -57,7 +57,7 @@ const ManageIssuedBooks2 = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {transactions.map((transaction) => (
+                  {transactions && transactions.map((transaction) => (
                     <TableRow key={transaction.id}>
                       <TableCell>{transaction.email}</TableCell>
                       <TableCell>{transaction.bookId}</TableCell>

@@ -47,9 +47,9 @@ const BookGallery = ({ books }) => {
 
     axios.post("http://localhost:8080/api/v1/library/atransaction", requestBody)
       .then((response) => {
+        if(response.data.message==="transaction added"){
         console.log(response.data);
         alert("One transaction added Successfully!");
-
         //decrement available book
         axios.put("http://localhost:8080/api/v1/library/available/book/decrement", { bookId: selectedBookId })
         .then((response) => {
@@ -70,9 +70,16 @@ const BookGallery = ({ books }) => {
 
         handleClose();
         window.location.reload();
+      }
+      else{
+          alert("you already taken this !!");
+          window.location.reload();
+      }
       })
       .catch((error) => {
         console.error("Error:", error);
+        alert("you already taken this !!");
+        window.location.reload();
       });
   };
 
